@@ -1844,6 +1844,7 @@ return html;
 function newForm(){
 state.view=isRAJenjang()?'form-ra':'form';
 state.currentStep=0;state.editId=null;
+state.unlockedScores={};
 var pengawas=getPengawas();
 state.formData={identitas:{namaSupervisor:pengawas.nama||'',nipSupervisor:pengawas.nip||'',jabatanSupervisor:pengawas.jabatan||''},perencanaan:{scores:[],catatan:[],manualCatatan:[]},pelaksanaan:{scores:[],catatan:[],manualCatatan:[]},asesmen:{scores:[],catatan:[],manualCatatan:[]},rekap:{}};
 render();
@@ -1903,6 +1904,7 @@ function editItem(idx){
 var data=getData();
 state.formData=JSON.parse(JSON.stringify(data[idx]));
 state.editId=idx;
+state.unlockedScores={};
 state.view=isRAJenjang()?'form-ra':'form';
 state.currentStep=0;render();
 }
@@ -2366,12 +2368,14 @@ var entry={madrasahNama:madrasah,tanggal:tanggal,scores:[],catatan:[],rekap:{cat
 data.push(entry);
 saveKokurikuler(data);
 state.kokurikulerIdx=data.length-1;
+state.unlockedScores={};
 state.view='kokurikuler-form';
 render();
 }
 
 function editKokurikuler(idx){
 state.kokurikulerIdx=idx;
+state.unlockedScores={};
 state.view='kokurikuler-form';
 render();
 }
@@ -2703,7 +2707,7 @@ var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},
 var max=EKSTRAKURIKULER.length*4;
 var pct=max>0?(sum/max)*100:0;
 html+='<tr><td>'+(i+1)+'</td><td>'+escHtml(d.madrasahNama||'-')+'</td><td>'+escHtml(d.tanggal||'-')+'</td><td>'+sum+'/'+max+' ('+pct.toFixed(1)+'%)</td><td>'+getPredikat(pct)+'</td>';
-html+='<td><button class="btn btn-sm btn-primary" onclick="state.ekstrakurikulerIdx='+i+';navigate(\'ekstrakurikuler-form\')">&\#9998;</button> ';
+html+='<td><button class="btn btn-sm btn-primary" onclick="state.ekstrakurikulerIdx='+i+';state.unlockedScores={};navigate(\'ekstrakurikuler-form\')">&\#9998;</button> ';
 html+='<button class="btn btn-sm btn-info" onclick="cetakEkstrakurikuler('+i+')">&#128424;</button> ';
 html+='<button class="btn btn-sm btn-danger" onclick="deleteEkstrakurikuler('+i+')">\u{1F5D1}</button></td></tr>';
 });
@@ -2739,6 +2743,7 @@ data.push({madrasahNama:nama,tanggal:tgl,scores:new Array(EKSTRAKURIKULER.length
 saveEkstrakurikuler(data);
 var el=document.getElementById('modal-ekstra');if(el)el.remove();
 state.ekstrakurikulerIdx=data.length-1;
+state.unlockedScores={};
 navigate('ekstrakurikuler-form');
 }
 
@@ -3069,7 +3074,7 @@ var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},
 var max=IKLIM_MADRASAH.length*4;
 var pct=max>0?(sum/max)*100:0;
 html+='<tr><td>'+(i+1)+'</td><td>'+escHtml(d.madrasahNama||'-')+'</td><td>'+escHtml(d.tanggal||'-')+'</td><td>'+sum+'/'+max+' ('+pct.toFixed(1)+'%)</td><td>'+getPredikat(pct)+'</td>';
-html+='<td><button class="btn btn-sm btn-primary" onclick="state.iklimMadrasahIdx='+i+';navigate(\'iklim-madrasah-form\')">&#9998;</button> ';
+html+='<td><button class="btn btn-sm btn-primary" onclick="state.iklimMadrasahIdx='+i+';state.unlockedScores={};navigate(\'iklim-madrasah-form\')">&#9998;</button> ';
 html+='<button class="btn btn-sm btn-info" onclick="cetakIklimMadrasah('+i+')">&#128424;</button> ';
 html+='<button class="btn btn-sm btn-danger" onclick="deleteIklimMadrasah('+i+')">&#128465;</button></td></tr>';
 });
@@ -3103,6 +3108,7 @@ data.push({madrasahNama:nama,tanggal:tgl,scores:new Array(IKLIM_MADRASAH.length)
 saveIklimMadrasah(data);
 var el=document.getElementById('modal-iklim');if(el)el.remove();
 state.iklimMadrasahIdx=data.length-1;
+state.unlockedScores={};
 navigate('iklim-madrasah-form');
 }
 function deleteIklimMadrasah(idx){
