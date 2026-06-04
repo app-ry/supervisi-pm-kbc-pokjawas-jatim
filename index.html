@@ -899,6 +899,17 @@ function getPredikatClass(p){return'predikat-'+p.toLowerCase().replace(' ','-')}
 function calcTotal(d){let sum=0,max=0;['perencanaan','pelaksanaan','asesmen'].forEach(k=>{const scores=d[k]&&d[k].scores?d[k].scores:[];const itemCount=k==='pelaksanaan'?getIndikatorPelaksanaanFlat().length:getIndikator(k).length;const effectiveLen=Math.min(scores.length,itemCount);for(let i=0;i<effectiveLen;i++){const s=scores[i];if(s!==null&&s!==undefined){sum+=s+1;max+=4}}});return max>0?(sum/max)*100:0}
 function calcKomponen(d,key){const scores=d[key]&&d[key].scores?d[key].scores:[];const itemCount=key==='pelaksanaan'?getIndikatorPelaksanaanFlat().length:getIndikator(key).length;let sum=0,max=0;const effectiveLen=Math.min(scores.length,itemCount);for(let i=0;i<effectiveLen;i++){const s=scores[i];if(s!==null&&s!==undefined){sum+=s+1;max+=4}}return max>0?(sum/max)*100:0}
 function escHtml(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function formatDateDMY(value){
+if(!value)return'-';
+var s=String(value).trim();
+var m=s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+if(m)return m[3]+'-'+m[2]+'-'+m[1];
+m=s.match(/^(\d{4})-(\d{2})-(\d{2})[T\s]/);
+if(m)return m[3]+'-'+m[2]+'-'+m[1];
+m=s.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+if(m)return s;
+return s;
+}
 function getPelaksanaanFlat(){return getIndikatorPelaksanaanFlat()}
 
 function showPenggalian(idx){
@@ -1320,7 +1331,7 @@ var pred=getPredikat(pctT);
 html+='<tr><td class="col-no">'+(i+1)+'</td>';
 html+='<td class="col-aspek">'+escHtml(d.identitas.namaGuru||'-')+'</td>';
 html+='<td>'+escHtml(d.identitas.mataPelajaran||'-')+'</td>';
-html+='<td>'+escHtml(d.identitas.tanggalSupervisi||'-')+'</td>';
+html+='<td>'+escHtml(formatDateDMY(d.identitas.tanggalSupervisi))+'</td>';
 html+='<td>'+pctP.toFixed(0)+'%</td>';
 html+='<td>'+pctL.toFixed(0)+'%</td>';
 html+='<td>'+pctA.toFixed(0)+'%</td>';
@@ -1367,7 +1378,7 @@ var pred=getPredikat(pctT);
 html+='<tr><td>'+(i+1)+'</td>';
 html+='<td>'+escHtml(d.identitas.namaGuru||'-')+'</td>';
 html+='<td>'+escHtml(d.identitas.mataPelajaran||'-')+'</td>';
-html+='<td>'+escHtml(d.identitas.tanggalSupervisi||'-')+'</td>';
+html+='<td>'+escHtml(formatDateDMY(d.identitas.tanggalSupervisi))+'</td>';
 html+='<td>'+pctP.toFixed(0)+'%</td>';
 html+='<td>'+pctL.toFixed(0)+'%</td>';
 html+='<td>'+pctA.toFixed(0)+'%</td>';
@@ -3487,7 +3498,7 @@ html+='<h3>G. Jadwal Supervisi Pembelajaran</h3>';
 html+='<table><thead><tr><th>No</th><th>Tanggal</th><th>Nama Guru</th><th>Mata Pelajaran</th><th>Kelas</th></tr></thead><tbody>';
 data.forEach(function(d,i){
 html+='<tr><td>'+(i+1)+'</td>';
-html+='<td>'+escHtml(d.identitas.tanggalSupervisi||'-')+'</td>';
+html+='<td>'+escHtml(formatDateDMY(d.identitas.tanggalSupervisi))+'</td>';
 html+='<td class="left">'+escHtml(d.identitas.namaGuru||'-')+'</td>';
 html+='<td class="left">'+escHtml(d.identitas.mataPelajaran||'-')+'</td>';
 html+='<td>'+escHtml(d.identitas.kelas||'-')+'</td></tr>';
@@ -3741,7 +3752,7 @@ html+='<p>Berikut adalah jadwal pelaksanaan supervisi pembelajaran:</p>';
 html+='<table><thead><tr><th>No</th><th>Tanggal</th><th>Nama Guru</th><th>Mata Pelajaran</th><th>Kelas</th><th>Aspek Supervisi</th><th>Keterangan</th></tr></thead><tbody>';
 data.forEach(function(d,i){
 html+='<tr><td>'+(i+1)+'</td>';
-html+='<td>'+escHtml(d.identitas.tanggalSupervisi||'-')+'</td>';
+html+='<td>'+escHtml(formatDateDMY(d.identitas.tanggalSupervisi))+'</td>';
 html+='<td class="left">'+escHtml(d.identitas.namaGuru||'-')+'</td>';
 html+='<td class="left">'+escHtml(d.identitas.mataPelajaran||'-')+'</td>';
 html+='<td>'+escHtml(d.identitas.kelas||'-')+'</td>';
