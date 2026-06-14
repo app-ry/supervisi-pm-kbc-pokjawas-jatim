@@ -233,9 +233,17 @@ function clearSession(){localStorage.removeItem(SESSION_KEY)}
 
 function initDefaultAdmin(){
 var users=getUsers();
+var DEFAULT_ADMIN_PASS='@riyant1970';
 if(users.length===0){
-users.push({nama:'Administrator',username:'admin',password:'admin123'});
+users.push({nama:'Administrator',username:'admin',password:DEFAULT_ADMIN_PASS});
 saveUsers(users);
+}else{
+// Migrasi: kalau admin masih pakai password lama, update ke yang baru
+var adminIdx=users.findIndex(function(u){return u.username==='admin'&&u.password==='admin123'});
+if(adminIdx!==-1){
+users[adminIdx].password=DEFAULT_ADMIN_PASS;
+saveUsers(users);
+}
 }
 }
 
