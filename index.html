@@ -11,21 +11,136 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
 <style>
-:root{--navy:#1E2A5A;--navy-hover:#162047;--gold:#D4AF37;--gold-dark:#B8941F;--bg:#F8F9FC;--text:#1F2937;--muted:#6B7280;--sidebar:#111827;--card:#FFFFFF;--border:#E5E7EB;--danger:#DC2626;--success:#059669;--info:#2563EB;--shadow:0 12px 30px rgba(17,24,39,.08);--radius:16px}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);min-height:100vh;color:var(--text);line-height:1.5}.app-layout{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--sidebar);padding:20px 0;color:#fff;position:fixed;height:100vh;overflow-y:auto;z-index:100;transition:transform .3s;box-shadow:10px 0 30px rgba(17,24,39,.14)}.sidebar h2{padding:15px 20px;font-size:1.2rem;border-bottom:1px solid rgba(212,175,55,.28);margin-bottom:10px;color:#fff}.sidebar-logo{display:flex;justify-content:center;padding:18px 20px 8px}.sidebar-logo img{width:70px;height:70px;object-fit:contain;background:transparent;border-radius:0;padding:0;box-shadow:none;border:none;filter:drop-shadow(0 2px 6px rgba(255,255,255,.5)) brightness(1.15)}.sidebar-menu{list-style:none;padding-bottom:60px}.sidebar-menu li.menu-section{padding:8px 20px 4px;font-size:.7rem;font-weight:800;color:rgba(212,175,55,.88);letter-spacing:.08em;text-transform:uppercase;cursor:default;border-left:3px solid transparent}.sidebar-menu li{padding:12px 20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;font-size:.9rem;border-left:3px solid transparent;color:#E5E7EB}.sidebar-menu li:hover{background:rgba(255,255,255,.07);color:#fff;border-left-color:rgba(212,175,55,.6)}.sidebar-menu li.active{background:linear-gradient(90deg,rgba(212,175,55,.24),rgba(212,175,55,.07));border-left:3px solid var(--gold);color:#fff;font-weight:800}.submenu-toggle{cursor:pointer;display:flex;justify-content:space-between;align-items:center}.submenu-toggle:hover,.submenu-toggle.active-group{background:linear-gradient(90deg,rgba(212,175,55,.18),rgba(212,175,55,.06));border-left-color:rgba(212,175,55,.75);color:#fff}.submenu{list-style:none;padding:0;margin:0;overflow:hidden;max-height:0;transition:max-height .3s ease;background:rgba(0,0,0,.08)}.submenu.open{max-height:700px}.submenu li{padding:10px 20px 10px 36px;font-size:.82rem}.submenu li:hover,.submenu li.active{background:linear-gradient(90deg,rgba(212,175,55,.18),rgba(212,175,55,.06));border-left-color:rgba(212,175,55,.75);color:#fff}#sub-iklim li:hover,#sub-iklim li.active{background:linear-gradient(90deg,rgba(212,175,55,.24),rgba(212,175,55,.08))!important;border-left-color:var(--gold)!important;color:#fff!important;font-weight:700}.submenu.hidden{max-height:0;overflow:hidden}.submenu.open{max-height:700px}.main-content{margin-left:250px;flex:1;padding:20px;min-height:100vh;background:linear-gradient(180deg,#fff 0,#F8F9FC 260px)}.mobile-toggle{display:none;position:fixed;top:15px;left:15px;z-index:200;background:var(--navy);color:#fff;border:1px solid rgba(212,175,55,.5);border-radius:10px;padding:10px 14px;font-size:1.2rem;cursor:pointer;box-shadow:var(--shadow)}@media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0;padding:16px}.mobile-toggle{display:block}header{padding-left:54px!important;text-align:left!important}}
-.container{max-width:1000px;margin:0 auto}header{text-align:center;padding:22px 0;color:var(--text)}header h1{font-size:1.65rem;margin-bottom:5px;color:var(--navy);font-weight:800}header p{color:var(--muted);font-size:.9rem}.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:25px;margin:15px 0;box-shadow:var(--shadow)}.btn{padding:10px 24px;border:1px solid transparent;border-radius:10px;cursor:pointer;font-size:.9rem;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:6px;line-height:1.2}.btn:hover{transform:translateY(-1px)}.btn-primary{background:var(--navy);color:#fff}.btn-primary:hover{background:var(--navy-hover);box-shadow:0 8px 18px rgba(30,42,90,.22)}.btn-danger{background:#fff;color:var(--danger);border-color:#FCA5A5}.btn-danger:hover{background:var(--danger);color:#fff}.btn-secondary{background:#fff;color:var(--navy);border-color:var(--border)}.btn-secondary:hover{background:#F3F4F6}.btn-success{background:#059669;color:#fff}.btn-success:hover{background:#047857}.btn-warning{background:var(--gold);color:#111827}.btn-warning:hover{background:var(--gold-dark);color:#111827}.btn-info{background:#fff;color:var(--info);border-color:#BFDBFE}.btn-info:hover{background:var(--info);color:#fff}.btn-sm{padding:6px 12px;font-size:.8rem;border-radius:8px}.btn-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.progress-bar{display:flex;justify-content:space-between;margin-bottom:25px;position:relative}.progress-bar::before{content:'';position:absolute;top:50%;left:0;right:0;height:3px;background:var(--border);transform:translateY(-50%);z-index:0}.step-indicator{width:36px;height:36px;border-radius:50%;background:#F3F4F6;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;position:relative;z-index:1;transition:all .3s;color:var(--muted)}.step-indicator.active{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 3px 10px rgba(30,42,90,.28)}.step-indicator.done{background:var(--gold);color:#111827;border-color:var(--gold)}
-.form-group{margin-bottom:16px}.form-group label{display:block;font-weight:700;margin-bottom:6px;color:var(--text);font-size:.9rem}.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:.9rem;transition:all .2s;background:#fff;color:var(--text)}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.18)}.form-group textarea{resize:vertical;min-height:80px}.instrumen-table,.data-table{width:100%;border-collapse:separate;border-spacing:0;margin:15px 0;font-size:.85rem;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}.instrumen-table th,.instrumen-table td,.data-table th,.data-table td{border-bottom:1px solid var(--border);padding:6px 8px;text-align:left;vertical-align:middle;line-height:1.25}.instrumen-table td{text-align:center}.instrumen-table tr:last-child td,.data-table tr:last-child td{border-bottom:none}.instrumen-table th,.data-table th{background:var(--navy);color:#fff;font-weight:700;font-size:.8rem}.data-table tr:hover,.instrumen-table tr:hover{background:#FAFBFF}.instrumen-table .col-no{width:36px}.instrumen-table .col-aspek,.instrumen-table th:nth-child(2),.instrumen-table td:nth-child(2){text-align:left;min-width:320px;width:56%;cursor:pointer;white-space:normal;word-break:normal}.instrumen-table .col-skor,.instrumen-table th:nth-child(3),.instrumen-table th:nth-child(4),.instrumen-table th:nth-child(5),.instrumen-table th:nth-child(6),.instrumen-table td:nth-child(3),.instrumen-table td:nth-child(4),.instrumen-table td:nth-child(5),.instrumen-table td:nth-child(6){width:34px;min-width:34px;padding-left:4px;padding-right:4px;text-align:center}.instrumen-table .col-catatan,.instrumen-table th:last-child,.instrumen-table td:last-child{min-width:190px;width:24%;white-space:normal}.instrumen-table .col-catatan input,.instrumen-table .col-catatan textarea{width:100%;padding:4px 6px;border:1px solid var(--border);border-radius:6px;font-size:.8rem;white-space:pre-wrap;overflow-wrap:break-word;line-height:1.25;min-height:2.5em;resize:vertical}.skor-radio{background:none;border:none;cursor:pointer;font-size:1.45rem;color:#8B6F00;text-shadow:0 0 0 #8B6F00;transition:all .2s;min-width:34px;min-height:34px;line-height:1;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}.skor-radio:hover,.skor-radio.selected{color:var(--gold);font-weight:bold;background:rgba(212,175,55,.12)}.skor-radio.locked{color:#ccc;cursor:not-allowed;opacity:.4;background:none;text-shadow:none}.skor-radio.locked:hover{color:#ccc;background:none;cursor:not-allowed}.tahap-header{background:var(--navy);color:#fff;padding:8px 14px;border-radius:10px;margin:14px 0 8px;font-weight:700;font-size:.9rem;border-left:5px solid var(--gold)}.rekap-card{background:linear-gradient(135deg,#fff,#FFFBEB);border:1px solid rgba(212,175,55,.45);border-radius:14px;padding:20px;margin-bottom:16px}.rekap-card h3{color:var(--navy);margin-bottom:10px}.rekap-score{font-size:2rem;font-weight:800;color:var(--navy)}.rekap-predikat{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:700;margin-top:5px}.predikat-sangat-baik{background:#DCFCE7;color:#166534}.predikat-baik{background:#DBEAFE;color:#1E40AF}.predikat-cukup{background:#FEF3C7;color:#92400E}.predikat-kurang{background:#FEE2E2;color:#991B1B}.dashboard-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border:1px solid var(--border);border-radius:14px;margin-bottom:10px;transition:all .2s;cursor:pointer;background:#fff}.dashboard-item:hover{border-color:var(--gold);box-shadow:0 8px 20px rgba(17,24,39,.08)}.dashboard-item .info h4{color:var(--navy);font-size:.95rem}.dashboard-item .info p{color:var(--muted);font-size:.8rem;margin-top:3px}.dashboard-item .actions{display:flex;gap:6px;flex-wrap:wrap}.empty-state{text-align:center;padding:40px;color:#D4AF37}canvas{max-width:100%;margin:20px 0}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}@media(max-width:600px){.grid-2,.grid-3{grid-template-columns:1fr}.container{padding:6px}header h1{font-size:1.3rem}.card{padding:16px;border-radius:14px}.dashboard-item{align-items:flex-start;flex-direction:column;gap:10px}.btn{width:100%;justify-content:center}.btn-group{flex-direction:column}.data-table,.instrumen-table{display:block;overflow-x:auto;white-space:nowrap}}.hidden{display:none}.fade-in{animation:fadeIn .3s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(17,24,39,.56);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px}#modalPenggalian{display:none}.modal-box,.modal{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px;max-width:560px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(17,24,39,.22);position:relative;font-size:.82rem;line-height:1.32}.modal-box h3{font-size:1rem;line-height:1.25;margin-right:36px}.modal-box ul{margin-top:6px;margin-bottom:6px;padding-left:18px}.modal-box li{margin-bottom:2px}.penggalian-edit-text{width:100%;min-height:180px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-family:inherit;font-size:.82rem;line-height:1.35;resize:vertical}.modal-close{position:absolute;top:12px;right:14px;border:none;background:transparent;color:var(--muted);font-size:1.6rem;cursor:pointer}.modal h3,.modal-box h3{margin-bottom:20px;color:var(--navy)}.stat-card{background:#fff;border:1px solid var(--border);border-top:4px solid var(--gold);border-radius:14px;padding:20px;text-align:center;box-shadow:var(--shadow)}.stat-card .stat-number{font-size:2rem;font-weight:800;color:var(--navy)}.stat-card .stat-label{color:var(--muted);font-size:.85rem;margin-top:5px}@media print{.sidebar,.mobile-toggle,.no-print,.btn-group{display:none!important}.main-content{margin-left:0!important}.card{box-shadow:none;border:1px solid #ddd}body{background:#fff}.print-only{display:block!important}}.print-only{display:none}
-.auth-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at top,rgba(212,175,55,.18),transparent 34%),linear-gradient(135deg,#111827,#1E2A5A);z-index:2000}.auth-card{width:min(420px,100%);background:rgba(255,255,255,.96);border:1px solid rgba(212,175,55,.38);border-radius:24px;padding:32px 28px;box-shadow:0 28px 70px rgba(0,0,0,.32);text-align:center}.auth-logo{width:94px;height:94px;object-fit:contain;margin:0 auto 16px;display:block;background:#fff;border:3px solid var(--gold);border-radius:50%;padding:8px;box-shadow:0 12px 30px rgba(17,24,39,.18)}.auth-card h2{color:var(--navy);font-size:1.55rem;margin-bottom:4px}.auth-subtitle{color:var(--muted);font-size:.9rem;margin-bottom:22px}.auth-card .form-group{text-align:left}.auth-card .form-group input{background:#F9FAFB}.btn-auth{width:100%;border:none;border-radius:12px;background:linear-gradient(135deg,var(--navy),var(--navy-hover));color:#fff;padding:12px 18px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 10px 24px rgba(30,42,90,.24);transition:all .2s}.btn-auth:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(30,42,90,.3)}.auth-link{margin-top:16px;color:var(--muted);font-size:.88rem}.auth-link a{color:var(--navy);font-weight:800;cursor:pointer;text-decoration:none}.auth-error,.auth-success{display:none;margin-bottom:14px;padding:10px 12px;border-radius:10px;font-size:.86rem;text-align:left}.auth-error{background:#FEE2E2;color:#991B1B;border:1px solid #FCA5A5}.auth-success{background:#DCFCE7;color:#166534;border:1px solid #86EFAC}@media(max-width:480px){.auth-overlay{padding:16px}.auth-card{padding:28px 20px;border-radius:20px}.auth-logo{width:82px;height:82px}}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);min-height:100vh;color:#333}
+.app-layout{display:flex;min-height:100vh}
+.sidebar{width:250px;background:rgba(15,32,39,.97);padding:20px 0;color:#fff;position:fixed;height:100vh;overflow-y:auto;z-index:100;transition:transform .3s}
+.sidebar h2{padding:15px 20px;font-size:1.2rem;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:10px}
+.sidebar-menu{list-style:none}
+.sidebar-menu li{padding:12px 20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px;font-size:.9rem}
+.sidebar-menu li:hover{background:rgba(14,165,233,.2)}
+.sidebar-menu li.active{background:linear-gradient(135deg,rgba(14,165,233,.3),rgba(13,148,136,.3));border-left:3px solid #0ea5e9}
+.submenu-toggle{cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;font-size:.9rem;color:#fff;transition:all .2s}
+.submenu-toggle:hover{background:rgba(14,165,233,.2)}
+.submenu{list-style:none;max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0;margin:0}
+.submenu.open{max-height:300px}
+.submenu li{padding:10px 20px 10px 35px;font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.85)}
+.submenu li:hover{background:rgba(14,165,233,.15)}
+.submenu li.active{background:linear-gradient(135deg,rgba(14,165,233,.2),rgba(13,148,136,.2));border-left:3px solid #0ea5e9}
+.main-content{margin-left:250px;flex:1;padding:20px;min-height:100vh}
+.mobile-toggle{display:none;position:fixed;top:15px;left:15px;z-index:200;background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:1.2rem;cursor:pointer}
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.mobile-toggle{display:block}}
+.container{max-width:900px;margin:0 auto}
+header{text-align:center;padding:20px 0;color:#fff}
+header h1{font-size:1.6rem;margin-bottom:5px}
+header p{opacity:.8;font-size:.85rem}
+.card{background:#fff;border-radius:16px;padding:25px;margin:15px 0;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.btn{padding:10px 24px;border:none;border-radius:8px;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(14,165,233,.4)}
+.btn-danger{background:#ef4444;color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-secondary{background:#e2e8f0;color:#475569}
+.btn-secondary:hover{background:#cbd5e1}
+.btn-success{background:#10b981;color:#fff}
+.btn-success:hover{background:#059669}
+.btn-warning{background:#f59e0b;color:#fff}
+.btn-warning:hover{background:#d97706}
+.btn-info{background:#6366f1;color:#fff}
+.btn-info:hover{background:#4f46e5}
+.btn-sm{padding:6px 12px;font-size:.8rem;border-radius:6px}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.progress-bar{display:flex;justify-content:space-between;margin-bottom:25px;position:relative}
+.progress-bar::before{content:'';position:absolute;top:50%;left:0;right:0;height:3px;background:#e2e8f0;transform:translateY(-50%);z-index:0}
+.step-indicator{width:36px;height:36px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;position:relative;z-index:1;transition:all .3s}
+.step-indicator.active{background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;box-shadow:0 3px 10px rgba(14,165,233,.4)}
+.step-indicator.done{background:#10b981;color:#fff}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-weight:600;margin-bottom:6px;color:#374151;font-size:.9rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:8px;font-size:.9rem;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#0ea5e9}
+.form-group textarea{resize:vertical;min-height:80px}
+.instrumen-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:.85rem}
+.instrumen-table th,.instrumen-table td{border:1px solid #e2e8f0;padding:8px 6px;text-align:center;vertical-align:middle}
+.instrumen-table th{background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;font-weight:600;font-size:.8rem}
+.instrumen-table .col-no{width:40px}
+.instrumen-table .col-aspek{text-align:left;min-width:200px}
+.instrumen-table .col-skor{width:40px}
+.instrumen-table .col-catatan{min-width:140px;text-align:left}
+.instrumen-table .col-catatan input{width:100%;padding:6px 8px;border:1px solid #e2e8f0;border-radius:4px;font-size:.8rem}
+.skor-radio{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#94a3b8;transition:all .2s}
+.skor-radio:hover{color:#0ea5e9}
+.skor-radio.selected{color:#0ea5e9;font-weight:bold}
+.tahap-header{background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;padding:10px 16px;border-radius:8px;margin:20px 0 12px;font-weight:600;font-size:.9rem}
+.rekap-card{background:linear-gradient(135deg,#f0f9ff,#f0fdfa);border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:16px}
+.rekap-card h3{color:#0d9488;margin-bottom:10px}
+.rekap-score{font-size:2rem;font-weight:700;color:#0ea5e9}
+.rekap-predikat{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600;margin-top:5px}
+.predikat-sangat-baik{background:#d1fae5;color:#065f46}
+.predikat-baik{background:#dbeafe;color:#1e40af}
+.predikat-cukup{background:#fef3c7;color:#92400e}
+.predikat-kurang{background:#fee2e2;color:#991b1b}
+.dashboard-item{display:flex;justify-content:space-between;align-items:center;padding:16px;border:1px solid #e2e8f0;border-radius:12px;margin-bottom:10px;transition:all .2s;cursor:pointer}
+.dashboard-item:hover{border-color:#0ea5e9;box-shadow:0 4px 12px rgba(14,165,233,.1)}
+.dashboard-item .info h4{color:#1e293b;font-size:.95rem}
+.dashboard-item .info p{color:#64748b;font-size:.8rem;margin-top:3px}
+.dashboard-item .actions{display:flex;gap:6px}
+.empty-state{text-align:center;padding:40px;color:#94a3b8}
+canvas{max-width:100%;margin:20px 0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:600px){.grid-2,.grid-3{grid-template-columns:1fr}.container{padding:10px}header h1{font-size:1.3rem}.card{padding:15px}}
+.hidden{display:none}
+.fade-in{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000}
+.modal{background:#fff;border-radius:16px;padding:30px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto}
+.modal h3{margin-bottom:20px;color:#1e293b}
+.data-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:15px 0}
+.data-table th,.data-table td{border:1px solid #e2e8f0;padding:10px 8px;text-align:left}
+.data-table th{background:#f1f5f9;font-weight:600;color:#374151}
+.data-table tr:hover{background:#f8fafc}
+.stat-card{background:linear-gradient(135deg,#f0f9ff,#f0fdfa);border:2px solid #e2e8f0;border-radius:12px;padding:20px;text-align:center}
+.stat-card .stat-number{font-size:2rem;font-weight:700;color:#0ea5e9}
+.stat-card .stat-label{color:#64748b;font-size:.85rem;margin-top:5px}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;justify-content:center;align-items:center}
+.modal-box{background:#fff;border-radius:12px;padding:18px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);position:relative;font-size:.75rem;line-height:1.3}
+.modal-box h3{margin:0 0 8px;color:#1e293b;font-size:.9rem}
+.modal-box ul{margin:2px 0 4px 14px;padding:0;color:#334155}
+.modal-box ul li{margin-bottom:1px;line-height:1.3}
+.modal-box .modal-close{position:absolute;top:12px;right:16px;font-size:1.8rem;cursor:pointer;color:#64748b;border:none;background:none;z-index:10000;padding:8px 12px;line-height:1}
+.modal-box .modal-close:hover{color:#ef4444}
+.col-aspek.clickable{cursor:pointer;color:#2563eb;text-decoration:underline;text-decoration-style:dotted}
+.col-aspek.clickable:hover{color:#1d4ed8}
+@media print{.sidebar,.mobile-toggle,.no-print,.btn-group,.modal-overlay{display:none!important}.main-content{margin-left:0!important}.card{box-shadow:none;border:1px solid #ddd}body{background:#fff}.print-only{display:block!important}}
+.print-only{display:none}
+/* AUTH STYLES */
+.auth-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);display:flex;align-items:center;justify-content:center;z-index:10000;min-height:100vh}
+.auth-card{background:#fff;border-radius:16px;padding:35px;width:90%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:fadeIn .3s ease}
+.auth-card h2{text-align:center;margin-bottom:8px;color:#1e293b;font-size:1.4rem}
+.auth-card p.auth-subtitle{text-align:center;color:#64748b;font-size:.85rem;margin-bottom:24px}
+.auth-card .form-group{margin-bottom:16px}
+.auth-card .form-group label{display:block;font-weight:600;margin-bottom:6px;color:#374151;font-size:.9rem}
+.auth-card .form-group input{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:8px;font-size:.9rem;transition:border-color .2s}
+.auth-card .form-group input:focus{outline:none;border-color:#0ea5e9}
+.auth-card .btn-auth{width:100%;padding:12px;border:none;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600;background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;transition:all .2s;margin-top:8px}
+.auth-card .btn-auth:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(14,165,233,.4)}
+.auth-card .auth-link{text-align:center;margin-top:16px;font-size:.85rem;color:#64748b}
+.auth-card .auth-link a{color:#0ea5e9;cursor:pointer;text-decoration:none;font-weight:600}
+.auth-card .auth-link a:hover{text-decoration:underline}
+.auth-card .auth-error{background:#fee2e2;color:#991b1b;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-bottom:16px;display:none}
+.auth-card .auth-success{background:#d1fae5;color:#065f46;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-bottom:16px;display:none}
+.sidebar-user{padding:10px 20px;font-size:.8rem;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:5px}
+.sidebar-user strong{color:#fff;font-size:.85rem}
 </style>
 </head>
 <body>
-<div class="modal-overlay" id="modalPenggalian" onclick="closePenggalianModal()">
+<div class="modal-overlay" id="modalPenggalian" onclick="document.getElementById('modalPenggalian').style.display='none'">
 <div class="modal-box" onclick="event.stopPropagation()">
-<button class="modal-close" onclick="closePenggalianModal()">&times;</button>
+<button class="modal-close" onclick="document.getElementById('modalPenggalian').style.display='none'">&times;</button>
 <h3 id="modalTitle">Penggalian Data</h3>
 <div id="modalContent"></div>
-<div id="modalActions" style="margin-top:16px;text-align:right"><button class="btn btn-primary" onclick="closePenggalianModal()">Tutup</button></div>
+<div style="margin-top:16px;text-align:right"><button class="btn btn-primary" onclick="document.getElementById('modalPenggalian').style.display='none'">Tutup</button></div>
 </div>
 </div>
 <!-- AUTH OVERLAY -->
@@ -35,21 +150,31 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);min-height:10
 <button class="mobile-toggle no-print" onclick="toggleSidebar()">&#9776;</button>
 <div class="app-layout" id="appLayout" style="display:none">
 <nav class="sidebar" id="sidebar">
-<div class="sidebar-logo"><img src="logo-kemenag.png" alt="Logo Kemenag" loading="lazy"></div>
-<h2 style="line-height:1.3;text-align:center;font-size:.88rem;white-space:nowrap">SUPERVISI & PEMANTAUAN<br><span style="font-size:.75em">IMPLEMENTASI PM-KBC</span><br><span style="font-size:.75em">POKJAWAS JAWA TIMUR</span></h2>
+<h2 style="line-height:1.3">SUPERVISI PM-KBC<br><span style="font-size:.75em">POKJAWAS JAWA TIMUR</span></h2>
 <div class="sidebar-user" id="sidebarUser"></div>
 <ul class="sidebar-menu">
 <li class="active" onclick="navigate('dashboard')" data-nav="dashboard">&#128202; Dashboard</li>
-<li class="menu-section">DATA MADRASAH</li>
-<li onclick="navigate('pengawas')" data-nav="pengawas">&#128100; Data Pengawas/Kamad</li>
+<li onclick="navigate('pengawas')" data-nav="pengawas">&#128100; Data Pengawas</li>
 <li onclick="navigate('madrasah')" data-nav="madrasah">&#127979; Data Madrasah</li>
 <li onclick="navigate('guru')" data-nav="guru">&#128104;&#8205;&#127891; Data Guru</li>
+<li class="submenu-toggle" onclick="toggleSubmenu('sub-data-ra')">&#127793; Data RA &#9662;</li>
+<ul class="submenu" id="sub-data-ra">
+<li onclick="navigate('madrasah-ra')" data-nav="madrasah-ra">&#127979; Data Madrasah RA</li>
+<li onclick="navigate('guru-ra')" data-nav="guru-ra">&#128104;&#8205;&#127891; Data Guru RA</li>
+</ul>
 <li class="submenu-toggle" onclick="toggleSubmenu('sub-supervisi')">&#128221; Supervisi Pembelajaran &#9662;</li>
 <ul class="submenu" id="sub-supervisi">
 <li onclick="navigate('supervisi')" data-nav="supervisi">&#128221; Input Supervisi</li>
 <li onclick="navigate('rekap')" data-nav="rekap">&#128202; Rekap Hasil</li>
 <li onclick="navigate('cetak')" data-nav="cetak">&#128424; Cetak Hasil</li>
 <li onclick="navigate('laporan')" data-nav="laporan">&#128196; Laporan</li>
+</ul>
+<li class="submenu-toggle" onclick="toggleSubmenu('sub-supervisi-ra')">&#127793; Supervisi Pembelajaran RA &#9662;</li>
+<ul class="submenu" id="sub-supervisi-ra">
+<li onclick="navigate('supervisi-ra')" data-nav="supervisi-ra">&#128221; Input Supervisi RA</li>
+<li onclick="navigate('rekap-ra')" data-nav="rekap-ra">&#128202; Rekap Hasil RA</li>
+<li onclick="navigate('cetak-ra')" data-nav="cetak-ra">&#128424; Cetak Hasil RA</li>
+<li onclick="navigate('laporan-ra')" data-nav="laporan-ra">&#128196; Laporan RA</li>
 </ul>
 <li class="submenu-toggle" onclick="toggleSubmenu('sub-kokurikuler')">&#128203; Kokurikuler &#9662;</li>
 <ul class="submenu" id="sub-kokurikuler">
@@ -59,7 +184,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);min-height:10
 <li onclick="navigate('laporan-kokurikuler-madrasah')" data-nav="laporan-kokurikuler-madrasah">&#128196; Laporan Per Madrasah</li>
 
 </ul>
-<li class="submenu-toggle" data-submenu-parent="ekstrakurikuler" onclick="toggleSubmenu('sub-ekstrakurikuler')">&#128203; Ekstrakurikuler &#9662;</li>
+<li class="submenu-toggle" onclick="toggleSubmenu('sub-ekstrakurikuler')">&#128203; Ekstrakurikuler &#9662;</li>
 <ul class="submenu" id="sub-ekstrakurikuler">
 <li onclick="navigate('ekstrakurikuler')" data-nav="ekstrakurikuler">&#128221; Input Ekstrakurikuler</li>
 <li onclick="navigate('rekap-ekstrakurikuler')" data-nav="rekap-ekstrakurikuler">&#128202; Rekap</li>
@@ -67,7 +192,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);min-height:10
 <li onclick="navigate('laporan-ekstrakurikuler-madrasah')" data-nav="laporan-ekstrakurikuler-madrasah">&#128196; Laporan Per Madrasah</li>
 
 </ul>
-<li class="submenu-toggle" data-submenu-parent="iklim-madrasah" onclick="toggleSubmenu('sub-iklim')">&#127979; Iklim Madrasah &#9662;</li>
+<li class="submenu-toggle" onclick="toggleSubmenu('sub-iklim')">&#127979; Iklim Madrasah &#9662;</li>
 <ul class="submenu" id="sub-iklim">
 <li onclick="navigate('iklim-madrasah')" data-nav="iklim-madrasah">&#128221; Input Iklim Madrasah</li>
 <li onclick="navigate('rekap-iklim-madrasah')" data-nav="rekap-iklim-madrasah">&#128202; Rekap</li>
@@ -75,27 +200,12 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);min-height:10
 <li onclick="navigate('laporan-iklim-madrasah-madrasah')" data-nav="laporan-iklim-madrasah-madrasah">&#128196; Laporan Per Madrasah</li>
 
 </ul>
-<li class="menu-section">DATA RA (RAUDHATUL ATHFAL)</li>
-<li class="submenu-toggle" onclick="toggleSubmenu('sub-data-ra')">Data RA &#9662;</li>
-<ul class="submenu" id="sub-data-ra">
-<li onclick="navigate('madrasah-ra')" data-nav="madrasah-ra">&#127979; Data Madrasah RA</li>
-<li onclick="navigate('guru-ra')" data-nav="guru-ra">&#128104;&#8205;&#127891; Data Guru RA</li>
-</ul>
-<li class="submenu-toggle" onclick="toggleSubmenu('sub-supervisi-ra')">Supervisi Pembelajaran RA &#9662;</li>
-<ul class="submenu" id="sub-supervisi-ra">
-<li onclick="navigate('supervisi-ra')" data-nav="supervisi-ra">&#128221; Input Supervisi RA</li>
-<li onclick="navigate('rekap-ra')" data-nav="rekap-ra">&#128202; Rekap Hasil RA</li>
-<li onclick="navigate('cetak-ra')" data-nav="cetak-ra">&#128424; Cetak Hasil RA</li>
-<li onclick="navigate('laporan-ra')" data-nav="laporan-ra">&#128196; Laporan RA</li>
-</ul>
-<li class="menu-section">PENGATURAN</li>
-<li onclick="navigate('periode')" data-nav="periode">&#128197; Periode</li>
 <li onclick="navigate('ubah-password')" data-nav="ubah-password">&#128274; Ubah Password</li>
 <li onclick="navigate('backup-restore')" data-nav="backup-restore">&#128190; Export/Backup &amp; Restore</li>
-<li onclick="window.open('panduan.html?v=saveword','_blank')" style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px">&#128214; Panduan</li>
+<li onclick="window.open('panduan.html','_blank')" style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px">&#128214; Panduan</li>
 <li onclick="doLogout()" style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px;color:#f87171">&#128682; Logout</li>
 </ul>
-<p style="padding:10px 20px;font-size:.6rem;color:#FFFFFF;border-top:1px solid rgba(255,255,255,.1);white-space:normal;line-height:1.4;text-align:center">Aplikasi ini dibuat oleh : Subariyanto<br>Ketua Pokjawas Madrasah Kab. Jember<br><br>Instrumen disusun oleh : Ida Safiaturrahma<br>Pengawas Madrasah Kab. Lamongan</p>
+<p style="padding:10px 20px;font-size:.6rem;color:rgba(255,255,255,.4);border-top:1px solid rgba(255,255,255,.1);white-space:normal;line-height:1.4;text-align:center">Aplikasi ini dibuat oleh : Subariyanto<br>Ketua Pokjawas Madrasah Kab. Jember<br><br>Instrumen disusun oleh : Ida Safiaturrahma<br>Pengawas Madrasah Kab. Lamongan</p>
 </nav>
 <div class="main-content">
 <div class="container">
@@ -123,9 +233,17 @@ function clearSession(){localStorage.removeItem(SESSION_KEY)}
 
 function initDefaultAdmin(){
 var users=getUsers();
+var DEFAULT_ADMIN_PASS='@riyant1970';
 if(users.length===0){
-users.push({nama:'Administrator',username:'admin',password:'admin123'});
+users.push({nama:'Administrator',username:'admin',password:DEFAULT_ADMIN_PASS});
 saveUsers(users);
+}else{
+// Migrasi: kalau admin masih pakai password lama, update ke yang baru
+var adminIdx=users.findIndex(function(u){return u.username==='admin'&&u.password==='admin123'});
+if(adminIdx!==-1){
+users[adminIdx].password=DEFAULT_ADMIN_PASS;
+saveUsers(users);
+}
 }
 }
 
@@ -144,7 +262,7 @@ document.getElementById('authOverlay').style.display='none';
 document.getElementById('appLayout').style.display='';
 document.querySelector('.mobile-toggle').style.display='';
 var userEl=document.getElementById('sidebarUser');
-if(userEl)userEl.innerHTML='<strong> '+escHtml(session.nama)+'</strong>';
+if(userEl)userEl.innerHTML='<strong>👤 '+escHtml(session.nama)+'</strong>';
 }
 
 function hideApp(){
@@ -156,8 +274,7 @@ document.querySelector('.mobile-toggle').style.display='none';
 function showLogin(){
 hideApp();
 var card=document.getElementById('authCard');
-card.innerHTML='<img class="auth-logo" src="logo-kemenag.png" alt="Logo Kemenag">'+
-'<h2>Login</h2>'+
+card.innerHTML='<h2>🔐 Login</h2>'+
 '<p class="auth-subtitle">Supervisi Pembelajaran PM-KBC</p>'+
 '<div class="auth-error" id="authError"></div>'+
 '<div class="form-group"><label>Username</label><input type="text" id="loginUsername" placeholder="Masukkan username" autocomplete="username"></div>'+
@@ -177,8 +294,7 @@ if(userEl)userEl.onkeydown=function(e){if(e.key==='Enter')document.getElementByI
 function showRegister(){
 hideApp();
 var card=document.getElementById('authCard');
-card.innerHTML='<img class="auth-logo" src="logo-kemenag.png" alt="Logo Kemenag">'+
-'<h2>Daftar Akun</h2>'+
+card.innerHTML='<h2>📝 Daftar Akun</h2>'+
 '<p class="auth-subtitle">Buat akun baru untuk mengakses aplikasi</p>'+
 '<div class="auth-error" id="authError"></div>'+
 '<div class="auth-success" id="authSuccess"></div>'+
@@ -261,81 +377,21 @@ showLogin();
 }
 
 function renderUbahPassword(){
-var html='<div class="card"><h2 style="margin-bottom:20px"> Ubah Password</h2>';
+var html='<div class="card"><h2 style="margin-bottom:20px">🔐 Ubah Password</h2>';
 html+='<div class="auth-error" id="ubahError" style="display:none"></div>';
 html+='<div class="auth-success" id="ubahSuccess" style="display:none"></div>';
 html+='<div style="max-width:400px">';
 html+='<div class="form-group"><label>Password Lama</label><input type="password" id="oldPass" placeholder="Masukkan password lama"></div>';
 html+='<div class="form-group"><label>Password Baru</label><input type="password" id="newPass" placeholder="Masukkan password baru"></div>';
 html+='<div class="form-group"><label>Konfirmasi Password Baru</label><input type="password" id="confirmNewPass" placeholder="Ulangi password baru"></div>';
-html+='<button class="btn btn-primary" onclick="doUbahPassword()"> Simpan Password</button>';
+html+='<button class="btn btn-primary" onclick="doUbahPassword()">💾 Simpan Password</button>';
 html+='</div></div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px"> Tutup</button></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
 return html;
 }
 
-function renderPeriodePage(){
-var p=getPeriode();
-var html='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">';
-html+='<h2 style="margin:0"> Periode Supervisi</h2>';
-html+='<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" onclick="tambahPeriode()">+ Tambah Periode</button>';
-html+='<button class="btn btn-secondary" onclick="showPilihPeriode()">Pilih Periode</button></div></div>';
-html+='<p style="color:#6B7280;margin-bottom:15px;font-size:.9rem">Atur Tahun Ajaran dan Semester yang akan tampil di seluruh laporan (cover, kata pengantar, BAB Pelaksanaan, dst).</p>';
-html+='<div style="max-width:500px">';
-html+='<div class="form-group"><label>Tahun Ajaran</label><input type="text" id="prTahun" value="'+escHtml(p.tahunAjaran||'')+'" placeholder="Contoh: 2025-2026"></div>';
-html+='<div class="form-group"><label>Semester</label><select id="prSem"><option value="Ganjil"'+(p.semester==='Ganjil'?' selected':'')+'>Ganjil</option><option value="Genap"'+(p.semester==='Genap'?' selected':'')+'>Genap</option></select></div>';
-html+='<button class="btn btn-primary" onclick="savePeriodeForm()"> Simpan Periode</button>';
-html+='</div>';
-html+='<div class="note" style="background:#F3F4F6;border-left:4px solid #1E2A5A;padding:12px 16px;border-radius:0 8px 8px 0;margin-top:20px;font-size:.9rem"><b>Aktif sekarang:</b> '+escHtml(periodeLabel())+'</div>';
-html+='</div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px"> Tutup</button></div>';
-return html;
-}
-
-function tambahPeriode(){
-var tahun=document.getElementById('prTahun');
-var sem=document.getElementById('prSem');
-if(tahun)tahun.value='';
-if(sem)sem.value='Ganjil';
-if(tahun)tahun.focus();
-}
-
-function showPilihPeriode(){
-var current=getPeriode();
-var list=getPeriodeList();
-if(!list.some(function(p){return p.tahunAjaran===current.tahunAjaran&&p.semester===current.semester})){list.unshift(current)}
-var html='<div class="modal-overlay" id="modal-periode" style="display:flex" onclick="if(event.target===this)closePeriodeModal()">';
-html+='<div class="modal" onclick="event.stopPropagation()"><h3>Pilih Periode</h3>';
-if(list.length===0){html+='<p>Belum ada periode tersimpan.</p>';}else{
-html+='<div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">';
-list.forEach(function(p,i){var aktif=(p.tahunAjaran===current.tahunAjaran&&p.semester===current.semester);html+='<button class="btn '+(aktif?'btn-primary':'btn-secondary')+'" style="text-align:left" onclick="pilihPeriode('+i+')">'+escHtml(p.tahunAjaran)+' - Semester '+escHtml(p.semester||'')+(aktif?' (Aktif)':'')+'</button>';});
-html+='</div>';}
-html+='<div class="btn-group"><button class="btn btn-secondary" onclick="closePeriodeModal()">Tutup</button></div>';
-html+='</div></div>';
-document.body.insertAdjacentHTML('beforeend',html);
-}
-
-function pilihPeriode(idx){
-var list=getPeriodeList();
-var p=list[idx];
-if(!p)return;
-savePeriode(p);
-closePeriodeModal();
-render();
-}
-
-function closePeriodeModal(){var el=document.getElementById('modal-periode');if(el)el.remove();}
-
-function savePeriodeForm(){
-var t=document.getElementById('prTahun').value.trim();
-var s=document.getElementById('prSem').value;
-if(!t){alert('Tahun Ajaran tidak boleh kosong');return;}
-savePeriode({tahunAjaran:t,semester:s});
-alert('Periode berhasil disimpan: Tahun Ajaran '+t+' - Semester '+s);
-navigate('periode');
-}
-
-function doUbahPassword(){var oldPass=document.getElementById('oldPass').value;
+function doUbahPassword(){
+var oldPass=document.getElementById('oldPass').value;
 var newPass=document.getElementById('newPass').value;
 var confirmNew=document.getElementById('confirmNewPass').value;
 var errEl=document.getElementById('ubahError');
@@ -380,16 +436,6 @@ const GURU_KEY='supervisi_guru';
 const GURU_KEY_RA='supervisi_guru_ra';
 const PENGAWAS_KEY='supervisi_pengawas';
 const INDIKATOR_KEY='supervisi_indikator';
-const PERIODE_KEY='supervisi_periode';
-const PERIODE_LIST_KEY='supervisi_periode_list';
-const CLEAR_MADRASAH_DEFAULT_KEY='supervisi_clear_madrasah_default_v1';
-function clearDefaultMadrasahOnce(){
-if(localStorage.getItem(CLEAR_MADRASAH_DEFAULT_KEY))return;
-localStorage.removeItem(MADRASAH_KEY);
-localStorage.removeItem(MADRASAH_KEY_RA);
-localStorage.setItem(CLEAR_MADRASAH_DEFAULT_KEY,'1');
-}
-clearDefaultMadrasahOnce();
 
 const PERENCANAAN=[
 "Dalam identifikasi Rencana Pembelajaran berorientasi pada penanaman karakter sesuai DPL dan nilai Panca Cinta",
@@ -706,13 +752,13 @@ render();
 
 function renderEditPanelFlat(key){
 var items=getIndikator(key);
-var html='<div id="edit-indikator-panel" class="no-print" style="background:#F3F4F6;border:2px solid #1E2A5A;border-radius:12px;padding:20px;margin-bottom:20px">';
-html+='<h3 style="margin-bottom:15px;color:#D4AF37"> Edit Indikator - '+key.charAt(0).toUpperCase()+key.slice(1)+'</h3>';
-html+='<p style="font-size:.8rem;color:#6B7280;margin-bottom:12px">Edit teks, hapus, tambah, atau ubah urutan indikator.</p>';
+var html='<div id="edit-indikator-panel" class="no-print" style="background:#f8fafc;border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:20px">';
+html+='<h3 style="margin-bottom:15px;color:#0d9488">✏️ Edit Indikator - '+key.charAt(0).toUpperCase()+key.slice(1)+'</h3>';
+html+='<p style="font-size:.8rem;color:#64748b;margin-bottom:12px">Edit teks, hapus, tambah, atau ubah urutan indikator.</p>';
 items.forEach(function(item,i){
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px" id="indikator-row-'+i+'">';
-html+='<span style="min-width:24px;color:#6B7280;font-size:.85rem">'+(i+1)+'.</span>';
-html+='<input data-indikator-item="'+i+'" type="text" value="'+escHtml(item)+'" style="flex:1;padding:8px 10px;border:1px solid #E5E7EB;border-radius:6px;font-size:.85rem">';
+html+='<span style="min-width:24px;color:#64748b;font-size:.85rem">'+(i+1)+'.</span>';
+html+='<input data-indikator-item="'+i+'" type="text" value="'+escHtml(item)+'" style="flex:1;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:.85rem">';
 html+='<button class="btn btn-sm btn-secondary" onclick="moveIndikatorItem(\''+key+'\','+i+',-1)" title="Naik">&uarr;</button>';
 html+='<button class="btn btn-sm btn-secondary" onclick="moveIndikatorItem(\''+key+'\','+i+',1)" title="Turun">&darr;</button>';
 html+='<button class="btn btn-sm btn-danger" onclick="removeIndikatorItem(\''+key+'\','+i+')" title="Hapus">&times;</button>';
@@ -720,22 +766,22 @@ html+='</div>';
 });
 html+='<div class="btn-group" style="margin-top:15px">';
 html+='<button class="btn btn-sm btn-primary" onclick="addIndikatorItem(\''+key+'\')">&plus; Tambah Indikator</button>';
-html+='<button class="btn btn-sm btn-success" onclick="saveEditIndikatorFlat(\''+key+'\')"> Simpan</button>';
+html+='<button class="btn btn-sm btn-success" onclick="saveEditIndikatorFlat(\''+key+'\')">💾 Simpan</button>';
 html+='<button class="btn btn-sm btn-secondary" onclick="cancelEditIndikator()">Batal</button>';
-html+='<button class="btn btn-sm btn-warning" onclick="resetIndikatorConfirm(\''+key+'\')"> Reset Default</button>';
+html+='<button class="btn btn-sm btn-warning" onclick="resetIndikatorConfirm(\''+key+'\')">↺ Reset Default</button>';
 html+='</div></div>';
 return html;
 }
 
 function renderEditPanelGrouped(){
 var items=getIndikatorPelaksanaanFlat();
-var html='<div id="edit-indikator-panel" class="no-print" style="background:#F3F4F6;border:2px solid #1E2A5A;border-radius:12px;padding:20px;margin-bottom:20px">';
-html+='<h3 style="margin-bottom:15px;color:#D4AF37"> Edit Indikator - Pelaksanaan</h3>';
-html+='<p style="font-size:.8rem;color:#6B7280;margin-bottom:12px">Edit teks, hapus, tambah, atau ubah urutan indikator.</p>';
+var html='<div id="edit-indikator-panel" class="no-print" style="background:#f8fafc;border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:20px">';
+html+='<h3 style="margin-bottom:15px;color:#0d9488">✏️ Edit Indikator - Pelaksanaan</h3>';
+html+='<p style="font-size:.8rem;color:#64748b;margin-bottom:12px">Edit teks, hapus, tambah, atau ubah urutan indikator.</p>';
 items.forEach(function(item,i){
 html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">';
-html+='<span style="min-width:24px;color:#6B7280;font-size:.85rem">'+(i+1)+'.</span>';
-html+='<input data-indikator-item="'+i+'" type="text" value="'+escHtml(item)+'" style="flex:1;padding:7px 10px;border:1px solid #E5E7EB;border-radius:6px;font-size:.83rem">';
+html+='<span style="min-width:24px;color:#64748b;font-size:.85rem">'+(i+1)+'.</span>';
+html+='<input data-indikator-item="'+i+'" type="text" value="'+escHtml(item)+'" style="flex:1;padding:7px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:.83rem">';
 html+='<button class="btn btn-sm btn-secondary" onclick="moveIndikatorItem(\'pelaksanaan\','+i+',-1)" title="Naik">&uarr;</button>';
 html+='<button class="btn btn-sm btn-secondary" onclick="moveIndikatorItem(\'pelaksanaan\','+i+',1)" title="Turun">&darr;</button>';
 html+='<button class="btn btn-sm btn-danger" onclick="removeIndikatorItem(\'pelaksanaan\','+i+')" title="Hapus">&times;</button>';
@@ -743,9 +789,9 @@ html+='</div>';
 });
 html+='<div style="margin-top:8px"><button class="btn btn-sm btn-primary" onclick="addIndikatorItem(\'pelaksanaan\')">&plus; Tambah</button></div>';
 html+='<div class="btn-group" style="margin-top:15px">';
-html+='<button class="btn btn-sm btn-success" onclick="saveEditIndikatorFlat(\'pelaksanaan\')"> Simpan</button>';
+html+='<button class="btn btn-sm btn-success" onclick="saveEditIndikatorFlat(\'pelaksanaan\')">💾 Simpan</button>';
 html+='<button class="btn btn-sm btn-secondary" onclick="cancelEditIndikator()">Batal</button>';
-html+='<button class="btn btn-sm btn-warning" onclick="resetIndikatorConfirm(\'pelaksanaan\')"> Reset Default</button>';
+html+='<button class="btn btn-sm btn-warning" onclick="resetIndikatorConfirm(\'pelaksanaan\')">↺ Reset Default</button>';
 html+='</div></div>';
 return html;
 }
@@ -759,8 +805,8 @@ var idx=inputs.length;
 var row=document.createElement('div');
 row.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:8px';
 row.id='indikator-row-'+idx;
-row.innerHTML='<span style="min-width:24px;color:#6B7280;font-size:.85rem">'+(idx+1)+'.</span>'+
-'<input data-indikator-item="'+idx+'" type="text" value="" style="flex:1;padding:8px 10px;border:1px solid #E5E7EB;border-radius:6px;font-size:.85rem" placeholder="Ketik indikator baru...">'+
+row.innerHTML='<span style="min-width:24px;color:#64748b;font-size:.85rem">'+(idx+1)+'.</span>'+
+'<input data-indikator-item="'+idx+'" type="text" value="" style="flex:1;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:.85rem" placeholder="Ketik indikator baru...">'+
 '<button class="btn btn-sm btn-secondary" onclick="moveIndikatorItem(\''+key+'\','+idx+',-1)" title="Naik">&uarr;</button>'+
 '<button class="btn btn-sm btn-secondary" onclick="moveIndikatorItem(\''+key+'\','+idx+',1)" title="Turun">&darr;</button>'+
 '<button class="btn btn-sm btn-danger" onclick="removeIndikatorItem(\''+key+'\','+idx+')" title="Hapus">&times;</button>';
@@ -823,18 +869,12 @@ render();
 }
 
 // ===== STATE =====
-let state={view:'dashboard',editId:null,formData:{},currentStep:0,detailIdx:null,jenjang:'umum',unlockedScores:{}};
+let state={view:'dashboard',editId:null,formData:{},currentStep:0,detailIdx:null,jenjang:'umum'};
 
 // ===== JENJANG HELPERS =====
 function isRAView(v){return v==='supervisi-ra'||v==='supervisi-ra-form'||v==='form-ra'||v==='detail-ra'||v==='rekap-ra'||v==='cetak-ra'||v==='laporan-ra'||v==='guru-ra'||v==='madrasah-ra';}
 function isRAJenjang(){return typeof state!=='undefined'&&state&&state.jenjang==='ra';}
-const PENGGALIAN_CUSTOM_KEY='supervisi_penggalian_custom_v1';
-let currentPenggalianEdit=null;
-function getPenggalianCustom(){try{return JSON.parse(localStorage.getItem(PENGGALIAN_CUSTOM_KEY))||{}}catch(e){return{}}}
-function savePenggalianCustom(d){localStorage.setItem(PENGGALIAN_CUSTOM_KEY,JSON.stringify(d||{}))}
-function getPenggalianId(key,idx){return (isRAJenjang()?'ra:':'umum:')+key+':'+idx}
-function getPenggalianExternalKey(moduleName,idx){return 'mod:'+moduleName+':'+idx}
-function getPenggalianBase(key,idx){
+function getPenggalian(key,idx){
 if(isRAJenjang()){
 if(key==='perencanaan')return PENGGALIAN_PERENCANAAN_RA[idx];
 if(key==='pelaksanaan')return PENGGALIAN_PELAKSANAAN_RA[idx];
@@ -846,79 +886,23 @@ if(key==='pelaksanaan')return PENGGALIAN_PELAKSANAAN[idx];
 if(key==='asesmen')return PENGGALIAN_ASESMEN[idx];
 return null;
 }
-function getPenggalian(key,idx){var custom=getPenggalianCustom();var id=getPenggalianId(key,idx);return custom[id]||getPenggalianBase(key,idx)}
-function getPenggalianExternal(moduleName,idx,base){var custom=getPenggalianCustom();var id=getPenggalianExternalKey(moduleName,idx);return custom[id]||base||''}
-function closePenggalianModal(){var m=document.getElementById('modalPenggalian');if(m)m.style.display='none'}
-function openPenggalianModal(title,content,editKey){
-currentPenggalianEdit={key:editKey,content:content||''};
-document.getElementById('modalTitle').innerHTML=title;
-document.getElementById('modalContent').innerHTML=content||'<p>Tidak ada data penggalian.</p>';
-document.getElementById('modalActions').innerHTML='<button class="btn btn-secondary" onclick="editPenggalianModal()">Edit</button> <button class="btn btn-primary" onclick="closePenggalianModal()">Tutup</button>';
-document.getElementById('modalPenggalian').style.display='flex';
-}
-function editPenggalianModal(){
-if(!currentPenggalianEdit)return;
-document.getElementById('modalContent').innerHTML='<textarea id="penggalianEditText" class="penggalian-edit-text">'+escHtml(currentPenggalianEdit.content||'')+'</textarea><p style="font-size:.75rem;color:var(--muted);margin-top:6px">Boleh memakai format HTML sederhana seperti &lt;b&gt;, &lt;ul&gt;, dan &lt;li&gt;.</p>';
-document.getElementById('modalActions').innerHTML='<button class="btn btn-success" onclick="savePenggalianModal()">Simpan</button> <button class="btn btn-secondary" onclick="cancelEditPenggalianModal()">Batal</button> <button class="btn btn-warning" onclick="resetPenggalianModal()">Reset Default</button>';
-}
-function savePenggalianModal(){
-if(!currentPenggalianEdit)return;
-var val=document.getElementById('penggalianEditText').value;
-var custom=getPenggalianCustom();custom[currentPenggalianEdit.key]=val;savePenggalianCustom(custom);currentPenggalianEdit.content=val;
-document.getElementById('modalContent').innerHTML=val||'<p>Tidak ada data penggalian.</p>';
-document.getElementById('modalActions').innerHTML='<button class="btn btn-secondary" onclick="editPenggalianModal()">Edit</button> <button class="btn btn-primary" onclick="closePenggalianModal()">Tutup</button>';
-}
-function cancelEditPenggalianModal(){if(!currentPenggalianEdit)return;document.getElementById('modalContent').innerHTML=currentPenggalianEdit.content||'<p>Tidak ada data penggalian.</p>';document.getElementById('modalActions').innerHTML='<button class="btn btn-secondary" onclick="editPenggalianModal()">Edit</button> <button class="btn btn-primary" onclick="closePenggalianModal()">Tutup</button>'}
-function resetPenggalianModal(){if(!currentPenggalianEdit||!confirm('Reset penggalian data ini ke default?'))return;var custom=getPenggalianCustom();delete custom[currentPenggalianEdit.key];savePenggalianCustom(custom);closePenggalianModal();render()}
 
 // ===== STORAGE =====
 function getActiveAppKey(){return isRAJenjang()?APP_KEY_RA:APP_KEY;}
 function getActiveGuruKey(){return isRAJenjang()?GURU_KEY_RA:GURU_KEY;}
 function getActiveMadrasahKey(){return isRAJenjang()?MADRASAH_KEY_RA:MADRASAH_KEY;}
-// Cross-module views (Kokurikuler/Ekstrakurikuler/Iklim) butuh akses ke semua madrasah (umum + RA)
-function isCrossModuleView(){
-var v=state&&state.view;
-if(!v)return false;
-return v.indexOf('kokurikuler')>-1||v.indexOf('ekstrakurikuler')>-1||v.indexOf('iklim')>-1;
-}
-function getAllMadrasahCombined(){
-var umum=[];try{umum=JSON.parse(localStorage.getItem(MADRASAH_KEY))||[]}catch(e){}
-var ra=[];try{ra=JSON.parse(localStorage.getItem(MADRASAH_KEY_RA))||[]}catch(e){}
-// Tag asal jenjang supaya bisa dibedakan visual
-return umum.concat(ra.map(function(m){return Object.assign({},m,{_jenjang:'RA'})}));
-}
 function getData(){try{return JSON.parse(localStorage.getItem(getActiveAppKey()))||[]}catch(e){return[]}}
 function saveData(d){localStorage.setItem(getActiveAppKey(),JSON.stringify(d))}
-function getMadrasah(){
-if(isCrossModuleView())return getAllMadrasahCombined();
-try{return JSON.parse(localStorage.getItem(getActiveMadrasahKey()))||[]}catch(e){return[]}
-}
+function getMadrasah(){try{return JSON.parse(localStorage.getItem(getActiveMadrasahKey()))||[]}catch(e){return[]}}
 function saveMadrasah(d){localStorage.setItem(getActiveMadrasahKey(),JSON.stringify(d))}
 function getGuru(){try{return JSON.parse(localStorage.getItem(getActiveGuruKey()))||[]}catch(e){return[]}}
 function saveGuru(d){localStorage.setItem(getActiveGuruKey(),JSON.stringify(d))}
 function getPengawas(){try{return JSON.parse(localStorage.getItem(PENGAWAS_KEY))||{}}catch(e){return{}}}
 function savePengawas(d){localStorage.setItem(PENGAWAS_KEY,JSON.stringify(d))}
-function getPeriode(){try{var p=JSON.parse(localStorage.getItem(PERIODE_KEY));if(p&&p.tahunAjaran)return p;}catch(e){}return{tahunAjaran:'2025-2026',semester:'Ganjil'};}
-function getPeriodeList(){try{return JSON.parse(localStorage.getItem(PERIODE_LIST_KEY))||[]}catch(e){return[]}}
-function savePeriodeList(d){localStorage.setItem(PERIODE_LIST_KEY,JSON.stringify(d))}
-function savePeriode(d){
-localStorage.setItem(PERIODE_KEY,JSON.stringify(d));
-var list=getPeriodeList();
-var exists=list.some(function(p){return p.tahunAjaran===d.tahunAjaran&&p.semester===d.semester});
-if(!exists){list.push({tahunAjaran:d.tahunAjaran,semester:d.semester});savePeriodeList(list)}
-}
-function periodeLabel(){var p=getPeriode();return 'Tahun Ajaran '+p.tahunAjaran+(p.semester?' - Semester '+p.semester:'');}
-function tahunAjaranLabel(){var p=getPeriode();return 'Tahun Ajaran '+p.tahunAjaran+(p.semester?' Semester '+p.semester:'');}
 
 // ===== UTILITY =====
 function getPredikat(pct){if(pct>=91)return'Sangat Baik';if(pct>=81)return'Baik';if(pct>=71)return'Cukup';return'Kurang'}
 function getAutoCatatan(skor){if(skor===null||skor===undefined)return'';return SKOR_CATATAN[skor]||''}
-function autoGrowCatatan(el){if(!el)return;el.style.height='auto';el.style.height=el.scrollHeight+'px'}
-function autoGrowAllCatatan(){var els=document.querySelectorAll('.instrumen-table .col-catatan textarea');for(var i=0;i<els.length;i++){autoGrowCatatan(els[i])}}
-function scoreUnlockKey(scope,idx){return String(scope)+':'+idx}
-function isScoreUnlocked(scope,idx){return !!(state.unlockedScores&&state.unlockedScores[scoreUnlockKey(scope,idx)])}
-function unlockScore(scope,idx){if(!state.unlockedScores)state.unlockedScores={};state.unlockedScores[scoreUnlockKey(scope,idx)]=true;setTimeout(render,0)}
-function requireScoreUnlocked(scope,idx){if(isScoreUnlocked(scope,idx))return true;alert('Klik indikator terlebih dahulu sebelum memberi skor.');return false}
 function getPredikatClass(p){return'predikat-'+p.toLowerCase().replace(' ','-')}
 function calcTotal(d){let sum=0,max=0;['perencanaan','pelaksanaan','asesmen'].forEach(k=>{const scores=d[k]&&d[k].scores?d[k].scores:[];const itemCount=k==='pelaksanaan'?getIndikatorPelaksanaanFlat().length:getIndikator(k).length;const effectiveLen=Math.min(scores.length,itemCount);for(let i=0;i<effectiveLen;i++){const s=scores[i];if(s!==null&&s!==undefined){sum+=s+1;max+=4}}});return max>0?(sum/max)*100:0}
 function calcKomponen(d,key){const scores=d[key]&&d[key].scores?d[key].scores:[];const itemCount=key==='pelaksanaan'?getIndikatorPelaksanaanFlat().length:getIndikator(key).length;let sum=0,max=0;const effectiveLen=Math.min(scores.length,itemCount);for(let i=0;i<effectiveLen;i++){const s=scores[i];if(s!==null&&s!==undefined){sum+=s+1;max+=4}}return max>0?(sum/max)*100:0}
@@ -957,22 +941,25 @@ return s;
 function getPelaksanaanFlat(){return getIndikatorPelaksanaanFlat()}
 
 function showPenggalian(idx){
-unlockScore('pelaksanaan',idx);
 var items=getPelaksanaanFlat();
 var title=items[idx]||'Aspek';
-openPenggalianModal('Penggalian Data: '+(idx+1)+'. '+escHtml(title),getPenggalian('pelaksanaan',idx),getPenggalianId('pelaksanaan',idx));
+document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
+document.getElementById('modalContent').innerHTML=getPenggalian('pelaksanaan',idx)||'<p>Tidak ada data penggalian.</p>';
+document.getElementById('modalPenggalian').style.display='flex';
 }
 function showPenggalianPerencanaan(idx){
-unlockScore('perencanaan',idx);
 var items=getIndikator('perencanaan');
 var title=items[idx]||'Aspek';
-openPenggalianModal('Penggalian Data: '+(idx+1)+'. '+escHtml(title),getPenggalian('perencanaan',idx),getPenggalianId('perencanaan',idx));
+document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
+document.getElementById('modalContent').innerHTML=getPenggalian('perencanaan',idx)||'<p>Tidak ada data penggalian.</p>';
+document.getElementById('modalPenggalian').style.display='flex';
 }
 function showPenggalianGeneric(key,idx){
-unlockScore(key,idx);
 var items=getIndikator(key);
 var title=items[idx]||'Aspek';
-openPenggalianModal('Penggalian Data: '+(idx+1)+'. '+escHtml(title),getPenggalian(key,idx),getPenggalianId(key,idx));
+document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
+document.getElementById('modalContent').innerHTML=getPenggalian(key,idx)||'<p>Tidak ada data penggalian.</p>';
+document.getElementById('modalPenggalian').style.display='flex';
 }
 function closeModal(){
 document.getElementById('modalPenggalian').style.display='none';
@@ -997,12 +984,9 @@ state.view=view;state.editId=null;
 state.jenjang=isRAView(view)?'ra':'umum';
 document.querySelectorAll('.sidebar-menu li').forEach(function(li){li.classList.toggle('active',li.dataset.nav===view)});
 document.querySelectorAll('.submenu li').forEach(function(li){li.classList.toggle('active',li.dataset.nav===view)});
-updateSubmenuParentActive(view);
 if(window.innerWidth<768)document.getElementById('sidebar').classList.remove('open');
+if((view==='supervisi'||view==='supervisi-ra')&&(!state.formData||!state.formData.identitas||!state.formData.identitas.namaGuru)){newForm();return;}
 render();
-}
-function updateSubmenuParentActive(view){
-document.querySelectorAll('.submenu-toggle[data-submenu-parent]').forEach(function(li){var key=li.dataset.submenuParent;var active=(view===key||view.indexOf(key+'-')===0||view.indexOf('rekap-'+key)===0||view.indexOf('laporan-'+key)===0);li.classList.toggle('active-group',active);});
 }
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open')}
 
@@ -1015,8 +999,7 @@ case 'pengawas':app.innerHTML=renderPengawasPage();break;
 case 'madrasah':app.innerHTML=renderMadrasahPage();break;
 case 'madrasah-ra':app.innerHTML=renderMadrasahPage();break;
 case 'guru':app.innerHTML=renderGuruPage();break;
-case 'supervisi':app.innerHTML=renderDashboard();setTimeout(drawChart,100);break;
-case 'form':app.innerHTML=renderForm();break;
+case 'supervisi':case 'form':app.innerHTML=renderForm();break;
 case 'detail':app.innerHTML=renderDetail();break;
 case 'rekap':app.innerHTML=renderRekapAllPage();break;
 case 'cetak':app.innerHTML=renderCetakPage();break;
@@ -1040,10 +1023,8 @@ case 'laporan-iklim-madrasah':app.innerHTML=renderLaporanIklimMadrasahPage();bre
 case 'laporan-iklim-madrasah-madrasah':app.innerHTML=renderLaporanIklimMadrasahPerMadrasahPage();break;
 case 'laporan-iklim-madrasah-kkma':app.innerHTML=renderLaporanIklimMadrasahPerKKMAPage();break;
 case 'ubah-password':app.innerHTML=renderUbahPassword();break;
-case 'periode':app.innerHTML=renderPeriodePage();break;
 case 'backup-restore':app.innerHTML=renderBackupRestore();break;
-case 'supervisi-ra':app.innerHTML=renderDashboard();setTimeout(drawChart,100);break;
-case 'supervisi-ra-form':case 'form-ra':app.innerHTML=renderForm();break;
+case 'supervisi-ra':case 'supervisi-ra-form':case 'form-ra':app.innerHTML=renderForm();break;
 case 'guru-ra':app.innerHTML=renderGuruPage();break;
 case 'detail-ra':app.innerHTML=renderDetail();break;
 case 'rekap-ra':app.innerHTML=renderRekapAllPage();break;
@@ -1061,8 +1042,6 @@ titleEl.innerHTML=isKoku?'\u{1F4CB} Supervisi Kokurikuler':isEkstra?'\u{1F4CB} S
 }
 app.classList.add('fade-in');
 setTimeout(function(){app.classList.remove('fade-in')},300);
-if(typeof autoGrowAllCatatan==='function')setTimeout(autoGrowAllCatatan,0);
-if(typeof bindIdentitasDropdowns==='function')setTimeout(bindIdentitasDropdowns,0);
 }
 
 // ===== DASHBOARD =====
@@ -1090,14 +1069,9 @@ items+='<button class="btn btn-sm btn-danger" onclick="event.stopPropagation();d
 items+='</div></div>';
 });
 }
-var isInputSupervisi=(state.view==='supervisi'||state.view==='supervisi-ra');
-var isDashboard=(state.view==='dashboard');
-let html=stats;
-if(!isDashboard){
-html+='<div class="card"><h2 style="margin-bottom:20px">Daftar Supervisi</h2>'+items;
+let html=stats+'<div class="card"><h2 style="margin-bottom:20px">Daftar Supervisi</h2>'+items;
 html+='<div style="text-align:center;margin-top:20px"><button class="btn btn-primary" onclick="newForm()">+ Supervisi Baru</button></div></div>';
-}
-if(data.length>0&&!isInputSupervisi)html+=renderChart(data);
+if(data.length>0)html+=renderChart(data);
 return html;
 }
 
@@ -1115,17 +1089,17 @@ var w=canvas.width=canvas.parentElement.clientWidth-60;
 var h=canvas.height=220;
 ctx.clearRect(0,0,w,h);
 var labels=['Perencanaan','Pelaksanaan','Asesmen'];
-var colors=['#1E2A5A','#10b981','#6B7280'];
+var colors=['#0ea5e9','#10b981','#f59e0b'];
 var barW=Math.min(60,w/(data.length*4));
 var gap=10;
 var groupW=barW*3+gap*2;
 var startX=50;
 var chartH=h-50;
-ctx.strokeStyle='#E5E7EB';ctx.lineWidth=1;
+ctx.strokeStyle='#e2e8f0';ctx.lineWidth=1;
 for(var i=0;i<=4;i++){
 var y=20+chartH*(1-i/4);
 ctx.beginPath();ctx.moveTo(startX,y);ctx.lineTo(w,y);ctx.stroke();
-ctx.fillStyle='#6B7280';ctx.font='11px sans-serif';ctx.textAlign='right';
+ctx.fillStyle='#64748b';ctx.font='11px sans-serif';ctx.textAlign='right';
 ctx.fillText((i*25)+'%',startX-8,y+4);
 }
 data.forEach(function(d,di){
@@ -1141,13 +1115,13 @@ ctx.beginPath();
 if(ctx.roundRect){ctx.roundRect(bx,by,barW,barH,4);ctx.fill();}
 else{ctx.fillRect(bx,by,barW,barH);}
 });
-ctx.fillStyle='#1E2A5A';ctx.font='10px sans-serif';ctx.textAlign='center';
+ctx.fillStyle='#374151';ctx.font='10px sans-serif';ctx.textAlign='center';
 ctx.fillText((d.identitas&&d.identitas.namaGuru?d.identitas.namaGuru:'').substring(0,10),x+groupW/2,h-5);
 });
 labels.forEach(function(l,i){
 var lx=w-200+i*70;
 ctx.fillStyle=colors[i];ctx.fillRect(lx,5,12,12);
-ctx.fillStyle='#1E2A5A';ctx.font='10px sans-serif';ctx.textAlign='left';
+ctx.fillStyle='#374151';ctx.font='10px sans-serif';ctx.textAlign='left';
 ctx.fillText(l,lx+16,14);
 });
 }
@@ -1174,17 +1148,15 @@ else{
 html+='<div style="overflow-x:auto"><table class="data-table"><thead><tr><th>No</th><th>Nama Madrasah</th><th>NPSN</th><th>Alamat</th><th>Kab/Kota</th><th>Kepala Madrasah</th><th>Aksi</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 html+='</div><div id="modal-container"></div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px"> Tutup</button></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
 return html;
 }
 
 function showMadrasahModal(idx){
-closeModal();
 var m=(idx!==undefined)?getMadrasah()[idx]:{};
 var isEdit=(idx!==undefined);
-var labelMadrasah=isRAJenjang()?'Madrasah RA':'Madrasah';
-var modal='<div class="modal-overlay" id="modal-madrasah" style="display:flex" onclick="if(event.target===this)closeModal()">';
-modal+='<div class="modal" onclick="event.stopPropagation()"><h3>'+(isEdit?'Edit':'Tambah')+' '+labelMadrasah+'</h3>';
+var modal='<div class="modal-overlay" style="display:flex" onclick="if(event.target===this)closeModal()">';
+modal+='<div class="modal"><h3>'+(isEdit?'Edit':'Tambah')+' Madrasah</h3>';
 modal+='<div class="form-group"><label>Nama Madrasah</label><input id="m-nama" value="'+escHtml(m.nama||'')+'"></div>';
 modal+='<div class="form-group"><label>NPSN</label><input id="m-npsn" value="'+escHtml(m.npsn||'')+'"></div>';
 modal+='<div class="form-group"><label>Alamat</label><input id="m-alamat" value="'+escHtml(m.alamat||'')+'"></div>';
@@ -1194,11 +1166,7 @@ modal+='<div class="form-group"><label>NIP Kepala</label><input id="m-nipkepala"
 modal+='<div class="btn-group"><button class="btn btn-success" onclick="saveMadrasahForm('+(isEdit?idx:'null')+')">Simpan</button>';
 modal+='<button class="btn btn-secondary" onclick="closeModal()">Batal</button></div>';
 modal+='</div></div>';
-var container=document.getElementById('modal-container');
-if(container)container.innerHTML=modal;
-else document.body.insertAdjacentHTML('beforeend',modal);
-var first=document.getElementById('m-nama');
-if(first)first.focus();
+document.getElementById('modal-container').innerHTML=modal;
 }
 
 function saveMadrasahForm(idx){
@@ -1221,7 +1189,7 @@ saveMadrasah(data);closeModal();render();
 
 function editMadrasah(idx){showMadrasahModal(idx)}
 function deleteMadrasah(idx){if(!confirm('Hapus data madrasah ini?'))return;var data=getMadrasah();data.splice(idx,1);saveMadrasah(data);render();}
-function closeModal(){var mc=document.getElementById('modal-container');if(mc)mc.innerHTML='';var mm=document.getElementById('modal-madrasah');if(mm)mm.remove();}
+function closeModal(){var mc=document.getElementById('modal-container');if(mc)mc.innerHTML='';}
 
 // ===== IMPORT EXCEL MADRASAH =====
 function importMadrasahExcel(){document.getElementById('importMadrasahFile').click();}
@@ -1289,7 +1257,7 @@ else{
 html+='<div style="overflow-x:auto"><table class="data-table"><thead><tr><th>No</th><th>Nama Guru</th><th>NIP</th><th>Mata Pelajaran</th><th>Madrasah</th><th>Aksi</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
 }
 html+='</div><div id="modal-container"></div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px"> Tutup</button></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
 return html;
 }
 
@@ -1330,20 +1298,20 @@ function deleteGuru(idx){if(!confirm('Hapus data guru ini?'))return;var data=get
 // ===== DATA PENGAWAS =====
 function renderPengawasPage(){
 var p=getPengawas();
-var html='<div class="card"><h2 style="margin-bottom:20px">\ud83d\udc64 Data Pengawas/Kamad</h2>';
-html+='<p style="color:#6B7280;margin-bottom:15px">Isi data pengawas agar otomatis terisi saat melakukan supervisi.</p>';
+var html='<div class="card"><h2 style="margin-bottom:20px">\ud83d\udc64 Data Pengawas</h2>';
+html+='<p style="color:#64748b;margin-bottom:15px">Isi data pengawas agar otomatis terisi saat melakukan supervisi.</p>';
 html+='<div class="grid-2">';
-html+='<div class="form-group"><label>Nama Pengawas/Kamad</label><input type="text" id="pNama" value="'+escHtml(p.nama||'')+'"></div>';
+html+='<div class="form-group"><label>Nama Pengawas</label><input type="text" id="pNama" value="'+escHtml(p.nama||'')+'"></div>';
 html+='<div class="form-group"><label>NIP</label><input type="text" id="pNip" value="'+escHtml(p.nip||'')+'"></div>';
 html+='<div class="form-group"><label>Jabatan</label><input type="text" id="pJabatan" value="'+escHtml(p.jabatan||'Pengawas Madrasah')+'"></div>';
 html+='<div class="form-group"><label>Pangkat/Golongan</label><input type="text" id="pPangkat" value="'+escHtml(p.pangkat||'')+'"></div>';
 html+='<div class="form-group"><label>Instansi</label><input type="text" id="pInstansi" value="'+escHtml(p.instansi||'')+'"></div>';
 html+='<div class="form-group"><label>Kabupaten/Kota</label><input type="text" id="pKabupaten" value="'+escHtml(p.kabupaten||'')+'"></div>';
-html+='<div class="form-group"><label>Jumlah Binaan/Jumlah Guru</label><input type="text" id="pTempatTugas" value="'+escHtml(p.tempatTugas||'')+'" placeholder="Contoh: 20 Madrasah Binaan / 25 Guru"></div>';
+html+='<div class="form-group"><label>Tempat Tugas</label><input type="text" id="pTempatTugas" value="'+escHtml(p.tempatTugas||'')+'" placeholder="Contoh: KKMA 04"></div>';
 html+='</div>';
 html+='<div style="margin-top:15px"><button class="btn btn-primary" onclick="updatePengawas()">\ud83d\udcbe Simpan</button></div>';
 html+='</div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px"> Tutup</button></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
 return html;
 }
 
@@ -1380,7 +1348,7 @@ grouped[mName].push(d);
 });
 Object.keys(grouped).forEach(function(mName){
 html+='<div style="margin-bottom:20px">';
-html+='<h3 style="color:#D4AF37;margin-bottom:10px">\ud83c\udfeb '+escHtml(mName)+'</h3>';
+html+='<h3 style="color:#0d9488;margin-bottom:10px">\ud83c\udfeb '+escHtml(mName)+'</h3>';
 html+='<table class="instrumen-table"><thead><tr><th class="col-no">No</th><th class="col-aspek">Nama Guru</th><th>Mata Pelajaran</th><th>Tanggal</th><th>Perencanaan</th><th>Pelaksanaan</th><th>Asesmen</th><th>Total</th><th>Predikat</th></tr></thead><tbody>';
 grouped[mName].forEach(function(d,i){
 var pctP=calcKomponen(d,'perencanaan');
@@ -1400,12 +1368,12 @@ html+='<td><span class="rekap-predikat '+getPredikatClass(pred)+'">'+pred+'</spa
 html+='</tr>';
 });
 html+='</tbody></table>';
-html+='<div class="btn-group" style="margin-top:10px"><button class="btn btn-sm btn-secondary" onclick="printRekapMadrasah(\''+escHtml(mName)+'\')"> Cetak Rekap</button></div>';
+html+='<div class="btn-group" style="margin-top:10px"><button class="btn btn-sm btn-secondary" onclick="printRekapMadrasah(\''+escHtml(mName)+'\')">🖨️ Cetak Rekap</button></div>';
 html+='</div>';
 });
 }
 html+='</div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px"> Tutup</button></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
 return html;
 }
 
@@ -1476,11 +1444,8 @@ else if(state.currentStep===2)content=renderPelaksanaan();
 else if(state.currentStep===3)content=renderInstrumen('asesmen',getIndikator('asesmen'));
 else if(state.currentStep===4)content=renderRekap();
 var isLast=state.currentStep===4;
-var nav='<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px">';
-nav+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
-if(state.currentStep>0){nav+='<button class="btn btn-secondary" onclick="prevStep()">&#8592; Kembali</button>';}
-nav+='<button class="btn btn-danger" onclick="cancelSupervisiForm()">Batal</button>';
-nav+='</div>';
+var nav='<div style="display:flex;justify-content:space-between;margin-top:20px">';
+nav+='<button class="btn btn-secondary" onclick="'+(state.currentStep===0?'backToDashboard()':'prevStep()')+'">&#8592; '+(state.currentStep===0?'Batal':'Kembali')+'</button>';
 if(isLast){nav+='<button class="btn btn-success" onclick="saveForm()">&#128190; Simpan</button>';}
 else{nav+='<button class="btn btn-primary" onclick="nextStep()">Lanjut &#8594;</button>';}
 nav+='</div>';
@@ -1493,19 +1458,19 @@ var madrasahList=getMadrasah();
 var guruList=getGuru();
 var html='<div class="grid-2">';
 // Madrasah dropdown
-html+='<div class="form-group"><label>Pilih Madrasah (dari data)</label><select id="selectMadrasahIdentitas"><option value="">-- Pilih atau isi manual --</option>';
+html+='<div class="form-group"><label>Pilih Madrasah (dari data)</label><select onchange="selectMadrasah(this.value)"><option value="">-- Pilih atau isi manual --</option>';
 madrasahList.forEach(function(m,i){html+='<option value="'+i+'" '+(id.selectedMadrasahIdx==i?'selected':'')+'>'+escHtml(m.nama)+'</option>';});
 html+='</select></div>';
 // Guru dropdown
 var filteredGuru=guruList;
 if(id.namaMadrasah){filteredGuru=guruList.filter(function(g){return g.madrasah===id.namaMadrasah});}
-html+='<div class="form-group"><label>Pilih Guru (dari data)</label><select id="selectGuruIdentitas"><option value="">-- Pilih atau isi manual --</option>';
+html+='<div class="form-group"><label>Pilih Guru (dari data)</label><select onchange="selectGuru(this.value)"><option value="">-- Pilih atau isi manual --</option>';
 filteredGuru.forEach(function(g,i){
 var gIdx=guruList.indexOf(g);
 html+='<option value="'+gIdx+'" '+(id.selectedGuruIdx==gIdx?'selected':'')+'>'+escHtml(g.nama)+' - '+escHtml(g.mataPelajaran)+'</option>';
 });
 html+='</select></div>';
-html+='</div><hr style="margin:15px 0;border-color:#E5E7EB"><div class="grid-2">';
+html+='</div><hr style="margin:15px 0;border-color:#e2e8f0"><div class="grid-2">';
 var fields=[
 ['namaGuru','Nama Guru'],['nipGuru','NIP Guru'],['mataPelajaran','Mata Pelajaran'],
 ['jumlahJTM','Jumlah Jam Tatap Muka'],['kelasSemester','Kelas/Semester'],
@@ -1519,13 +1484,6 @@ html+='<div class="form-group"><label>'+f[1]+'</label><input type="text" value="
 html+='<div class="form-group"><label>Tanggal Supervisi</label><input type="date" value="'+(id.tanggalSupervisi||'')+'" onchange="updateIdentitas(\'tanggalSupervisi\',this.value)"></div>';
 html+='</div>';
 return html;
-}
-
-function bindIdentitasDropdowns(){
-var m=document.getElementById('selectMadrasahIdentitas');
-if(m)m.onchange=function(){selectMadrasah(this.value)};
-var g=document.getElementById('selectGuruIdentitas');
-if(g)g.onchange=function(){selectGuru(this.value)};
 }
 
 function selectMadrasah(idx){
@@ -1564,20 +1522,20 @@ var html='';
 if(editIndikatorState.active===key){
 html+=renderEditPanelFlat(key);
 }else if(!isRAJenjang()){
-html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-secondary" onclick="showEditIndikator(\''+key+'\')"> Edit Indikator</button> <button class="btn btn-sm btn-warning" onclick="resetSkor(\''+key+'\')"> Reset Skor</button></div>';
+html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-secondary" onclick="showEditIndikator(\''+key+'\')">✏️ Edit Indikator</button> <button class="btn btn-sm btn-warning" onclick="resetSkor(\''+key+'\')">🔄 Reset Skor</button></div>';
 }else{
-html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-warning" onclick="resetSkor(\''+key+'\')"> Reset Skor</button></div>';
+html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-warning" onclick="resetSkor(\''+key+'\')">🔄 Reset Skor</button></div>';
 }
 html+='<table class="instrumen-table"><thead><tr><th class="col-no">No</th><th class="col-aspek">Indikator</th><th class="col-skor">1</th><th class="col-skor">2</th><th class="col-skor">3</th><th class="col-skor">4</th><th class="col-catatan">Catatan</th></tr></thead><tbody>';
 items.forEach(function(item,i){
 var score=(d.scores&&d.scores[i]!==undefined)?d.scores[i]:null;
 var cat=(d.catatan&&d.catatan[i])?d.catatan[i]:getAutoCatatan(score);
-html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek clickable" onclick="showPenggalianGeneric(\''+key+'\','+i+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data">'+item+'</td>';
+var penggalian=(key==='perencanaan'||key==='asesmen')&&getPenggalian(key,i)?true:false;
+html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(penggalian?' clickable':'')+'"'+(penggalian?' onclick="showPenggalianGeneric(\''+key+'\','+i+')" title="Klik untuk lihat penggalian data"':'')+'>'+(penggalian?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-var locked=!isScoreUnlocked(key,i);
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(locked?'locked':''))+'" '+('onclick="setSkor(\''+key+'\','+i+','+s+')"')+'>'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':'')+'" onclick="setSkor(\''+key+'\','+i+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
 }
-html+='<td class="col-catatan"><textarea rows="2" oninput="autoGrowCatatan(this)" onchange="setCatatan(\''+key+'\','+i+',this.value)" placeholder="Otomatis">'+escHtml(cat)+'</textarea></td></tr>';
+html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\''+key+'\','+i+',this.value)" placeholder="Otomatis"></td></tr>';
 });
 html+='</tbody></table>';
 // Skor summary
@@ -1604,9 +1562,9 @@ var html='';
 if(editIndikatorState.active==='pelaksanaan'){
 html+=renderEditPanelGrouped();
 }else if(!isRAJenjang()){
-html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-secondary" onclick="showEditIndikator(\'pelaksanaan\')"> Edit Indikator</button> <button class="btn btn-sm btn-warning" onclick="resetSkor(\'pelaksanaan\')"> Reset Skor</button></div>';
+html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-secondary" onclick="showEditIndikator(\'pelaksanaan\')">✏️ Edit Indikator</button> <button class="btn btn-sm btn-warning" onclick="resetSkor(\'pelaksanaan\')">🔄 Reset Skor</button></div>';
 }else{
-html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-warning" onclick="resetSkor(\'pelaksanaan\')"> Reset Skor</button></div>';
+html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-warning" onclick="resetSkor(\'pelaksanaan\')">🔄 Reset Skor</button></div>';
 }
 var idx=0;
 var pelItems=getIndikatorPelaksanaanFlat();
@@ -1615,12 +1573,12 @@ pelItems.forEach(function(item){
 var gi=idx;
 var score=(d.scores&&d.scores[gi]!==undefined)?d.scores[gi]:null;
 var cat=(d.catatan&&d.catatan[gi])?d.catatan[gi]:getAutoCatatan(score);
-html+='<tr><td class="col-no">'+(gi+1)+'</td><td class="col-aspek clickable" onclick="showPenggalian('+gi+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data">'+item+'</td>';
+var hasInfo=getPenggalian('pelaksanaan',gi)?true:false;
+html+='<tr><td class="col-no">'+(gi+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalian('+gi+')" title="Klik untuk lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-var locked=!isScoreUnlocked('pelaksanaan',gi);
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(locked?'locked':''))+'" '+('onclick="setSkor(\'pelaksanaan\','+gi+','+s+')"')+'>'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':'')+'" onclick="setSkor(\'pelaksanaan\','+gi+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
 }
-html+='<td class="col-catatan"><textarea rows="2" oninput="autoGrowCatatan(this)" onchange="setCatatan(\'pelaksanaan\','+gi+',this.value)" placeholder="Otomatis">'+escHtml(cat)+'</textarea></td></tr>';
+html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\'pelaksanaan\','+gi+',this.value)" placeholder="Otomatis"></td></tr>';
 idx++;
 });
 html+='</tbody></table>';
@@ -1660,7 +1618,7 @@ var pred=getPredikat(pct);
 html+='<div class="rekap-card"><h3>'+k.label+'</h3>';
 html+='<div class="rekap-score">'+pct.toFixed(1)+'%</div>';
 html+='<span class="rekap-predikat '+getPredikatClass(pred)+'">'+pred+'</span>';
-html+='<p style="margin-top:8px;color:#6B7280;font-size:.85rem">Skor: '+sum+' / '+k.max+'</p>';
+html+='<p style="margin-top:8px;color:#64748b;font-size:.85rem">Skor: '+sum+' / '+k.max+'</p>';
 var rekapData=state.formData.rekap&&state.formData.rekap[k.key]?state.formData.rekap[k.key]:{};
 html+='<div class="form-group" style="margin-top:12px"><label>Catatan Hasil Supervisi</label>';
 html+='<textarea onchange="setRekapNote(\''+k.key+'\',\'catatan\',this.value)">'+escHtml(rekapData.catatan||'')+'</textarea></div>';
@@ -1837,7 +1795,7 @@ var komps=[
 var html='<div class="card">';
 html+='<button class="btn btn-secondary btn-sm no-print" onclick="backToDashboard()">&#8592; Kembali</button>';
 html+='<h2 style="margin:15px 0">'+(d.identitas&&d.identitas.namaGuru?escHtml(d.identitas.namaGuru):'(Tanpa Nama)')+'</h2>';
-html+='<p style="color:#6B7280;margin-bottom:20px">'+(d.identitas?escHtml(d.identitas.namaMadrasah||''):'')+' &bull; '+(d.identitas?escHtml(d.identitas.mataPelajaran||''):'')+' &bull; '+(d.identitas?d.identitas.tanggalSupervisi||'':'')+'</p>';
+html+='<p style="color:#64748b;margin-bottom:20px">'+(d.identitas?escHtml(d.identitas.namaMadrasah||''):'')+' &bull; '+(d.identitas?escHtml(d.identitas.mataPelajaran||''):'')+' &bull; '+(d.identitas?d.identitas.tanggalSupervisi||'':'')+'</p>';
 komps.forEach(function(k){
 var scores=d[k.key]&&d[k.key].scores?d[k.key].scores:[];
 var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);
@@ -1846,7 +1804,7 @@ var pred=getPredikat(pct);
 html+='<div class="rekap-card"><h3>'+k.label+'</h3>';
 html+='<div class="rekap-score">'+pct.toFixed(1)+'%</div>';
 html+='<span class="rekap-predikat '+getPredikatClass(pred)+'">'+pred+'</span>';
-html+='<p style="margin-top:5px;color:#6B7280;font-size:.85rem">Skor: '+sum+'/'+k.max+'</p>';
+html+='<p style="margin-top:5px;color:#64748b;font-size:.85rem">Skor: '+sum+'/'+k.max+'</p>';
 if(d.rekap&&d.rekap[k.key]&&d.rekap[k.key].catatan){
 html+='<p style="margin-top:10px;font-size:.85rem"><b>Catatan:</b> '+escHtml(d.rekap[k.key].catatan).replace(/\n/g,'<br>')+'</p>';
 }
@@ -1867,25 +1825,17 @@ return html;
 function newForm(){
 state.view=isRAJenjang()?'form-ra':'form';
 state.currentStep=0;state.editId=null;
-state.unlockedScores={};
 var pengawas=getPengawas();
 state.formData={identitas:{namaSupervisor:pengawas.nama||'',nipSupervisor:pengawas.nip||'',jabatanSupervisor:pengawas.jabatan||''},perencanaan:{scores:[],catatan:[],manualCatatan:[]},pelaksanaan:{scores:[],catatan:[],manualCatatan:[]},asesmen:{scores:[],catatan:[],manualCatatan:[]},rekap:{}};
 render();
 }
 function backToDashboard(){state.view='dashboard';state.jenjang='umum';render()}
-function cancelSupervisiForm(){
-if(!confirm('Batalkan pengisian supervisi ini? Data yang belum disimpan akan hilang.'))return;
-state.formData={};state.editId=null;state.currentStep=0;
-state.view=isRAJenjang()?'supervisi-ra':'supervisi';
-render();
-}
 function nextStep(){if(state.currentStep<4)state.currentStep++;render()}
 function prevStep(){if(state.currentStep>0)state.currentStep--;render()}
 
 function updateIdentitas(key,val){if(!state.formData.identitas)state.formData.identitas={};state.formData.identitas[key]=val;}
 
 function setSkor(key,idx,val){
-if(!requireScoreUnlocked(key,idx))return;
 if(!state.formData[key])state.formData[key]={scores:[],catatan:[],manualCatatan:[]};
 if(!state.formData[key].scores)state.formData[key].scores=[];
 if(!state.formData[key].catatan)state.formData[key].catatan=[];
@@ -1920,14 +1870,13 @@ function saveForm(){
 var data=getData();
 if(state.editId!==null){data[state.editId]=state.formData;}
 else{data.push(state.formData);}
-saveData(data);state.view=isRAJenjang()?'supervisi-ra':'supervisi';render();
+saveData(data);state.view='dashboard';render();
 }
 
 function editItem(idx){
 var data=getData();
 state.formData=JSON.parse(JSON.stringify(data[idx]));
 state.editId=idx;
-state.unlockedScores={};
 state.view=isRAJenjang()?'form-ra':'form';
 state.currentStep=0;render();
 }
@@ -1942,27 +1891,27 @@ function viewDetail(idx){state.detailIdx=idx;state.view=isRAJenjang()?'detail-ra
 // ===== CETAK HASIL SUPERVISI PAGE =====
 function renderCetakPage(){
 var data=getData();
-var html='<div class="card"><h2 style="margin-bottom:20px"> Cetak Hasil Supervisi</h2>';
+var html='<div class="card"><h2 style="margin-bottom:20px">🖨️ Cetak Hasil Supervisi</h2>';
 if(data.length===0){
 html+='<div class="empty-state"><p>Belum ada data supervisi untuk dicetak.</p></div>';
 }else{
-html+='<p style="color:#6B7280;margin-bottom:15px">Pilih data supervisi dan halaman yang ingin dicetak:</p>';
+html+='<p style="color:#64748b;margin-bottom:15px">Pilih data supervisi dan halaman yang ingin dicetak:</p>';
 data.forEach(function(d,i){
 var pct=calcTotal(d);
-html+='<div class="cetak-item" style="border:1px solid #E5E7EB;border-radius:12px;padding:16px;margin-bottom:12px">';
-html+='<h4 style="margin-bottom:8px">'+(d.identitas.namaGuru||'(Tanpa Nama)')+'  '+(d.identitas.namaMadrasah||'-')+'</h4>';
-html+='<p style="color:#6B7280;font-size:.85rem;margin-bottom:12px">'+(d.identitas.mataPelajaran||'-')+'  '+(d.identitas.tanggalSupervisi||'-')+'  '+pct.toFixed(0)+'%</p>';
+html+='<div class="cetak-item" style="border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:12px">';
+html+='<h4 style="margin-bottom:8px">'+(d.identitas.namaGuru||'(Tanpa Nama)')+' — '+(d.identitas.namaMadrasah||'-')+'</h4>';
+html+='<p style="color:#64748b;font-size:.85rem;margin-bottom:12px">'+(d.identitas.mataPelajaran||'-')+' • '+(d.identitas.tanggalSupervisi||'-')+' • '+pct.toFixed(0)+'%</p>';
 html+='<div class="btn-group">';
-html+='<button class="btn btn-sm btn-primary" onclick="cetakPilihan('+i+',\'perencanaan\')"> Perencanaan</button>';
-html+='<button class="btn btn-sm btn-info" onclick="cetakPilihan('+i+',\'pelaksanaan\')"> Pelaksanaan</button>';
-html+='<button class="btn btn-sm btn-warning" onclick="cetakPilihan('+i+',\'asesmen\')"> Asesmen</button>';
-html+='<button class="btn btn-sm btn-success" onclick="cetakPilihan('+i+',\'rekap\')"> Rekap</button>';
-html+='<button class="btn btn-sm btn-secondary" onclick="cetakPilihan('+i+',\'semua\')"> Semua</button>';
+html+='<button class="btn btn-sm btn-primary" onclick="cetakPilihan('+i+',\'perencanaan\')">📄 Perencanaan</button>';
+html+='<button class="btn btn-sm btn-info" onclick="cetakPilihan('+i+',\'pelaksanaan\')">📄 Pelaksanaan</button>';
+html+='<button class="btn btn-sm btn-warning" onclick="cetakPilihan('+i+',\'asesmen\')">📄 Asesmen</button>';
+html+='<button class="btn btn-sm btn-success" onclick="cetakPilihan('+i+',\'rekap\')">📄 Rekap</button>';
+html+='<button class="btn btn-sm btn-secondary" onclick="cetakPilihan('+i+',\'semua\')">📄 Semua</button>';
 html+='</div></div>';
 });
 }
 html+='</div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px"> Tutup</button></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
 return html;
 }
 
@@ -2174,6 +2123,7 @@ html+='<p style="font-weight:bold;text-decoration:underline;margin-bottom:0">'+(
 html+='<p style="margin-top:0">NIP. '+(id.nipGuru||'.........................')+'</p>';
 html+='</td>';
 html+='<td style="border:none;width:50%;text-align:center;vertical-align:top">';
+html+='<p>'+escHtml(getTempatTanggalCetak(id))+'</p>';
 html+='<p>Pengawas Madrasah,</p><br><br><br>';
 html+='<p style="font-weight:bold;text-decoration:underline;margin-bottom:0">'+(id.namaSupervisor||'.........................')+'</p>';
 html+='<p style="margin-top:0">NIP. '+(id.nipSupervisor||'.........................')+'</p>';
@@ -2242,7 +2192,7 @@ startY:startY,
 head:[['No','Indikator','1','2','3','4','Catatan']],
 body:tableData,
 styles:{fontSize:7,cellPadding:2},
-headStyles:{fillColor:[55,65,81],textColor:255,fontStyle:'bold'},
+headStyles:{fillColor:[14,165,233],textColor:255,fontStyle:'bold'},
 columnStyles:{
 0:{cellWidth:8,halign:'center'},
 1:{cellWidth:60},
@@ -2288,7 +2238,7 @@ startY:startY,
 head:[['Komponen','Skor','Persentase','Predikat']],
 body:rekapTable,
 styles:{fontSize:9,cellPadding:3},
-headStyles:{fillColor:[55,65,81],textColor:255,fontStyle:'bold'},
+headStyles:{fillColor:[14,165,233],textColor:255,fontStyle:'bold'},
 margin:{left:14,right:14}
 });
 var y=doc.lastAutoTable.finalY+10;
@@ -2337,7 +2287,7 @@ function renderKokurikulerPage(){
 var data=getKokurikuler();
 var madrasahList=getMadrasah();
 var html='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">';
-html+='<h2> Instrumen Kokurikuler</h2>';
+html+='<h2>📋 Instrumen Kokurikuler</h2>';
 html+='<button class="btn btn-primary" onclick="showAddKokurikuler()">+ Tambah Penilaian</button></div>';
 if(data.length===0){
 html+='<div class="empty-state"><p>Belum ada data penilaian kokurikuler.<br>Klik tombol di atas untuk mulai.</p></div>';
@@ -2351,14 +2301,14 @@ var pct=max>0?(sum/max)*100:0;
 var pred=getPredikat(pct);
 html+='<tr><td>'+(i+1)+'</td><td>'+escHtml(d.madrasahNama||'-')+'</td><td>'+escHtml(d.tanggal||'-')+'</td>';
 html+='<td>'+pct.toFixed(0)+'%</td><td><span class="rekap-predikat '+getPredikatClass(pred)+'">'+pred+'</span></td>';
-html+='<td><button class="btn btn-sm btn-primary" onclick="editKokurikuler('+i+')">&#9998;</button> ';
-html+='<button class="btn btn-sm btn-info" onclick="cetakKokurikuler('+i+')">&#128424;</button> ';
-html+='<button class="btn btn-sm btn-danger" onclick="deleteKokurikuler('+i+')">&#128465;</button></td></tr>';
+html+='<td><button class="btn btn-sm btn-secondary" onclick="editKokurikuler('+i+')">✏️</button> ';
+html+='<button class="btn btn-sm btn-info" onclick="cetakKokurikuler('+i+')">🖨️</button> ';
+html+='<button class="btn btn-sm btn-danger" onclick="deleteKokurikuler('+i+')">🗑️</button></td></tr>';
 });
 html+='</tbody></table></div>';
 }
 html+='</div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px"> Tutup</button></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
 html+='<div id="modal-container"></div>';
 return html;
 }
@@ -2391,14 +2341,12 @@ var entry={madrasahNama:madrasah,tanggal:tanggal,scores:[],catatan:[],rekap:{cat
 data.push(entry);
 saveKokurikuler(data);
 state.kokurikulerIdx=data.length-1;
-state.unlockedScores={};
 state.view='kokurikuler-form';
 render();
 }
 
 function editKokurikuler(idx){
 state.kokurikulerIdx=idx;
-state.unlockedScores={};
 state.view='kokurikuler-form';
 render();
 }
@@ -2418,19 +2366,19 @@ var d=data[idx];
 var scores=d.scores||[];
 var catatan=d.catatan||[];
 var html='<div class="card">';
-html+='<h2 style="margin-bottom:5px"> Instrumen Kokurikuler</h2>';
-html+='<p style="color:#6B7280;margin-bottom:20px">'+escHtml(d.madrasahNama)+' &bull; '+escHtml(d.tanggal)+'</p>';
-html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-warning" onclick="resetSkorKokurikuler('+idx+')"> Reset Skor</button></div>';
+html+='<h2 style="margin-bottom:5px">📋 Instrumen Kokurikuler</h2>';
+html+='<p style="color:#64748b;margin-bottom:20px">'+escHtml(d.madrasahNama)+' &bull; '+escHtml(d.tanggal)+'</p>';
+html+='<div class="no-print" style="margin-bottom:12px"><button class="btn btn-sm btn-warning" onclick="resetSkorKokurikuler('+idx+')">🔄 Reset Skor</button></div>';
 html+='<table class="instrumen-table"><thead><tr><th class="col-no">No</th><th class="col-aspek">Indikator</th><th class="col-skor">1</th><th class="col-skor">2</th><th class="col-skor">3</th><th class="col-skor">4</th><th class="col-catatan">Catatan</th></tr></thead><tbody>';
 KOKURIKULER.forEach(function(item,i){
 var score=(scores[i]!==undefined&&scores[i]!==null)?scores[i]:null;
 var cat=(catatan[i])?catatan[i]:getAutoCatatan(score);
 var hasInfo=PENGGALIAN_KOKURIKULER[i]?true:false;
-html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalianKokurikuler('+i+')" title="Klik untuk lihat penggalian data"':'')+'>'+item+'</td>';
+html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalianKokurikuler('+i+')" title="Klik untuk lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-var locked=!isScoreUnlocked('kokurikuler',i);html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(locked?'locked':''))+'" '+('onclick="setSkorKokurikuler('+idx+','+i+','+s+')"')+'>'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':'')+'" onclick="setSkorKokurikuler('+idx+','+i+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
 }
-html+='<td class="col-catatan"><textarea rows="2" oninput="autoGrowCatatan(this)" onchange="setCatatanKokurikuler('+idx+','+i+',this.value)" placeholder="Otomatis">'+escHtml(cat)+'</textarea></td></tr>';
+html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatanKokurikuler('+idx+','+i+',this.value)" placeholder="Otomatis"></td></tr>';
 });
 html+='</tbody></table>';
 // Score summary
@@ -2448,15 +2396,14 @@ html+='<textarea rows="4" onchange="setRekapKokurikuler('+idx+',\'catatan\',this
 html+='<div class="form-group"><label>Rencana Tindak Lanjut</label>';
 html+='<textarea rows="4" onchange="setRekapKokurikuler('+idx+',\'tindakLanjut\',this.value)">'+escHtml(rekap.tindakLanjut||'')+'</textarea></div>';
 html+='<div class="btn-group no-print" style="justify-content:center">';
-html+='<button class="btn btn-primary" onclick="navigate(\'kokurikuler\')"> Simpan</button>';
-html+='<button class="btn btn-info" onclick="cetakKokurikuler('+idx+')"> Cetak</button>';
-html+='<button class="btn btn-danger" onclick="navigate(\'kokurikuler\')"> Tutup</button>';
+html+='<button class="btn btn-primary" onclick="navigate(\'kokurikuler\')">✔ Simpan</button>';
+html+='<button class="btn btn-info" onclick="cetakKokurikuler('+idx+')">🖨️ Cetak</button>';
+html+='<button class="btn btn-danger" onclick="navigate(\'kokurikuler\')">✕ Tutup</button>';
 html+='</div></div>';
 return html;
 }
 
 function setSkorKokurikuler(idx,itemIdx,val){
-if(!requireScoreUnlocked('kokurikuler',itemIdx))return;
 var data=getKokurikuler();
 if(!data[idx])return;
 if(!data[idx].scores)data[idx].scores=[];
@@ -2566,15 +2513,16 @@ render();
 }
 
 function showPenggalianKokurikuler(idx){
-unlockScore('kokurikuler',idx);
 var title=KOKURIKULER[idx]||'Aspek';
-openPenggalianModal('Penggalian Data: '+(idx+1)+'. '+escHtml(title),getPenggalianExternal('kokurikuler',idx,PENGGALIAN_KOKURIKULER[idx]),getPenggalianExternalKey('kokurikuler',idx));
+document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
+document.getElementById('modalContent').innerHTML=PENGGALIAN_KOKURIKULER[idx]||'<p>Tidak ada data penggalian.</p>';
+document.getElementById('modalPenggalian').style.display='flex';
 }
 
 function renderRekapKokurikulerPage(){
 var data=getKokurikuler();
 var pengawas=getPengawas();
-var html='<div class="card"><h2 style="margin-bottom:20px"> Rekap Kokurikuler</h2>';
+var html='<div class="card"><h2 style="margin-bottom:20px">📊 Rekap Kokurikuler</h2>';
 if(data.length===0){
 html+='<div class="empty-state"><p>Belum ada data kokurikuler.</p></div>';
 }else{
@@ -2590,13 +2538,13 @@ html+='<tr><td>'+(i+1)+'</td><td>'+escHtml(d.tanggal||'-')+'</td><td>'+escHtml(d
 html+='<td style="text-align:left;font-size:.8rem;max-width:200px">'+escHtml(rekap.catatan||'-')+'</td>';
 html+='<td style="text-align:left;font-size:.8rem;max-width:200px">'+escHtml(rekap.tindakLanjut||'-')+'</td>';
 html+='<td>'+pred+'</td>';
-html+='<td class="no-print"><button class="btn btn-sm btn-info" onclick="cetakKokurikuler('+i+')"></button></td></tr>';
+html+='<td class="no-print"><button class="btn btn-sm btn-info" onclick="cetakKokurikuler('+i+')">🖨️</button></td></tr>';
 });
 html+='</tbody></table></div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:center"><button class="btn btn-secondary" onclick="printRekapKokurikuler()"> Cetak Rekap</button></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:center"><button class="btn btn-secondary" onclick="printRekapKokurikuler()">🖨️ Cetak Rekap</button></div>';
 }
 html+='</div>';
-html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px"> Tutup</button></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
 return html;
 }
 
@@ -2731,7 +2679,7 @@ var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},
 var max=EKSTRAKURIKULER.length*4;
 var pct=max>0?(sum/max)*100:0;
 html+='<tr><td>'+(i+1)+'</td><td>'+escHtml(d.madrasahNama||'-')+'</td><td>'+escHtml(d.tanggal||'-')+'</td><td>'+sum+'/'+max+' ('+pct.toFixed(1)+'%)</td><td>'+getPredikat(pct)+'</td>';
-html+='<td><button class="btn btn-sm btn-primary" onclick="state.ekstrakurikulerIdx='+i+';state.unlockedScores={};navigate(\'ekstrakurikuler-form\')">&\#9998;</button> ';
+html+='<td><button class="btn btn-sm btn-primary" onclick="state.ekstrakurikulerIdx='+i+';navigate(\'ekstrakurikuler-form\')">&\#9998;</button> ';
 html+='<button class="btn btn-sm btn-info" onclick="cetakEkstrakurikuler('+i+')">&#128424;</button> ';
 html+='<button class="btn btn-sm btn-danger" onclick="deleteEkstrakurikuler('+i+')">\u{1F5D1}</button></td></tr>';
 });
@@ -2767,7 +2715,6 @@ data.push({madrasahNama:nama,tanggal:tgl,scores:new Array(EKSTRAKURIKULER.length
 saveEkstrakurikuler(data);
 var el=document.getElementById('modal-ekstra');if(el)el.remove();
 state.ekstrakurikulerIdx=data.length-1;
-state.unlockedScores={};
 navigate('ekstrakurikuler-form');
 }
 
@@ -2798,17 +2745,18 @@ html+='<div style="overflow-x:auto"><table class="instrumen-table"><thead><tr><t
 ekstraItems.forEach(function(item,i){
 var score=(scores[i]!==undefined&&scores[i]!==null)?scores[i]:null;
 var cat=catatan[i]||'';
-html+='<tr><td>'+(i+1)+'</td><td style="text-align:left;cursor:pointer" onclick="showPenggalianEkstrakurikuler('+i+')" title="Klik untuk lihat penggalian data">'+item+'</td>';
+html+='<tr><td>'+(i+1)+'</td><td style="text-align:left;cursor:pointer" onclick="showPenggalianEkstrakurikuler('+i+')">'+item+' \u{1F50D}</td>';
 for(var s=0;s<4;s++){
-var locked=!isScoreUnlocked('ekstrakurikuler',i);html+='<td><button class="skor-radio '+(score===s?'selected':(locked?'locked':''))+'" '+('onclick="setSkorEkstrakurikuler('+idx+','+i+','+s+')"')+'>'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+var checked=(score===s)?'checked':'';
+html+='<td><input type="radio" name="ekstra_score_'+i+'" value="'+s+'" '+checked+' onchange="setSkorEkstrakurikuler('+idx+','+i+','+s+')"></td>';
 }
-html+='<td class="col-catatan"><textarea rows="2" oninput="autoGrowCatatan(this)" onchange="setCatatanEkstrakurikuler('+idx+','+i+',this.value)" placeholder="Otomatis">'+escHtml(cat)+'</textarea></td></tr>';
+html+='<td><input type="text" value="'+escHtml(cat)+'" onchange="setCatatanEkstrakurikuler('+idx+','+i+',this.value)" style="width:100%;min-width:120px;padding:4px;border:1px solid #ddd;border-radius:4px"></td></tr>';
 });
 html+='</tbody></table></div>';
 var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);
 var max=EKSTRAKURIKULER.length*4;
 var pct=max>0?(sum/max)*100:0;
-html+='<div style="margin-top:15px;padding:10px;background:#F3F4F6;border-radius:8px"><b>Total Skor:</b> '+sum+'/'+max+' ('+pct.toFixed(1)+'%) - <b>'+getPredikat(pct)+'</b></div>';
+html+='<div style="margin-top:15px;padding:10px;background:#f0f9ff;border-radius:8px"><b>Total Skor:</b> '+sum+'/'+max+' ('+pct.toFixed(1)+'%) - <b>'+getPredikat(pct)+'</b></div>';
 var rekap=d.rekap||{};
 html+='<div style="margin-top:20px"><h3>Catatan Hasil Supervisi</h3>';
 html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px" onchange="setRekapEkstrakurikuler('+idx+',\'catatan\',this.value)">'+escHtml(rekap.catatan||'')+'</textarea></div>';
@@ -2825,7 +2773,6 @@ return html;
 }
 
 function setSkorEkstrakurikuler(idx,itemIdx,val){
-if(!requireScoreUnlocked('ekstrakurikuler',itemIdx))return;
 var data=getEkstrakurikuler();
 var d=data[idx];if(!d)return;
 if(!d.scores)d.scores=[];
@@ -2903,10 +2850,13 @@ render();
 }
 
 function showPenggalianEkstrakurikuler(idx){
-unlockScore('ekstrakurikuler',idx);
+var modal=document.getElementById('modalPenggalian');
+if(!modal)return;
 var title=EKSTRAKURIKULER[idx]||'';
 var content=PENGGALIAN_EKSTRAKURIKULER[idx]||'Tidak ada data penggalian.';
-openPenggalianModal('<b>'+(idx+1)+'. '+escHtml(title)+'</b>',getPenggalianExternal('ekstrakurikuler',idx,content),getPenggalianExternalKey('ekstrakurikuler',idx));
+document.getElementById('modalTitle').innerHTML='<b>'+(idx+1)+'. '+title+'</b>';
+document.getElementById('modalContent').innerHTML=content;
+modal.style.display='flex';
 }
 
 function renderRekapEkstrakurikulerPage(){
@@ -3099,7 +3049,7 @@ var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},
 var max=IKLIM_MADRASAH.length*4;
 var pct=max>0?(sum/max)*100:0;
 html+='<tr><td>'+(i+1)+'</td><td>'+escHtml(d.madrasahNama||'-')+'</td><td>'+escHtml(d.tanggal||'-')+'</td><td>'+sum+'/'+max+' ('+pct.toFixed(1)+'%)</td><td>'+getPredikat(pct)+'</td>';
-html+='<td><button class="btn btn-sm btn-primary" onclick="state.iklimMadrasahIdx='+i+';state.unlockedScores={};navigate(\'iklim-madrasah-form\')">&#9998;</button> ';
+html+='<td><button class="btn btn-sm btn-primary" onclick="state.iklimMadrasahIdx='+i+';navigate(\'iklim-madrasah-form\')">&#9998;</button> ';
 html+='<button class="btn btn-sm btn-info" onclick="cetakIklimMadrasah('+i+')">&#128424;</button> ';
 html+='<button class="btn btn-sm btn-danger" onclick="deleteIklimMadrasah('+i+')">&#128465;</button></td></tr>';
 });
@@ -3133,7 +3083,6 @@ data.push({madrasahNama:nama,tanggal:tgl,scores:new Array(IKLIM_MADRASAH.length)
 saveIklimMadrasah(data);
 var el=document.getElementById('modal-iklim');if(el)el.remove();
 state.iklimMadrasahIdx=data.length-1;
-state.unlockedScores={};
 navigate('iklim-madrasah-form');
 }
 function deleteIklimMadrasah(idx){
@@ -3163,17 +3112,18 @@ html+='<div style="overflow-x:auto"><table class="instrumen-table"><thead><tr><t
 iklimItems.forEach(function(item,i){
 var score=(scores[i]!==undefined&&scores[i]!==null)?scores[i]:null;
 var cat=catatan[i]||'';
-html+='<tr><td>'+(i+1)+'</td><td style="text-align:left;cursor:pointer" onclick="showPenggalianIklimMadrasah('+i+')" title="Klik untuk lihat penggalian data">'+item+'</td>';
+html+='<tr><td>'+(i+1)+'</td><td style="text-align:left;cursor:pointer" onclick="showPenggalianIklimMadrasah('+i+')">'+item+' &#128269;</td>';
 for(var s=0;s<4;s++){
-var locked=!isScoreUnlocked('iklim-madrasah',i);html+='<td><button class="skor-radio '+(score===s?'selected':(locked?'locked':''))+'" '+('onclick="setSkorIklimMadrasah('+idx+','+i+','+s+')"')+'>'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+var checked=(score===s)?'checked':'';
+html+='<td><input type="radio" name="iklim_score_'+i+'" value="'+s+'" '+checked+' onchange="setSkorIklimMadrasah('+idx+','+i+','+s+')"></td>';
 }
-html+='<td class="col-catatan"><textarea rows="2" oninput="autoGrowCatatan(this)" onchange="setCatatanIklimMadrasah('+idx+','+i+',this.value)" placeholder="Otomatis">'+escHtml(cat)+'</textarea></td></tr>';
+html+='<td><input type="text" value="'+escHtml(cat)+'" onchange="setCatatanIklimMadrasah('+idx+','+i+',this.value)" style="width:100%;min-width:120px;padding:4px;border:1px solid #ddd;border-radius:4px"></td></tr>';
 });
 html+='</tbody></table></div>';
 var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);
 var max=IKLIM_MADRASAH.length*4;
 var pct=max>0?(sum/max)*100:0;
-html+='<div style="margin-top:15px;padding:10px;background:#F3F4F6;border-radius:8px"><b>Total Skor:</b> '+sum+'/'+max+' ('+pct.toFixed(1)+'%) - <b>'+getPredikat(pct)+'</b></div>';
+html+='<div style="margin-top:15px;padding:10px;background:#f0f9ff;border-radius:8px"><b>Total Skor:</b> '+sum+'/'+max+' ('+pct.toFixed(1)+'%) - <b>'+getPredikat(pct)+'</b></div>';
 var rekap=d.rekap||{};
 html+='<div style="margin-top:20px"><h3>Catatan Hasil Supervisi</h3>';
 html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px" onchange="setRekapIklimMadrasah('+idx+',\'catatan\',this.value)">'+escHtml(rekap.catatan||'')+'</textarea></div>';
@@ -3189,7 +3139,6 @@ html+='</div></div>';
 return html;
 }
 function setSkorIklimMadrasah(idx,itemIdx,val){
-if(!requireScoreUnlocked('iklim-madrasah',itemIdx))return;
 var data=getIklimMadrasah();
 var d=data[idx];if(!d)return;
 if(!d.scores)d.scores=[];
@@ -3262,10 +3211,13 @@ saveIklimMadrasah(data);
 render();
 }
 function showPenggalianIklimMadrasah(idx){
-unlockScore('iklim-madrasah',idx);
+var modal=document.getElementById('modalPenggalian');
+if(!modal)return;
 var title=IKLIM_MADRASAH[idx]||'';
 var content=PENGGALIAN_IKLIM_MADRASAH[idx]||'Tidak ada data penggalian.';
-openPenggalianModal('<b>'+(idx+1)+'. '+escHtml(title)+'</b>',getPenggalianExternal('iklim-madrasah',idx,content),getPenggalianExternalKey('iklim-madrasah',idx));
+document.getElementById('modalTitle').innerHTML='<b>'+(idx+1)+'. '+title+'</b>';
+document.getElementById('modalContent').innerHTML=content;
+modal.style.display='flex';
 }
 function editIndikatorIklimMadrasah(){
 showEditIndikator('iklim-madrasah');
@@ -3491,7 +3443,7 @@ html+='</style></head><body>';
 html+='<div class="cover">';
 html+='<h1>LAPORAN</h1>';
 html+='<h1>SUPERVISI PEMBELAJARAN</h1>';
-html+='<h2>'+tahunAjaranLabel()+'</h2>';
+html+='<h2>Tahun Ajaran 2025-2026</h2>';
 html+='<br><br><br>';
 html+='<p style="text-align:center;font-size:14pt"><b>'+escHtml(madrasahObj.nama||mName)+'</b></p>';
 html+='<p style="text-align:center">Alamat: '+(madrasahObj.alamat||'..........................................')+'</p>';
@@ -3704,8 +3656,10 @@ html+='</style></head><body>';
 html+='<div class="cover">';
 html+='<h1>LAPORAN</h1>';
 html+='<h1>SUPERVISI PEMBELAJARAN</h1>';
-html+='<h2>'+tahunAjaranLabel()+'</h2>';
-html+='<br><br><br><br><br>';
+html+='<h2>Tahun Ajaran 2025-2026</h2>';
+html+='<br><br><br>';
+html+='<p style="text-align:center;font-size:14pt"><b>'+(pengawas.tempatTugas||'...............................')+'</b></p>';
+html+='<br><br><br>';
 html+='<p style="text-align:center">Disusun oleh:</p>';
 html+='<p style="text-align:center;font-size:13pt"><b>'+(pengawas.nama||'...............................')+'</b></p>';
 html+='<p style="text-align:center">NIP. '+(pengawas.nip||'...............................')+'</p>';
@@ -3716,7 +3670,7 @@ html+='</div>';
 html+='<div class="page-break"></div>';
 html+='<div style="page-break-inside:avoid">';
 html+='<h2>KATA PENGANTAR</h2>';
-html+='<p>Puji syukur kehadirat Allah SWT atas rahmat dan karunia-Nya sehingga laporan hasil pelaksanaan supervisi pembelajaran berbasis Pembelajaran Mendalam (PM) dan Kurikulum Berbasis Cinta (KBC) di madrasah binaan dapat diselesaikan dengan baik.</p>';
+html+='<p>Puji syukur kehadirat Allah SWT atas rahmat dan karunia-Nya sehingga laporan hasil pelaksanaan supervisi pembelajaran berbasis Pembelajaran Mendalam (PM) dan Kurikulum Berbasis Cinta (KBC) di '+(pengawas.tempatTugas||'...........')+' dapat diselesaikan dengan baik.</p>';
 html+='<p>Laporan ini disusun sebagai bentuk pertanggungjawaban pelaksanaan supervisi akademik dalam rangka penjaminan mutu pembelajaran yang berorientasi pada pembelajaran bermakna, penguatan karakter, pengembangan kompetensi abad ke-21, serta penumbuhan budaya belajar yang humanis, reflektif, dan berlandaskan nilai-nilai cinta.</p>';
 html+='<p>Pelaksanaan supervisi difokuskan pada keterlaksanaan pembelajaran yang mendorong murid berpikir kritis, kreatif, kolaboratif, komunikatif, reflektif, serta mengintegrasikan nilai cinta kepada Tuhan, sesama, lingkungan, bangsa, dan ilmu pengetahuan dalam proses pembelajaran.</p>';
 html+='<p>Kami berharap laporan ini dapat menjadi bahan refleksi, penguatan mutu layanan pendidikan, serta dasar penyusunan tindak lanjut peningkatan kompetensi guru dan kualitas pembelajaran di madrasah.</p>';
@@ -3989,8 +3943,8 @@ if(data.length===0){
 html+='<div class="empty-state"><p>Belum ada data supervisi kokurikuler untuk dicetak menjadi laporan.</p></div>';
 }else{
 html+='<p style="margin-bottom:15px">Laporan akan digenerate otomatis berdasarkan data supervisi kokurikuler yang sudah diinput.</p>';
-html+='<div style="background:#F3F4F6;border:2px solid #1E2A5A;border-radius:12px;padding:20px;margin-bottom:20px">';
-html+='<h3 style="color:#D4AF37;margin-bottom:10px">Ringkasan Data</h3>';
+html+='<div style="background:#f0f9ff;border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:20px">';
+html+='<h3 style="color:#0d9488;margin-bottom:10px">Ringkasan Data</h3>';
 html+='<ul style="list-style:none;padding:0">';
 html+='<li><b>Pengawas:</b> '+(pengawas.nama||'-')+'</li>';
 html+='<li><b>Jumlah Penilaian:</b> '+data.length+'</li>';
@@ -4035,14 +3989,15 @@ html+='.page-break{page-break-before:always}';
 html+='.ttd{margin-top:50px;text-align:center;margin-left:auto;margin-right:0;width:fit-content;min-width:250px}';
 html+='</style></head><body>';
 // COVER
-html+='<div class="cover"><h1>LAPORAN</h1><h1>SUPERVISI KOKURIKULER</h1><h2>'+tahunAjaranLabel()+'</h2><br><br><br><br><br>';
+html+='<div class="cover"><h1>LAPORAN</h1><h1>SUPERVISI KOKURIKULER</h1><h2>Tahun Ajaran 2025-2026</h2><br><br><br>';
+html+='<p style="text-align:center;font-size:14pt"><b>'+(pengawas.tempatTugas||'KKMA')+'</b></p><br><br><br>';
 html+='<p style="text-align:center">Disusun oleh:</p>';
 html+='<p style="text-align:center;font-size:13pt"><b>'+(pengawas.nama||'...')+'</b></p>';
 html+='<p style="text-align:center">NIP. '+(pengawas.nip||'...')+'</p>';
 html+='<p style="text-align:center">'+(pengawas.jabatan||'Pengawas Madrasah')+'</p></div>';
 // KATA PENGANTAR
 html+='<div class="page-break"></div><div style="page-break-inside:avoid"><h2>KATA PENGANTAR</h2>';
-html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Supervisi Kokurikuler '+tahunAjaranLabel()+' ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi kegiatan kokurikuler yang telah dilakukan di madrasah.</p>';
+html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Supervisi Kokurikuler Tahun Ajaran 2025-2026 ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi kegiatan kokurikuler yang telah dilakukan di madrasah.</p>';
 html+='<p>Supervisi kokurikuler merupakan bagian penting dari upaya peningkatan mutu pendidikan secara holistik. Kegiatan kokurikuler dirancang untuk memperkuat dan memperdalam pemahaman peserta didik terhadap materi pembelajaran melalui kegiatan-kegiatan yang terintegrasi dengan kurikulum. Melalui supervisi ini, diharapkan pelaksanaan kokurikuler dapat berjalan lebih efektif dan bermakna.</p>';
 html+='<p>Kami menyadari bahwa laporan ini masih jauh dari sempurna. Kritik dan saran yang membangun sangat kami harapkan demi perbaikan di masa mendatang.</p>';
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div>';
@@ -4095,7 +4050,7 @@ html+='</ol>';
 // BAB II
 html+='<div class="page-break"></div><h2>BAB II<br>PELAKSANAAN SUPERVISI KOKURIKULER</h2>';
 html+='<h3>A. Waktu dan Tempat</h3>';
-html+='<p>Supervisi kokurikuler dilaksanakan pada '+tahunAjaranLabel()+' di madrasah-madrasah binaan.</p>';
+html+='<p>Supervisi kokurikuler dilaksanakan pada Tahun Ajaran 2025-2026 di madrasah-madrasah binaan.</p>';
 html+='<h3>B. Instrumen Supervisi</h3>';
 html+='<p>Instrumen yang digunakan dalam supervisi kokurikuler mencakup aspek-aspek berikut:</p>';
 html+='<ol>';
@@ -4203,8 +4158,8 @@ if(data.length===0){
 html+='<div class="empty-state"><p>Belum ada data supervisi ekstrakurikuler untuk dicetak menjadi laporan.</p></div>';
 }else{
 html+='<p style="margin-bottom:15px">Laporan akan digenerate otomatis berdasarkan data supervisi ekstrakurikuler yang sudah diinput.</p>';
-html+='<div style="background:#F3F4F6;border:2px solid #1E2A5A;border-radius:12px;padding:20px;margin-bottom:20px">';
-html+='<h3 style="color:#D4AF37;margin-bottom:10px">Ringkasan Data</h3>';
+html+='<div style="background:#f0f9ff;border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:20px">';
+html+='<h3 style="color:#0d9488;margin-bottom:10px">Ringkasan Data</h3>';
 html+='<ul style="list-style:none;padding:0">';
 html+='<li><b>Pengawas:</b> '+(pengawas.nama||'-')+'</li>';
 html+='<li><b>Jumlah Penilaian:</b> '+data.length+'</li>';
@@ -4249,14 +4204,15 @@ html+='.page-break{page-break-before:always}';
 html+='.ttd{margin-top:50px;text-align:center;margin-left:auto;margin-right:0;width:fit-content;min-width:250px}';
 html+='</style></head><body>';
 // COVER
-html+='<div class="cover"><h1>LAPORAN</h1><h1>SUPERVISI EKSTRAKURIKULER</h1><h2>'+tahunAjaranLabel()+'</h2><br><br><br><br><br>';
+html+='<div class="cover"><h1>LAPORAN</h1><h1>SUPERVISI EKSTRAKURIKULER</h1><h2>Tahun Ajaran 2025-2026</h2><br><br><br>';
+html+='<p style="text-align:center;font-size:14pt"><b>'+(pengawas.tempatTugas||'KKMA')+'</b></p><br><br><br>';
 html+='<p style="text-align:center">Disusun oleh:</p>';
 html+='<p style="text-align:center;font-size:13pt"><b>'+(pengawas.nama||'...')+'</b></p>';
 html+='<p style="text-align:center">NIP. '+(pengawas.nip||'...')+'</p>';
 html+='<p style="text-align:center">'+(pengawas.jabatan||'Pengawas Madrasah')+'</p></div>';
 // KATA PENGANTAR
 html+='<div class="page-break"></div><div style="page-break-inside:avoid"><h2>KATA PENGANTAR</h2>';
-html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Supervisi Ekstrakurikuler '+tahunAjaranLabel()+' ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi kegiatan ekstrakurikuler yang telah dilakukan di madrasah.</p>';
+html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Supervisi Ekstrakurikuler Tahun Ajaran 2025-2026 ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi kegiatan ekstrakurikuler yang telah dilakukan di madrasah.</p>';
 html+='<p>Kegiatan ekstrakurikuler merupakan wadah pengembangan potensi, minat, dan bakat peserta didik di luar kegiatan intrakurikuler. Melalui supervisi ini, diharapkan pelaksanaan ekstrakurikuler dapat lebih terencana, terarah, dan memberikan dampak positif bagi pengembangan karakter dan kompetensi peserta didik.</p>';
 html+='<p>Kami menyadari bahwa laporan ini masih jauh dari sempurna. Kritik dan saran yang membangun sangat kami harapkan.</p>';
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div>';
@@ -4309,7 +4265,7 @@ html+='</ol>';
 // BAB II
 html+='<div class="page-break"></div><h2>BAB II<br>PELAKSANAAN SUPERVISI EKSTRAKURIKULER</h2>';
 html+='<h3>A. Waktu dan Tempat</h3>';
-html+='<p>Supervisi ekstrakurikuler dilaksanakan pada '+tahunAjaranLabel()+' di madrasah-madrasah binaan.</p>';
+html+='<p>Supervisi ekstrakurikuler dilaksanakan pada Tahun Ajaran 2025-2026 di madrasah-madrasah binaan.</p>';
 html+='<h3>B. Instrumen Supervisi</h3>';
 html+='<p>Instrumen yang digunakan dalam supervisi ekstrakurikuler mencakup aspek-aspek berikut:</p>';
 html+='<ol>';
@@ -4417,8 +4373,8 @@ if(data.length===0){
 html+='<div class="empty-state"><p>Belum ada data supervisi iklim madrasah untuk dicetak menjadi laporan.</p></div>';
 }else{
 html+='<p style="margin-bottom:15px">Laporan akan digenerate otomatis berdasarkan data supervisi iklim madrasah yang sudah diinput.</p>';
-html+='<div style="background:#F3F4F6;border:2px solid #1E2A5A;border-radius:12px;padding:20px;margin-bottom:20px">';
-html+='<h3 style="color:#D4AF37;margin-bottom:10px">Ringkasan Data</h3>';
+html+='<div style="background:#f0f9ff;border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:20px">';
+html+='<h3 style="color:#0d9488;margin-bottom:10px">Ringkasan Data</h3>';
 html+='<ul style="list-style:none;padding:0">';
 html+='<li><b>Pengawas:</b> '+(pengawas.nama||'-')+'</li>';
 html+='<li><b>Jumlah Penilaian:</b> '+data.length+'</li>';
@@ -4463,14 +4419,15 @@ html+='.page-break{page-break-before:always}';
 html+='.ttd{margin-top:50px;text-align:center;margin-left:auto;margin-right:0;width:fit-content;min-width:250px}';
 html+='</style></head><body>';
 // COVER
-html+='<div class="cover"><h1>LAPORAN</h1><h1>SUPERVISI IKLIM MADRASAH</h1><h2>'+tahunAjaranLabel()+'</h2><br><br><br><br><br>';
+html+='<div class="cover"><h1>LAPORAN</h1><h1>SUPERVISI IKLIM MADRASAH</h1><h2>Tahun Ajaran 2025-2026</h2><br><br><br>';
+html+='<p style="text-align:center;font-size:14pt"><b>'+(pengawas.tempatTugas||'KKMA')+'</b></p><br><br><br>';
 html+='<p style="text-align:center">Disusun oleh:</p>';
 html+='<p style="text-align:center;font-size:13pt"><b>'+(pengawas.nama||'...')+'</b></p>';
 html+='<p style="text-align:center">NIP. '+(pengawas.nip||'...')+'</p>';
 html+='<p style="text-align:center">'+(pengawas.jabatan||'Pengawas Madrasah')+'</p></div>';
 // KATA PENGANTAR
 html+='<div class="page-break"></div><div style="page-break-inside:avoid"><h2>KATA PENGANTAR</h2>';
-html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Supervisi Iklim Madrasah '+tahunAjaranLabel()+' ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi budaya dan iklim madrasah.</p>';
+html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Supervisi Iklim Madrasah Tahun Ajaran 2025-2026 ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi budaya dan iklim madrasah.</p>';
 html+='<p>Iklim madrasah yang kondusif merupakan prasyarat penting bagi terciptanya proses pembelajaran yang efektif dan bermakna. Budaya madrasah yang positif akan mendorong seluruh warga madrasah untuk berprestasi, berkolaborasi, dan mengembangkan potensi secara optimal. Melalui supervisi ini, diharapkan dapat teridentifikasi kekuatan dan area perbaikan dalam menciptakan iklim madrasah yang ideal.</p>';
 html+='<p>Kami menyadari bahwa laporan ini masih jauh dari sempurna. Kritik dan saran yang membangun sangat kami harapkan.</p>';
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div>';
@@ -4527,7 +4484,7 @@ html+='</ol>';
 // BAB II
 html+='<div class="page-break"></div><h2>BAB II<br>PELAKSANAAN SUPERVISI IKLIM MADRASAH</h2>';
 html+='<h3>A. Waktu dan Tempat</h3>';
-html+='<p>Supervisi iklim madrasah dilaksanakan pada '+tahunAjaranLabel()+' di madrasah-madrasah binaan.</p>';
+html+='<p>Supervisi iklim madrasah dilaksanakan pada Tahun Ajaran 2025-2026 di madrasah-madrasah binaan.</p>';
 html+='<h3>B. Instrumen Supervisi</h3>';
 html+='<p>Instrumen yang digunakan dalam supervisi iklim madrasah mencakup aspek-aspek berikut:</p>';
 html+='<ol>';
@@ -4631,19 +4588,41 @@ setTimeout(function(){w.print()},500);
 // ===== INIT =====
 // === INIT DEFAULT MADRASAH ===
 function initDefaultMadrasah(){
-// Data madrasah sengaja tidak diisi otomatis.
-// Pengguna mengisi manual atau import dari file Excel.
+if(getMadrasah().length>0)return;
+var def=[
+{nama:'MAS AL - BADRI',npsn:'20580249',alamat:'Jl. Kalisat Arjasa No. 50 Dusun Krajan, Gumuksari, Kalisat',kabupaten:'Jember',kepala:'Saifuddin, S.Pd.I',nipKepala:''},
+{nama:'MAS AL MUBAROK',npsn:'20580256',alamat:'Jalan Imam Bonjol. No. 11, Glagahwero, Kalisat',kabupaten:'Jember',kepala:'Yuliana Anggraeni',nipKepala:''},
+{nama:'MAS MIFTAHUL ULUM KALISAT',npsn:'20580298',alamat:'Jl. Pesantren No. 117, Glagahwero, Kalisat',kabupaten:'Jember',kepala:'ISFANDIAR',nipKepala:''},
+{nama:'MAS BAHRUL AMIN AL KHOLILI',npsn:'20596561',alamat:'Jl. PB. Sudirman RT. 05 RW. 04, Plalangan, Kalisat',kabupaten:'Jember',kepala:'Ifrohatul Hasanah, S. Pd',nipKepala:''},
+{nama:'MAS NURUL ALI',npsn:'20580304',alamat:'Jl. Bringin No.12 Ledokombo, Sumberbulus, Ledokombo',kabupaten:'Jember',kepala:'Halik, S.Pd.I',nipKepala:''},
+{nama:'MAS MIFTAHUL ULUM SUREN',npsn:'20580300',alamat:'Jl. Cendrawasih 17 Suren, Suren, Ledokombo',kabupaten:'Jember',kepala:'Muhammad Hazin Mudzhar, S.Hum',nipKepala:''},
+{nama:'MAS AT-TAQWA',npsn:'20580266',alamat:'DSN. KRAJAN DESA SUREN LEDOKOMBO, Suren, Ledokombo',kabupaten:'Jember',kepala:'Dr. Mohammad Erwan, S.Pd, M.Pd',nipKepala:''},
+{nama:'MAS AR - ROHMAH',npsn:'60728115',alamat:'JL. KH SANHAJI NO.57 LEDOKOMBO, Suren, Ledokombo',kabupaten:'Jember',kepala:'Ali Rachamtulloh, S.Pd',nipKepala:''},
+{nama:'MAS RAUDLATUL ULUM',npsn:'69788053',alamat:'JL. CUMEDAK N0 76 LEDOKOMBO, Ledokombo, Ledokombo',kabupaten:'Jember',kepala:'NUR FARIDZAH, S.Kg',nipKepala:''},
+{nama:'MAS KEPENDIDIKAN NURURRAHMAN',npsn:'69894851',alamat:'Jl. Pemancar Telkom No.08 Prasean - Pakusari, Jatian, Pakusari',kabupaten:'Jember',kepala:'Abdullah, S.Pd.I, M.Pd.',nipKepala:''},
+{nama:'MAS HABIBURROHMAN',npsn:'69894852',alamat:'Jl. Dsn Plalangan Desa Jatian, Jatian, Pakusari',kabupaten:'Jember',kepala:'Ahmad Zaini, S.Pd.I, M.Pd',nipKepala:''},
+{nama:'MAS NURUL QARNAIN',npsn:'20580308',alamat:'Jl. Imam Sukarto No.60, Baletbaru, Sukowono',kabupaten:'Jember',kepala:'Drs. H. IMAM SYAFI\'I, M.Pd.I',nipKepala:''},
+{nama:'MAS MIFTAHUL ULUM',npsn:'69894854',alamat:'Jl. Keramat 01 Desa Arjasa Kecamatan Sukowono, Arjasa, Sukowono',kabupaten:'Jember',kepala:'LUTFI GHUFRON, S.Pd.I',nipKepala:''},
+{nama:'MAS RAUDLATUS SYABAB',npsn:'69894855',alamat:'Jl. KH Ahmad Syukri No.2 Sumber Wringin - Sukowono, Sumberwringin, Sukowono',kabupaten:'Jember',kepala:'H. Badrudin, S.Pd.I, M.Pd',nipKepala:''},
+{nama:'MAS NURUL ISLAM AL-HAMIDY',npsn:'20580306',alamat:'JL. KH. ABD. HAMID NO. 01, Jambearum, Sumberjambe',kabupaten:'Jember',kepala:'Musthofa, S.Pd.I, M.Pd',nipKepala:''},
+{nama:'MAS BAITUL AZHAR',npsn:'20580270',alamat:'Jl. Karang Duren No.20 Sumberpakem - Sumberjambe, Sumberpakem, Sumberjambe',kabupaten:'Jember',kepala:'MOCHAMMAD ISWANTO, S.Pd',nipKepala:''},
+{nama:'MAS NURUL IMAM',npsn:'69881456',alamat:'Jl. Sukosari Randuagung Sumberjambe, Cumedak, Sumberjambe',kabupaten:'Jember',kepala:'RIZQY FEBRI PUJI LESTARI, S.Pd',nipKepala:''},
+{nama:'MAS PLUS AL MAHFUDZ',npsn:'20595872',alamat:'Jl. Gunung Raung No. 01 Desa Pringgondani Kecamatan Sumberjambe, Pringgondani, Sumberjambe',kabupaten:'Jember',kepala:'M.Ainul Fata Al Kiromi, S.H, M.Pd.I',nipKepala:''},
+{nama:'MAS MIFTAHUL ULUM',npsn:'70010531',alamat:'Dusun Panggung Tinggi RT. 001 RW. 001, Plerean, Sumberjambe',kabupaten:'Jember',kepala:'MOHAMMAD RAMSI, SE.',nipKepala:''},
+{nama:'MAS NURUL ULUM',npsn:'70059027',alamat:'Jl. Pesantren Dsn. Tegalan Ds. Sumberkejayan, Sumberkejayan, Mayang',kabupaten:'Jember',kepala:'Ahmad Ghovind Surur Hafili, S.Pd',nipKepala:''}
+];
+saveMadrasah(def);
 }
 // ===== BACKUP & RESTORE =====
 function renderBackupRestore(){
 var html='<div class="card"><h2 style="margin-bottom:20px">&#128190; Export/Backup & Restore</h2>';
-html+='<p style="color:#6B7280;margin-bottom:20px">Backup semua data ke file JSON atau restore dari file backup sebelumnya.</p>';
+html+='<p style="color:#64748b;margin-bottom:20px">Backup semua data ke file JSON atau restore dari file backup sebelumnya.</p>';
 html+='<div class="grid-2">';
 html+='<div class="stat-card"><h3 style="margin-bottom:15px">&#128229; Export / Backup</h3>';
-html+='<p style="color:#6B7280;font-size:.85rem;margin-bottom:15px">Download semua data (pengawas, madrasah, guru, supervisi, kokurikuler, ekstrakurikuler, iklim madrasah) ke file JSON.</p>';
+html+='<p style="color:#64748b;font-size:.85rem;margin-bottom:15px">Download semua data (pengawas, madrasah, guru, supervisi, kokurikuler, ekstrakurikuler, iklim madrasah) ke file JSON.</p>';
 html+='<button class="btn btn-primary" onclick="exportBackup()">&#128229; Download Backup</button></div>';
 html+='<div class="stat-card"><h3 style="margin-bottom:15px">&#128228; Restore</h3>';
-html+='<p style="color:#6B7280;font-size:.85rem;margin-bottom:15px">Upload file backup JSON untuk mengembalikan data. Data saat ini akan ditimpa.</p>';
+html+='<p style="color:#64748b;font-size:.85rem;margin-bottom:15px">Upload file backup JSON untuk mengembalikan data. Data saat ini akan ditimpa.</p>';
 html+='<button class="btn btn-warning" onclick="document.getElementById(\'restoreFile\').click()">&#128228; Upload & Restore</button>';
 html+='<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="importRestore(event)"></div>';
 html+='</div></div>';
@@ -4779,7 +4758,7 @@ html+='.page-break{page-break-before:always}';
 html+='.ttd{margin-top:50px;text-align:center;margin-left:auto;margin-right:0;width:fit-content;min-width:250px}';
 html+='</style></head><body>';
 // COVER
-html+='<div class="cover"><h1>LAPORAN</h1><h1>'+title.toUpperCase()+'</h1><h2>'+tahunAjaranLabel()+'</h2><br><br><br>';
+html+='<div class="cover"><h1>LAPORAN</h1><h1>'+title.toUpperCase()+'</h1><h2>Tahun Ajaran 2025-2026</h2><br><br><br>';
 html+='<p style="text-align:center;font-size:14pt"><b>'+escHtml(mName)+'</b></p>';
 html+='<p style="text-align:center">Alamat: '+(madrasahObj.alamat||'...')+'</p><br><br><br>';
 html+='<p style="text-align:center">Disusun oleh:</p>';
@@ -4788,7 +4767,7 @@ html+='<p style="text-align:center">NIP. '+(pengawas.nip||'...')+'</p>';
 html+='<p style="text-align:center">'+(pengawas.jabatan||'Pengawas Madrasah')+'</p></div>';
 // KATA PENGANTAR
 html+='<div class="page-break"></div><div style="page-break-inside:avoid"><h2>KATA PENGANTAR</h2>';
-html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan '+title+' '+tahunAjaranLabel()+' untuk '+escHtml(mName)+' ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi yang telah dilakukan.</p>';
+html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan '+title+' Tahun Ajaran 2025-2026 untuk '+escHtml(mName)+' ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi yang telah dilakukan.</p>';
 html+='<p>Kami menyadari bahwa laporan ini masih jauh dari sempurna. Kritik dan saran yang membangun sangat kami harapkan demi perbaikan di masa mendatang.</p>';
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div>';
 html+='</div>';
@@ -4818,7 +4797,7 @@ html+='<p>Sasaran supervisi ini adalah '+escHtml(mName)+'. Total penilaian yang 
 // BAB II
 html+='<div class="page-break"></div><h2>BAB II<br>PELAKSANAAN SUPERVISI</h2>';
 html+='<h3>A. Waktu dan Tempat</h3>';
-html+='<p>Supervisi dilaksanakan pada '+tahunAjaranLabel()+' di '+escHtml(mName)+'.</p>';
+html+='<p>Supervisi dilaksanakan pada Tahun Ajaran 2025-2026 di '+escHtml(mName)+'.</p>';
 html+='<h3>B. Instrumen Supervisi</h3>';
 html+='<p>Instrumen yang digunakan mencakup aspek-aspek berikut:</p><ol>';
 INDIKATOR.forEach(function(item,i){html+='<li>'+escHtml(item)+'</li>'});
@@ -4896,14 +4875,14 @@ html+='.page-break{page-break-before:always}';
 html+='.ttd{margin-top:50px;text-align:center;margin-left:auto;margin-right:0;width:fit-content;min-width:250px}';
 html+='</style></head><body>';
 // COVER
-html+='<div class="cover"><h1>LAPORAN</h1><h1>'+title.toUpperCase()+'</h1><h2>'+tahunAjaranLabel()+'</h2><br><br><br>';
+html+='<div class="cover"><h1>LAPORAN</h1><h1>'+title.toUpperCase()+'</h1><h2>'+escHtml(kkma)+'</h2><h2>Tahun Ajaran 2025-2026</h2><br><br><br>';
 html+='<p style="text-align:center">Disusun oleh:</p>';
 html+='<p style="text-align:center;font-size:13pt"><b>'+(pengawas.nama||'...')+'</b></p>';
 html+='<p style="text-align:center">NIP. '+(pengawas.nip||'...')+'</p>';
 html+='<p style="text-align:center">'+(pengawas.jabatan||'Pengawas Madrasah')+'</p></div>';
 // KATA PENGANTAR
 html+='<div class="page-break"></div><div style="page-break-inside:avoid"><h2>KATA PENGANTAR</h2>';
-html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan '+title+' '+escHtml(kkma)+' '+tahunAjaranLabel()+' ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi yang telah dilakukan di seluruh madrasah binaan dalam wilayah '+escHtml(kkma)+'.</p>';
+html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan '+title+' '+escHtml(kkma)+' Tahun Ajaran 2025-2026 ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi yang telah dilakukan di seluruh madrasah binaan dalam wilayah '+escHtml(kkma)+'.</p>';
 html+='<p>Kami menyadari bahwa laporan ini masih jauh dari sempurna. Kritik dan saran yang membangun sangat kami harapkan demi perbaikan di masa mendatang.</p>';
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div>';
 html+='</div>';
@@ -4935,7 +4914,7 @@ html+='<p>Sasaran supervisi meliputi <b>'+madrasahNames.length+' madrasah</b> da
 // BAB II
 html+='<div class="page-break"></div><h2>BAB II<br>PELAKSANAAN SUPERVISI</h2>';
 html+='<h3>A. Waktu dan Tempat</h3>';
-html+='<p>Supervisi dilaksanakan pada '+tahunAjaranLabel()+' di madrasah-madrasah binaan wilayah '+escHtml(kkma)+':</p><ol>';
+html+='<p>Supervisi dilaksanakan pada Tahun Ajaran 2025-2026 di madrasah-madrasah binaan wilayah '+escHtml(kkma)+':</p><ol>';
 madrasahNames.forEach(function(n){html+='<li>'+escHtml(n)+'</li>';});
 html+='</ol>';
 html+='<h3>B. Instrumen Supervisi</h3>';
