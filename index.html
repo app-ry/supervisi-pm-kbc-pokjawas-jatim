@@ -68,9 +68,11 @@ header p{opacity:.8;font-size:.85rem}
 .instrumen-table .col-skor{width:40px}
 .instrumen-table .col-catatan{min-width:140px;text-align:left}
 .instrumen-table .col-catatan input{width:100%;padding:6px 8px;border:1px solid #e2e8f0;border-radius:4px;font-size:.8rem}
-.skor-radio{background:#fff;border:2px solid #cbd5e1;cursor:pointer;font-size:0.85rem;color:#fff;transition:all .2s;min-width:20px;min-height:20px;line-height:1;border-radius:3px;display:inline-flex;align-items:center;justify-content:center}
+.skor-radio{background:#fff;border:2px solid #cbd5e1;cursor:pointer;font-size:0.85rem;color:#fff;transition:all .2s;min-width:20px;min-height:20px;line-height:1;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;position:relative}
 .skor-radio:hover{background:#f1f5f9;border-color:#94a3b8}
 .skor-radio.selected{color:#fff;font-weight:bold;background:#14b8a6;border-color:#14b8a6}
+.skor-radio.selected::before{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:2px}
+.skor-radio.selected::after{content:'✓';position:absolute;color:#14b8a6;font-size:0.7rem;font-weight:bold;z-index:1}
 .skor-radio.locked{color:#e5e7eb;border-color:#e5e7eb;cursor:not-allowed;opacity:.6;background:#fafafa}
 .skor-radio.locked:hover{color:#e5e7eb;background:#fafafa;cursor:not-allowed;border-color:#e5e7eb}
 .tahap-header{background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;padding:10px 16px;border-radius:8px;margin:20px 0 12px;font-weight:600;font-size:.9rem}
@@ -1543,7 +1545,7 @@ var cat=(d.catatan&&d.catatan[i])?d.catatan[i]:getAutoCatatan(score);
 var penggalian=(key==='perencanaan'||key==='asesmen')&&getPenggalian(key,i)?true:false;
 html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(penggalian?' clickable':'')+'"'+(penggalian?' onclick="showPenggalianGeneric(\''+key+'\','+i+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data"':'')+'>'+(penggalian?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked(key,i)?'locked':''))+'" onclick="setSkor(\''+key+'\','+i+','+s+')">'+(score===s?'&#10003;':'')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked(key,i)?'locked':''))+'" onclick="setSkor(\''+key+'\','+i+','+s+')">'+''+'</button></td>';
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\''+key+'\','+i+',this.value)" placeholder="Otomatis"></td></tr>';
 });
@@ -1586,7 +1588,7 @@ var cat=(d.catatan&&d.catatan[gi])?d.catatan[gi]:getAutoCatatan(score);
 var hasInfo=getPenggalian('pelaksanaan',gi)?true:false;
 html+='<tr><td class="col-no">'+(gi+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalian('+gi+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('pelaksanaan',gi)?'locked':''))+'" onclick="setSkor(\'pelaksanaan\','+gi+','+s+')">'+(score===s?'&#10003;':'')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('pelaksanaan',gi)?'locked':''))+'" onclick="setSkor(\'pelaksanaan\','+gi+','+s+')">'+''+'</button></td>';
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\'pelaksanaan\','+gi+',this.value)" placeholder="Otomatis"></td></tr>';
 idx++;
@@ -2387,7 +2389,7 @@ var cat=(catatan[i])?catatan[i]:getAutoCatatan(score);
 var hasInfo=PENGGALIAN_KOKURIKULER[i]?true:false;
 html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalianKokurikuler('+i+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('kokurikuler',i)?'locked':''))+'" onclick="setSkorKokurikuler('+idx+','+i+','+s+')">'+(score===s?'&#10003;':'')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('kokurikuler',i)?'locked':''))+'" onclick="setSkorKokurikuler('+idx+','+i+','+s+')">'+''+'</button></td>';
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatanKokurikuler('+idx+','+i+',this.value)" placeholder="Otomatis"></td></tr>';
 });
