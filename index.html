@@ -68,10 +68,11 @@ header p{opacity:.8;font-size:.85rem}
 .instrumen-table .col-skor{width:40px}
 .instrumen-table .col-catatan{min-width:140px;text-align:left}
 .instrumen-table .col-catatan input{width:100%;padding:6px 8px;border:1px solid #e2e8f0;border-radius:4px;font-size:.8rem}
-.skor-radio{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#0ea5e9;transition:all .2s;min-width:34px;min-height:34px;line-height:1;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
-.skor-radio:hover,.skor-radio.selected{color:#0ea5e9;font-weight:bold;background:rgba(14,165,233,.15);box-shadow:0 0 0 2px rgba(14,165,233,.3)}
-.skor-radio.locked{color:#d1d5db;cursor:not-allowed;opacity:.6;background:none}
-.skor-radio.locked:hover{color:#d1d5db;background:none;cursor:not-allowed;box-shadow:none}
+.skor-radio{background:#fff;border:2px solid #0ea5e9;cursor:pointer;font-size:1.1rem;color:#0ea5e9;transition:all .2s;min-width:34px;min-height:34px;line-height:1;border-radius:4px;display:inline-flex;align-items:center;justify-content:center}
+.skor-radio:hover{background:rgba(14,165,233,.08);border-color:#0284c7}
+.skor-radio.selected{color:#0ea5e9;font-weight:bold;background:rgba(14,165,233,.15);border-color:#0284c7}
+.skor-radio.locked{color:#d1d5db;border-color:#e5e7eb;cursor:not-allowed;opacity:.6;background:#fafafa}
+.skor-radio.locked:hover{color:#d1d5db;background:#fafafa;cursor:not-allowed;border-color:#e5e7eb}
 .tahap-header{background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;padding:10px 16px;border-radius:8px;margin:20px 0 12px;font-weight:600;font-size:.9rem}
 .rekap-card{background:linear-gradient(135deg,#f0f9ff,#f0fdfa);border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:16px}
 .rekap-card h3{color:#0d9488;margin-bottom:10px}
@@ -1542,7 +1543,7 @@ var cat=(d.catatan&&d.catatan[i])?d.catatan[i]:getAutoCatatan(score);
 var penggalian=(key==='perencanaan'||key==='asesmen')&&getPenggalian(key,i)?true:false;
 html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(penggalian?' clickable':'')+'"'+(penggalian?' onclick="showPenggalianGeneric(\''+key+'\','+i+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data"':'')+'>'+(penggalian?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked(key,i)?'locked':''))+'" onclick="setSkor(\''+key+'\','+i+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked(key,i)?'locked':''))+'" onclick="setSkor(\''+key+'\','+i+','+s+')">'+(score===s?'&#10003;':'')+'</button></td>';
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\''+key+'\','+i+',this.value)" placeholder="Otomatis"></td></tr>';
 });
@@ -1585,7 +1586,7 @@ var cat=(d.catatan&&d.catatan[gi])?d.catatan[gi]:getAutoCatatan(score);
 var hasInfo=getPenggalian('pelaksanaan',gi)?true:false;
 html+='<tr><td class="col-no">'+(gi+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalian('+gi+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('pelaksanaan',gi)?'locked':''))+'" onclick="setSkor(\'pelaksanaan\','+gi+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('pelaksanaan',gi)?'locked':''))+'" onclick="setSkor(\'pelaksanaan\','+gi+','+s+')">'+(score===s?'&#10003;':'')+'</button></td>';
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\'pelaksanaan\','+gi+',this.value)" placeholder="Otomatis"></td></tr>';
 idx++;
@@ -2386,7 +2387,7 @@ var cat=(catatan[i])?catatan[i]:getAutoCatatan(score);
 var hasInfo=PENGGALIAN_KOKURIKULER[i]?true:false;
 html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalianKokurikuler('+i+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('kokurikuler',i)?'locked':''))+'" onclick="setSkorKokurikuler('+idx+','+i+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('kokurikuler',i)?'locked':''))+'" onclick="setSkorKokurikuler('+idx+','+i+','+s+')">'+(score===s?'&#10003;':'')+'</button></td>';
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatanKokurikuler('+idx+','+i+',this.value)" placeholder="Otomatis"></td></tr>';
 });
