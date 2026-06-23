@@ -68,9 +68,10 @@ header p{opacity:.8;font-size:.85rem}
 .instrumen-table .col-skor{width:40px}
 .instrumen-table .col-catatan{min-width:140px;text-align:left}
 .instrumen-table .col-catatan input{width:100%;padding:6px 8px;border:1px solid #e2e8f0;border-radius:4px;font-size:.8rem}
-.skor-radio{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#94a3b8;transition:all .2s}
-.skor-radio:hover{color:#0ea5e9}
-.skor-radio.selected{color:#0ea5e9;font-weight:bold}
+.skor-radio{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#0ea5e9;transition:all .2s;min-width:34px;min-height:34px;line-height:1;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+.skor-radio:hover,.skor-radio.selected{color:#0ea5e9;font-weight:bold;background:rgba(14,165,233,.15);box-shadow:0 0 0 2px rgba(14,165,233,.3)}
+.skor-radio.locked{color:#d1d5db;cursor:not-allowed;opacity:.28;background:none}
+.skor-radio.locked:hover{color:#d1d5db;background:none;cursor:not-allowed;box-shadow:none}
 .tahap-header{background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;padding:10px 16px;border-radius:8px;margin:20px 0 12px;font-weight:600;font-size:.9rem}
 .rekap-card{background:linear-gradient(135deg,#f0f9ff,#f0fdfa);border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:16px}
 .rekap-card h3{color:#0d9488;margin-bottom:10px}
@@ -229,7 +230,7 @@ function getSession(){
 try{return JSON.parse(localStorage.getItem(SESSION_KEY))||null}catch(e){return null}
 }
 function saveSession(s){localStorage.setItem(SESSION_KEY,JSON.stringify(s))}
-function clearSession(){localStorage.removeItem(SESSION_KEY)}
+function clearSession(){localStorage.removeItem(SESSION_KEY);if(typeof state!=='undefined'&&state)state.unlockedScores={}}
 
 function initDefaultAdmin(){
 var users=getUsers();
@@ -869,7 +870,7 @@ render();
 }
 
 // ===== STATE =====
-let state={view:'dashboard',editId:null,formData:{},currentStep:0,detailIdx:null,jenjang:'umum'};
+let state={view:'dashboard',editId:null,formData:{},currentStep:0,detailIdx:null,jenjang:'umum',unlockedScores:{}};
 
 // ===== JENJANG HELPERS =====
 function isRAView(v){return v==='supervisi-ra'||v==='supervisi-ra-form'||v==='form-ra'||v==='detail-ra'||v==='rekap-ra'||v==='cetak-ra'||v==='laporan-ra'||v==='guru-ra'||v==='madrasah-ra';}
@@ -886,6 +887,11 @@ if(key==='pelaksanaan')return PENGGALIAN_PELAKSANAAN[idx];
 if(key==='asesmen')return PENGGALIAN_ASESMEN[idx];
 return null;
 }
+
+function scoreUnlockKey(scope,idx){return String(scope)+':'+idx}
+function isScoreUnlocked(scope,idx){return !!(state.unlockedScores&&state.unlockedScores[scoreUnlockKey(scope,idx)])}
+function unlockScore(scope,idx){if(!state.unlockedScores)state.unlockedScores={};state.unlockedScores[scoreUnlockKey(scope,idx)]=true;setTimeout(render,0)}
+function requireScoreUnlocked(scope,idx){if(isScoreUnlocked(scope,idx))return true;alert('Klik indikator terlebih dahulu sebelum memberi skor.');return false}
 
 // ===== STORAGE =====
 function getActiveAppKey(){return isRAJenjang()?APP_KEY_RA:APP_KEY;}
@@ -941,6 +947,7 @@ return s;
 function getPelaksanaanFlat(){return getIndikatorPelaksanaanFlat()}
 
 function showPenggalian(idx){
+unlockScore('pelaksanaan',idx);
 var items=getPelaksanaanFlat();
 var title=items[idx]||'Aspek';
 document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
@@ -948,6 +955,7 @@ document.getElementById('modalContent').innerHTML=getPenggalian('pelaksanaan',id
 document.getElementById('modalPenggalian').style.display='flex';
 }
 function showPenggalianPerencanaan(idx){
+unlockScore('perencanaan',idx);
 var items=getIndikator('perencanaan');
 var title=items[idx]||'Aspek';
 document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
@@ -955,6 +963,7 @@ document.getElementById('modalContent').innerHTML=getPenggalian('perencanaan',id
 document.getElementById('modalPenggalian').style.display='flex';
 }
 function showPenggalianGeneric(key,idx){
+unlockScore(key,idx);
 var items=getIndikator(key);
 var title=items[idx]||'Aspek';
 document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
@@ -1531,9 +1540,9 @@ items.forEach(function(item,i){
 var score=(d.scores&&d.scores[i]!==undefined)?d.scores[i]:null;
 var cat=(d.catatan&&d.catatan[i])?d.catatan[i]:getAutoCatatan(score);
 var penggalian=(key==='perencanaan'||key==='asesmen')&&getPenggalian(key,i)?true:false;
-html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(penggalian?' clickable':'')+'"'+(penggalian?' onclick="showPenggalianGeneric(\''+key+'\','+i+')" title="Klik untuk lihat penggalian data"':'')+'>'+(penggalian?'\u{1F50D} ':'')+item+'</td>';
+html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(penggalian?' clickable':'')+'"'+(penggalian?' onclick="showPenggalianGeneric(\''+key+'\','+i+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data"':'')+'>'+(penggalian?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':'')+'" onclick="setSkor(\''+key+'\','+i+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked(key,i)?'locked':''))+'" onclick="setSkor(\''+key+'\','+i+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\''+key+'\','+i+',this.value)" placeholder="Otomatis"></td></tr>';
 });
@@ -1574,9 +1583,9 @@ var gi=idx;
 var score=(d.scores&&d.scores[gi]!==undefined)?d.scores[gi]:null;
 var cat=(d.catatan&&d.catatan[gi])?d.catatan[gi]:getAutoCatatan(score);
 var hasInfo=getPenggalian('pelaksanaan',gi)?true:false;
-html+='<tr><td class="col-no">'+(gi+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalian('+gi+')" title="Klik untuk lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
+html+='<tr><td class="col-no">'+(gi+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalian('+gi+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':'')+'" onclick="setSkor(\'pelaksanaan\','+gi+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('pelaksanaan',gi)?'locked':''))+'" onclick="setSkor(\'pelaksanaan\','+gi+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\'pelaksanaan\','+gi+',this.value)" placeholder="Otomatis"></td></tr>';
 idx++;
@@ -1836,6 +1845,7 @@ function prevStep(){if(state.currentStep>0)state.currentStep--;render()}
 function updateIdentitas(key,val){if(!state.formData.identitas)state.formData.identitas={};state.formData.identitas[key]=val;}
 
 function setSkor(key,idx,val){
+if(!requireScoreUnlocked(key,idx))return;
 if(!state.formData[key])state.formData[key]={scores:[],catatan:[],manualCatatan:[]};
 if(!state.formData[key].scores)state.formData[key].scores=[];
 if(!state.formData[key].catatan)state.formData[key].catatan=[];
@@ -2374,9 +2384,9 @@ KOKURIKULER.forEach(function(item,i){
 var score=(scores[i]!==undefined&&scores[i]!==null)?scores[i]:null;
 var cat=(catatan[i])?catatan[i]:getAutoCatatan(score);
 var hasInfo=PENGGALIAN_KOKURIKULER[i]?true:false;
-html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalianKokurikuler('+i+')" title="Klik untuk lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
+html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalianKokurikuler('+i+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
-html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':'')+'" onclick="setSkorKokurikuler('+idx+','+i+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':(!isScoreUnlocked('kokurikuler',i)?'locked':''))+'" onclick="setSkorKokurikuler('+idx+','+i+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatanKokurikuler('+idx+','+i+',this.value)" placeholder="Otomatis"></td></tr>';
 });
@@ -2404,6 +2414,7 @@ return html;
 }
 
 function setSkorKokurikuler(idx,itemIdx,val){
+if(!requireScoreUnlocked('kokurikuler',itemIdx))return;
 var data=getKokurikuler();
 if(!data[idx])return;
 if(!data[idx].scores)data[idx].scores=[];
@@ -2513,6 +2524,7 @@ render();
 }
 
 function showPenggalianKokurikuler(idx){
+unlockScore('kokurikuler',idx);
 var title=KOKURIKULER[idx]||'Aspek';
 document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
 document.getElementById('modalContent').innerHTML=PENGGALIAN_KOKURIKULER[idx]||'<p>Tidak ada data penggalian.</p>';
@@ -2745,7 +2757,7 @@ html+='<div style="overflow-x:auto"><table class="instrumen-table"><thead><tr><t
 ekstraItems.forEach(function(item,i){
 var score=(scores[i]!==undefined&&scores[i]!==null)?scores[i]:null;
 var cat=catatan[i]||'';
-html+='<tr><td>'+(i+1)+'</td><td style="text-align:left;cursor:pointer" onclick="showPenggalianEkstrakurikuler('+i+')">'+item+' \u{1F50D}</td>';
+html+='<tr><td>'+(i+1)+'</td><td class="clickable" style="text-align:left;cursor:pointer" onclick="showPenggalianEkstrakurikuler('+i+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data">'+item+' \u{1F50D}</td>';
 for(var s=0;s<4;s++){
 var checked=(score===s)?'checked':'';
 html+='<td><input type="radio" name="ekstra_score_'+i+'" value="'+s+'" '+checked+' onchange="setSkorEkstrakurikuler('+idx+','+i+','+s+')"></td>';
@@ -2773,6 +2785,7 @@ return html;
 }
 
 function setSkorEkstrakurikuler(idx,itemIdx,val){
+if(!requireScoreUnlocked('ekstrakurikuler',itemIdx))return;
 var data=getEkstrakurikuler();
 var d=data[idx];if(!d)return;
 if(!d.scores)d.scores=[];
@@ -2850,6 +2863,7 @@ render();
 }
 
 function showPenggalianEkstrakurikuler(idx){
+unlockScore('ekstrakurikuler',idx);
 var modal=document.getElementById('modalPenggalian');
 if(!modal)return;
 var title=EKSTRAKURIKULER[idx]||'';
@@ -3112,7 +3126,7 @@ html+='<div style="overflow-x:auto"><table class="instrumen-table"><thead><tr><t
 iklimItems.forEach(function(item,i){
 var score=(scores[i]!==undefined&&scores[i]!==null)?scores[i]:null;
 var cat=catatan[i]||'';
-html+='<tr><td>'+(i+1)+'</td><td style="text-align:left;cursor:pointer" onclick="showPenggalianIklimMadrasah('+i+')">'+item+' &#128269;</td>';
+html+='<tr><td>'+(i+1)+'</td><td class="clickable" style="text-align:left;cursor:pointer" onclick="showPenggalianIklimMadrasah('+i+')" title="Klik indikator untuk membuka kunci skor dan lihat penggalian data">'+item+' &#128269;</td>';
 for(var s=0;s<4;s++){
 var checked=(score===s)?'checked':'';
 html+='<td><input type="radio" name="iklim_score_'+i+'" value="'+s+'" '+checked+' onchange="setSkorIklimMadrasah('+idx+','+i+','+s+')"></td>';
@@ -3139,6 +3153,7 @@ html+='</div></div>';
 return html;
 }
 function setSkorIklimMadrasah(idx,itemIdx,val){
+if(!requireScoreUnlocked('iklim-madrasah',itemIdx))return;
 var data=getIklimMadrasah();
 var d=data[idx];if(!d)return;
 if(!d.scores)d.scores=[];
@@ -3211,6 +3226,7 @@ saveIklimMadrasah(data);
 render();
 }
 function showPenggalianIklimMadrasah(idx){
+unlockScore('iklim-madrasah',idx);
 var modal=document.getElementById('modalPenggalian');
 if(!modal)return;
 var title=IKLIM_MADRASAH[idx]||'';
