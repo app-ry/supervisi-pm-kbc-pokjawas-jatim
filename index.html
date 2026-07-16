@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -2387,11 +2387,11 @@ var max=KOKURIKULER.length*4;
 var pct=max>0?(sum/max)*100:0;
 var pred=getPredikat(pct);
 html+='<p style="margin-top:10px;font-size:.9rem"><b>Total Skor:</b> '+sum+'/'+max+' ('+pct.toFixed(1)+'%) - <b>'+pred+'</b></p>';
-// Catatan Hasil Supervisi & RTL
+// Catatan Hasil Pendampingan & RTL
 autoGenerateRekapKokurikuler(idx);
 var rekap=d.rekap||{};
 var data2=getKokurikuler();if(data2[idx])rekap=data2[idx].rekap||{};
-html+='<div class="form-group" style="margin-top:15px"><label>Catatan Hasil Supervisi</label>';
+html+='<div class="form-group" style="margin-top:15px"><label>Catatan Hasil Pendampingan</label>';
 html+='<textarea rows="4" onchange="setRekapKokurikuler('+idx+',\'catatan\',this.value)">'+escHtml(rekap.catatan||'')+'</textarea></div>';
 html+='<div class="form-group"><label>Rencana Tindak Lanjut</label>';
 html+='<textarea rows="4" onchange="setRekapKokurikuler('+idx+',\'tindakLanjut\',this.value)">'+escHtml(rekap.tindakLanjut||'')+'</textarea></div>';
@@ -2460,7 +2460,7 @@ else goodItems.push({item:items[i],skor:s+1});
 }
 });
 if(!d.rekap.manualCatatan){
-var catatan='Berdasarkan hasil supervisi kegiatan '+label+', diperoleh capaian sebesar '+pct+'% dari skor maksimal. ';
+var catatan='Berdasarkan hasil pendampingan kegiatan '+label+', diperoleh capaian sebesar '+pct+'% dari skor maksimal. ';
 if(goodItems.length>0){
 var goodAspek=goodItems.slice(0,3).map(function(g){return g.item.toLowerCase()}).join(', ');
 catatan+='Aspek yang sudah terlaksana dengan baik antara lain '+goodAspek+'. ';
@@ -2482,7 +2482,7 @@ var rtl='';
 if(weakItems.length>0){
 var kurangItems=weakItems.filter(function(w){return w.skor===1});
 var cukupItems=weakItems.filter(function(w){return w.skor===2});
-rtl='Berdasarkan hasil supervisi kegiatan '+label+', rencana tindak lanjut yang perlu dilakukan adalah sebagai berikut. ';
+rtl='Berdasarkan hasil pendampingan kegiatan '+label+', rencana tindak lanjut yang perlu dilakukan adalah sebagai berikut. ';
 if(kurangItems.length>0){
 var kurangAspek=kurangItems.map(function(w){return w.item.toLowerCase()}).join(', ');
 rtl+='Perlu dilakukan pembinaan intensif melalui pendampingan langsung terkait '+kurangAspek+'. ';
@@ -2491,9 +2491,9 @@ if(cukupItems.length>0){
 var cukupAspek=cukupItems.map(function(w){return w.item.toLowerCase()}).join(', ');
 rtl+='Selain itu, perlu dilakukan pendampingan berkelanjutan untuk meningkatkan kualitas pada aspek '+cukupAspek+'. ';
 }
-rtl+='Supervisi lanjutan akan dilaksanakan untuk memastikan perbaikan yang telah direncanakan dapat terlaksana dengan optimal.';
+rtl+='Pendampingan lanjutan akan dilaksanakan untuk memastikan perbaikan yang telah direncanakan dapat terlaksana dengan optimal.';
 }else{
-rtl='Berdasarkan hasil supervisi kegiatan '+label+', seluruh aspek sudah terlaksana dengan baik. Rencana tindak lanjut adalah mempertahankan kualitas yang sudah tercapai dan terus melakukan inovasi dalam kegiatan kokurikuler.';
+rtl='Berdasarkan hasil pendampingan kegiatan '+label+', seluruh aspek sudah terlaksana dengan baik. Rencana tindak lanjut adalah mempertahankan kualitas yang sudah tercapai dan terus melakukan inovasi dalam kegiatan kokurikuler.';
 }
 d.rekap.tindakLanjut=rtl;
 }
@@ -2526,7 +2526,7 @@ var html='<div class="card"><h2 style="margin-bottom:20px">📊 Rekap Kokurikule
 if(data.length===0){
 html+='<div class="empty-state"><p>Belum ada data kokurikuler.</p></div>';
 }else{
-html+='<div style="overflow-x:auto"><table class="instrumen-table"><thead><tr><th style="width:30px">No</th><th>Tanggal</th><th>Nama Madrasah</th><th>Skor</th><th>Prosentase</th><th>Catatan Hasil Supervisi</th><th>Rencana Tindak Lanjut</th><th>Predikat</th><th class="no-print">Aksi</th></tr></thead><tbody>';
+html+='<div style="overflow-x:auto"><table class="instrumen-table"><thead><tr><th style="width:30px">No</th><th>Tanggal</th><th>Nama Madrasah</th><th>Skor</th><th>Prosentase</th><th>Catatan Hasil Pendampingan</th><th>Rencana Tindak Lanjut</th><th>Predikat</th><th class="no-print">Aksi</th></tr></thead><tbody>';
 data.forEach(function(d,i){
 var scores=d.scores||[];
 var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);
@@ -2563,9 +2563,9 @@ html+='.left{text-align:left}';
 html+='.ttd-table{border:none;margin-top:40px}';
 html+='.ttd-table td{border:none;text-align:center;vertical-align:top}';
 html+='</style></head><body>';
-html+='<h2>REKAP HASIL SUPERVISI KOKURIKULER</h2>';
+html+='<h2>REKAP HASIL PENDAMPINGAN KOKURIKULER</h2>';
 html+='<p style="text-align:center;margin-bottom:20px">Pengawas: '+(pengawas.nama||'-')+'</p>';
-html+='<table><thead><tr><th>No</th><th>Tanggal</th><th>Nama Madrasah</th><th>Skor</th><th>Prosentase</th><th>Catatan Hasil Supervisi</th><th>Rencana Tindak Lanjut</th><th>Predikat</th></tr></thead><tbody>';
+html+='<table><thead><tr><th>No</th><th>Tanggal</th><th>Nama Madrasah</th><th>Skor</th><th>Prosentase</th><th>Catatan Hasil Pendampingan</th><th>Rencana Tindak Lanjut</th><th>Predikat</th></tr></thead><tbody>';
 data.forEach(function(d,i){
 var scores=d.scores||[];
 var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);
@@ -2614,7 +2614,7 @@ html+='.narasi{text-align:justify;line-height:1.6;margin:5px 0}';
 html+='.ttd-table{border:none;margin-top:40px}';
 html+='.ttd-table td{border:none;text-align:center;vertical-align:top}';
 html+='</style></head><body>';
-html+='<h2>INSTRUMEN SUPERVISI KOKURIKULER</h2>';
+html+='<h2>INSTRUMEN PENDAMPINGAN KOKURIKULER</h2>';
 html+='<h3>Madrasah: '+escHtml(d.madrasahNama)+'</h3>';
 html+='<table style="border:none;margin-bottom:0;width:100%;border-spacing:0"><tbody>';
 html+='<tr><td style="border:none;width:140px;text-align:left;padding:2px 5px 2px 0"><b>Madrasah</b></td><td style="border:none;width:10px;text-align:left;padding:2px 0">:</td><td style="border:none;text-align:left;padding:2px 5px 2px 0">'+escHtml(d.madrasahNama)+'</td><td style="border:none;width:50px;text-align:left;padding:2px 5px 2px 0"><b>NPSN</b></td><td style="border:none;width:10px;text-align:left;padding:2px 0">:</td><td style="border:none;text-align:left;padding:2px 5px 2px 0">'+(madrasahData.npsn||'-')+'</td></tr>';
@@ -2638,7 +2638,7 @@ var pct=max>0?(sum/max)*100:0;
 html+='<p style="margin-top:15px"><b>Total Skor:</b> '+sum+'/'+max+' ('+pct.toFixed(1)+'%) - <b>'+getPredikat(pct)+'</b></p>';
 var rekap=d.rekap||{};
 if(rekap.catatan){
-html+='<div style="margin-top:20px"><b>Catatan Hasil Supervisi:</b></div>';
+html+='<div style="margin-top:20px"><b>Catatan Hasil Pendampingan:</b></div>';
 html+='<p class="narasi">'+escHtml(rekap.catatan)+'</p>';
 }
 if(rekap.tindakLanjut){
@@ -2758,7 +2758,7 @@ var max=EKSTRAKURIKULER.length*4;
 var pct=max>0?(sum/max)*100:0;
 html+='<div style="margin-top:15px;padding:10px;background:#f0f9ff;border-radius:8px"><b>Total Skor:</b> '+sum+'/'+max+' ('+pct.toFixed(1)+'%) - <b>'+getPredikat(pct)+'</b></div>';
 var rekap=d.rekap||{};
-html+='<div style="margin-top:20px"><h3>Catatan Hasil Supervisi</h3>';
+html+='<div style="margin-top:20px"><h3>Catatan Hasil Pendampingan</h3>';
 html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px" onchange="setRekapEkstrakurikuler('+idx+',\'catatan\',this.value)">'+escHtml(rekap.catatan||'')+'</textarea></div>';
 html+='<div style="margin-top:15px"><h3>Rencana Tindak Lanjut</h3>';
 html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px" onchange="setRekapEkstrakurikuler('+idx+',\'tindakLanjut\',this.value)">'+escHtml(rekap.tindakLanjut||'')+'</textarea></div>';
@@ -2823,7 +2823,7 @@ else if(s>=2)strong.push(EKSTRAKURIKULER[i]);
 });
 if(!d.rekap.manualCatatan){
 var cat='';
-if(strong.length>0)cat+='Aspek yang sudah baik dalam supervisi ekstrakurikuler: '+strong.join('; ')+'. ';
+if(strong.length>0)cat+='Aspek yang sudah baik dalam pendampingan ekstrakurikuler: '+strong.join('; ')+'. ';
 if(dominated.length>0)cat+='Aspek yang perlu ditingkatkan: '+dominated.join('; ')+'.';
 if(!cat)cat='Semua aspek ekstrakurikuler sudah terlaksana dengan baik.';
 d.rekap.catatan=cat;
@@ -2866,7 +2866,7 @@ var html='<div class="card"><h2 style="margin-bottom:20px">\u{1F4CA} Rekap Ekstr
 if(data.length===0){
 html+='<div class="empty-state"><p>Belum ada data ekstrakurikuler.</p></div>';
 }else{
-html+='<div style="overflow-x:auto"><table class="instrumen-table"><thead><tr><th style="width:30px">No</th><th>Tanggal</th><th>Nama Madrasah</th><th>Skor</th><th>Prosentase</th><th>Catatan Hasil Supervisi</th><th>Rencana Tindak Lanjut</th><th>Predikat</th><th class="no-print">Aksi</th></tr></thead><tbody>';
+html+='<div style="overflow-x:auto"><table class="instrumen-table"><thead><tr><th style="width:30px">No</th><th>Tanggal</th><th>Nama Madrasah</th><th>Skor</th><th>Prosentase</th><th>Catatan Hasil Pendampingan</th><th>Rencana Tindak Lanjut</th><th>Predikat</th><th class="no-print">Aksi</th></tr></thead><tbody>';
 data.forEach(function(d,i){
 var scores=d.scores||[];
 var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);
@@ -2903,9 +2903,9 @@ html+='.left{text-align:left}';
 html+='.ttd-table{border:none;margin-top:40px}';
 html+='.ttd-table td{border:none;text-align:center;vertical-align:top}';
 html+='</style></head><body>';
-html+='<h2>REKAP HASIL SUPERVISI EKSTRAKURIKULER</h2>';
+html+='<h2>REKAP HASIL PENDAMPINGAN EKSTRAKURIKULER</h2>';
 html+='<p style="text-align:center;margin-bottom:20px">Pengawas: '+(pengawas.nama||'-')+'</p>';
-html+='<table><thead><tr><th>No</th><th>Tanggal</th><th>Nama Madrasah</th><th>Skor</th><th>Prosentase</th><th>Catatan Hasil Supervisi</th><th>Rencana Tindak Lanjut</th><th>Predikat</th></tr></thead><tbody>';
+html+='<table><thead><tr><th>No</th><th>Tanggal</th><th>Nama Madrasah</th><th>Skor</th><th>Prosentase</th><th>Catatan Hasil Pendampingan</th><th>Rencana Tindak Lanjut</th><th>Predikat</th></tr></thead><tbody>';
 data.forEach(function(d,i){
 var scores=d.scores||[];
 var sum=scores.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);
@@ -2954,7 +2954,7 @@ html+='.narasi{text-align:justify;line-height:1.6;margin:5px 0}';
 html+='.ttd-table{border:none;margin-top:40px}';
 html+='.ttd-table td{border:none;text-align:center;vertical-align:top}';
 html+='</style></head><body>';
-html+='<h2>INSTRUMEN SUPERVISI EKSTRAKURIKULER</h2>';
+html+='<h2>INSTRUMEN PENDAMPINGAN EKSTRAKURIKULER</h2>';
 html+='<h3>Madrasah: '+escHtml(d.madrasahNama)+'</h3>';
 html+='<table style="border:none;margin-bottom:0;width:100%;border-spacing:0"><tbody>';
 html+='<tr><td style="border:none;width:140px;text-align:left;padding:2px 5px 2px 0"><b>Madrasah</b></td><td style="border:none;width:10px;text-align:left;padding:2px 0">:</td><td style="border:none;text-align:left;padding:2px 5px 2px 0">'+escHtml(d.madrasahNama)+'</td><td style="border:none;width:50px;text-align:left;padding:2px 5px 2px 0"><b>NPSN</b></td><td style="border:none;width:10px;text-align:left;padding:2px 0">:</td><td style="border:none;text-align:left;padding:2px 5px 2px 0">'+(madrasahData.npsn||'-')+'</td></tr>';
@@ -2978,7 +2978,7 @@ var pct=max>0?(sum/max)*100:0;
 html+='<p style="margin-top:15px"><b>Total Skor:</b> '+sum+'/'+max+' ('+pct.toFixed(1)+'%) - <b>'+getPredikat(pct)+'</b></p>';
 var rekap=d.rekap||{};
 if(rekap.catatan){
-html+='<div style="margin-top:20px"><b>Catatan Hasil Supervisi:</b></div>';
+html+='<div style="margin-top:20px"><b>Catatan Hasil Pendampingan:</b></div>';
 html+='<p class="narasi">'+escHtml(rekap.catatan)+'</p>';
 }
 if(rekap.tindakLanjut){
@@ -3938,11 +3938,11 @@ setTimeout(function(){w.print()},500);
 function renderLaporanKokurikulerPage(){
 var data=getKokurikuler();
 var pengawas=getPengawas();
-var html='<div class="card"><h2 style="margin-bottom:20px">&#128196; Laporan Hasil Supervisi Kokurikuler</h2>';
+var html='<div class="card"><h2 style="margin-bottom:20px">&#128196; Laporan Hasil Pendampingan Kokurikuler</h2>';
 if(data.length===0){
-html+='<div class="empty-state"><p>Belum ada data supervisi kokurikuler untuk dicetak menjadi laporan.</p></div>';
+html+='<div class="empty-state"><p>Belum ada data pendampingan kokurikuler untuk dicetak menjadi laporan.</p></div>';
 }else{
-html+='<p style="margin-bottom:15px">Laporan akan digenerate otomatis berdasarkan data supervisi kokurikuler yang sudah diinput.</p>';
+html+='<p style="margin-bottom:15px">Laporan akan digenerate otomatis berdasarkan data pendampingan kokurikuler yang sudah diinput.</p>';
 html+='<div style="background:#f0f9ff;border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:20px">';
 html+='<h3 style="color:#0d9488;margin-bottom:10px">Ringkasan Data</h3>';
 html+='<ul style="list-style:none;padding:0">';
@@ -3968,7 +3968,7 @@ var totalPct=0;
 data.forEach(function(d){var sc=d.scores||[];var sum=sc.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);var max=KOKURIKULER.length*4;totalPct+=max>0?(sum/max)*100:0});
 var avgPct=data.length>0?(totalPct/data.length):0;
 var w=window.open('','_blank');
-var html='<html><head><title>Laporan Supervisi Kokurikuler</title><style>';
+var html='<html><head><title>Laporan Pendampingan Kokurikuler</title><style>';
 html+='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
 html+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
 html+='p{page-break-inside:avoid}';
@@ -3989,7 +3989,7 @@ html+='.page-break{page-break-before:always}';
 html+='.ttd{margin-top:50px;text-align:center;margin-left:auto;margin-right:0;width:fit-content;min-width:250px}';
 html+='</style></head><body>';
 // COVER
-html+='<div class="cover"><h1>LAPORAN</h1><h1>SUPERVISI KOKURIKULER</h1><h2>Tahun Ajaran 2025-2026</h2><br><br><br>';
+html+='<div class="cover"><h1>LAPORAN</h1><h1>PENDAMPINGAN KOKURIKULER</h1><h2>Tahun Ajaran 2025-2026</h2><br><br><br>';
 html+='<p style="text-align:center;font-size:14pt"><b>'+(pengawas.tempatTugas||'KKMA')+'</b></p><br><br><br>';
 html+='<p style="text-align:center">Disusun oleh:</p>';
 html+='<p style="text-align:center;font-size:13pt"><b>'+(pengawas.nama||'...')+'</b></p>';
@@ -3997,8 +3997,8 @@ html+='<p style="text-align:center">NIP. '+(pengawas.nip||'...')+'</p>';
 html+='<p style="text-align:center">'+(pengawas.jabatan||'Pengawas Madrasah')+'</p></div>';
 // KATA PENGANTAR
 html+='<div class="page-break"></div><div style="page-break-inside:avoid"><h2>KATA PENGANTAR</h2>';
-html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Supervisi Kokurikuler Tahun Ajaran 2025-2026 ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi kegiatan kokurikuler yang telah dilakukan di madrasah.</p>';
-html+='<p>Supervisi kokurikuler merupakan bagian penting dari upaya peningkatan mutu pendidikan secara holistik. Kegiatan kokurikuler dirancang untuk memperkuat dan memperdalam pemahaman peserta didik terhadap materi pembelajaran melalui kegiatan-kegiatan yang terintegrasi dengan kurikulum. Melalui supervisi ini, diharapkan pelaksanaan kokurikuler dapat berjalan lebih efektif dan bermakna.</p>';
+html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Pendampingan Kokurikuler Tahun Ajaran 2025-2026 ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan pendampingan kegiatan kokurikuler yang telah dilakukan di madrasah.</p>';
+html+='<p>Pendampingan kokurikuler merupakan bagian penting dari upaya peningkatan mutu pendidikan secara holistik. Kegiatan kokurikuler dirancang untuk memperkuat dan memperdalam pemahaman peserta didik terhadap materi pembelajaran melalui kegiatan-kegiatan yang terintegrasi dengan kurikulum. Melalui pendampingan ini, diharapkan pelaksanaan kokurikuler dapat berjalan lebih efektif dan bermakna.</p>';
 html+='<p>Kami menyadari bahwa laporan ini masih jauh dari sempurna. Kritik dan saran yang membangun sangat kami harapkan demi perbaikan di masa mendatang.</p>';
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div>';
 html+='</div>';
@@ -4009,8 +4009,8 @@ html+='<tr><td class="left" style="border:none">Halaman Judul</td><td style="bor
 html+='<tr><td class="left" style="border:none">Kata Pengantar</td><td style="border:none;text-align:right">ii</td></tr>';
 html+='<tr><td class="left" style="border:none">Daftar Isi</td><td style="border:none;text-align:right">iii</td></tr>';
 html+='<tr><td class="left" style="border:none">BAB I. PENDAHULUAN</td><td style="border:none;text-align:right">1</td></tr>';
-html+='<tr><td class="left" style="border:none">BAB II. PELAKSANAAN SUPERVISI KOKURIKULER</td><td style="border:none;text-align:right">3</td></tr>';
-html+='<tr><td class="left" style="border:none">BAB III. HASIL SUPERVISI</td><td style="border:none;text-align:right">5</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB II. PELAKSANAAN PENDAMPINGAN KOKURIKULER</td><td style="border:none;text-align:right">3</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB III. HASIL PENDAMPINGAN</td><td style="border:none;text-align:right">5</td></tr>';
 html+='<tr><td class="left" style="border:none">BAB IV. EVALUASI DAN TINDAK LANJUT</td><td style="border:none;text-align:right">7</td></tr>';
 html+='<tr><td class="left" style="border:none">BAB V. PENUTUP</td><td style="border:none;text-align:right">9</td></tr>';
 html+='<tr><td class="left" style="border:none">LAMPIRAN</td><td style="border:none;text-align:right">10</td></tr>';
@@ -4022,7 +4022,7 @@ html+='<div class="page-break"></div><h2>BAB I<br>PENDAHULUAN</h2>';
 html+='<h3>A. Latar Belakang</h3>';
 html+='<p>Kegiatan kokurikuler merupakan kegiatan yang dilaksanakan untuk memperkuat, memperdalam, dan memperluas pembelajaran intrakurikuler. Kegiatan ini dirancang sebagai bagian integral dari kurikulum yang bertujuan untuk memberikan pengalaman belajar yang lebih bermakna dan kontekstual bagi peserta didik.</p>';
 html+='<p>Dalam implementasi Kurikulum Merdeka, kegiatan kokurikuler menjadi salah satu komponen penting yang mendukung pencapaian Profil Pelajar Rahmatan lil Alamin dan Dimensi Profil Lulusan. Melalui kegiatan kokurikuler, peserta didik diharapkan dapat mengembangkan kompetensi yang tidak sepenuhnya dapat dicapai melalui pembelajaran di kelas.</p>';
-html+='<p>Supervisi terhadap kegiatan kokurikuler diperlukan untuk memastikan bahwa pelaksanaannya sesuai dengan tujuan kurikulum, terencana dengan baik, dan memberikan dampak positif bagi perkembangan peserta didik. Laporan ini disusun sebagai dokumentasi dan bahan evaluasi pelaksanaan supervisi kokurikuler.</p>';
+html+='<p>Pendampingan terhadap kegiatan kokurikuler diperlukan untuk memastikan bahwa pelaksanaannya sesuai dengan tujuan kurikulum, terencana dengan baik, dan memberikan dampak positif bagi perkembangan peserta didik. Laporan ini disusun sebagai dokumentasi dan bahan evaluasi pelaksanaan pendampingan kokurikuler.</p>';
 html+='<h3>B. Dasar Hukum</h3>';
 html+='<ol>';
 html+='<li>Undang-Undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional;</li>';
@@ -4039,26 +4039,26 @@ html+='<li>Mengevaluasi efektivitas kegiatan kokurikuler dalam mendukung pencapa
 html+='<li>Menyusun rekomendasi perbaikan untuk peningkatan kualitas kegiatan kokurikuler di masa mendatang.</li>';
 html+='</ol>';
 html+='<h3>D. Sasaran</h3>';
-html+='<p>Sasaran supervisi kokurikuler meliputi seluruh kegiatan kokurikuler yang dilaksanakan di madrasah binaan. Total penilaian yang dilakukan pada periode ini sebanyak <b>'+data.length+' kegiatan</b>.</p>';
+html+='<p>Sasaran pendampingan kokurikuler meliputi seluruh kegiatan kokurikuler yang dilaksanakan di madrasah binaan. Total penilaian yang dilakukan pada periode ini sebanyak <b>'+data.length+' kegiatan</b>.</p>';
 html+='<h3>E. Ruang Lingkup</h3>';
-html+='<p>Ruang lingkup supervisi kokurikuler meliputi:</p>';
+html+='<p>Ruang lingkup pendampingan kokurikuler meliputi:</p>';
 html+='<ol>';
 html+='<li>Perencanaan kegiatan kokurikuler (keterkaitan dengan kurikulum, tujuan, dan sasaran);</li>';
 html+='<li>Pelaksanaan kegiatan (metode, keterlibatan siswa, pengelolaan waktu);</li>';
 html+='<li>Penilaian dan tindak lanjut (evaluasi hasil, refleksi, dan perbaikan).</li>';
 html+='</ol>';
 // BAB II
-html+='<div class="page-break"></div><h2>BAB II<br>PELAKSANAAN SUPERVISI KOKURIKULER</h2>';
+html+='<div class="page-break"></div><h2>BAB II<br>PELAKSANAAN PENDAMPINGAN KOKURIKULER</h2>';
 html+='<h3>A. Waktu dan Tempat</h3>';
-html+='<p>Supervisi kokurikuler dilaksanakan pada Tahun Ajaran 2025-2026 di madrasah-madrasah binaan.</p>';
-html+='<h3>B. Instrumen Supervisi</h3>';
-html+='<p>Instrumen yang digunakan dalam supervisi kokurikuler mencakup aspek-aspek berikut:</p>';
+html+='<p>Pendampingan kokurikuler dilaksanakan pada Tahun Ajaran 2025-2026 di madrasah-madrasah binaan.</p>';
+html+='<h3>B. Instrumen Pendampingan</h3>';
+html+='<p>Instrumen yang digunakan dalam pendampingan kokurikuler mencakup aspek-aspek berikut:</p>';
 html+='<ol>';
 var kokuItems=getIndikator("kokurikuler");
 kokuItems.forEach(function(item,i){html+='<li>'+escHtml(item)+'</li>'});
 html+='</ol>';
-html+='<h3>C. Metode Supervisi</h3>';
-html+='<p>Supervisi dilaksanakan melalui:</p>';
+html+='<h3>C. Metode Pendampingan</h3>';
+html+='<p>Pendampingan dilaksanakan melalui:</p>';
 html+='<ol>';
 html+='<li>Observasi langsung terhadap pelaksanaan kegiatan kokurikuler;</li>';
 html+='<li>Telaah dokumen perencanaan dan pelaporan kegiatan;</li>';
@@ -4068,8 +4068,8 @@ html+='</ol>';
 
 
 // BAB III KOKURIKULER - HASIL
-html+='<div class="page-break"></div><h2>BAB III<br>HASIL SUPERVISI KOKURIKULER</h2>';
-html+='<h3>A. Data Hasil Supervisi</h3>';
+html+='<div class="page-break"></div><h2>BAB III<br>HASIL PENDAMPINGAN KOKURIKULER</h2>';
+html+='<h3>A. Data Hasil Pendampingan</h3>';
 html+='<table><thead><tr><th>No</th><th>Madrasah</th><th>Tanggal</th><th>Skor</th><th>Prosentase</th><th>Predikat</th></tr></thead><tbody>';
 data.forEach(function(d,i){
 var sc=d.scores||[];
@@ -4101,7 +4101,7 @@ html+='</div>';
 // BAB IV KOKURIKULER - EVALUASI DAN TINDAK LANJUT
 html+='<div class="page-break"></div><h2>BAB IV<br>EVALUASI DAN TINDAK LANJUT</h2>';
 html+='<h3>A. Evaluasi</h3>';
-html+='<p>Berdasarkan hasil supervisi kokurikuler yang telah dilaksanakan terhadap '+data.length+' kegiatan, diperoleh temuan sebagai berikut:</p>';
+html+='<p>Berdasarkan hasil pendampingan kokurikuler yang telah dilaksanakan terhadap '+data.length+' kegiatan, diperoleh temuan sebagai berikut:</p>';
 if(avgPct>=75){
 html+='<p>Secara umum, pelaksanaan kegiatan kokurikuler di madrasah binaan sudah berjalan dengan baik. Sebagian besar aspek yang diamati menunjukkan capaian yang memuaskan. Guru telah mampu merancang dan melaksanakan kegiatan kokurikuler yang terintegrasi dengan kurikulum dan bermakna bagi peserta didik.</p>';
 html+='<p>Beberapa kekuatan yang ditemukan:</p><ul>';
@@ -4127,11 +4127,11 @@ html+='<li><b>Pendampingan Perencanaan:</b> Membimbing guru dalam menyusun renca
 html+='<li><b>Peningkatan Kualitas Pelaksanaan:</b> Mendorong penggunaan metode yang lebih variatif dan melibatkan peserta didik secara aktif dalam setiap tahap kegiatan.</li>';
 html+='<li><b>Penguatan Evaluasi:</b> Membantu guru mengembangkan instrumen evaluasi kegiatan kokurikuler yang komprehensif.</li>';
 html+='<li><b>Sharing Best Practice:</b> Memfasilitasi forum berbagi pengalaman antar guru dalam pelaksanaan kegiatan kokurikuler yang inovatif.</li>';
-html+='<li><b>Monitoring Berkelanjutan:</b> Melaksanakan supervisi lanjutan untuk memantau perkembangan dan perbaikan.</li>';
+html+='<li><b>Monitoring Berkelanjutan:</b> Melaksanakan pendampingan lanjutan untuk memantau perkembangan dan perbaikan.</li>';
 html+='</ol>';
 // BAB V PENUTUP
 html+='<div class="page-break"></div><div style="page-break-inside:avoid"><h2>BAB V<br>PENUTUP</h2>';
-html+='<p>Pelaksanaan supervisi kokurikuler yang telah dilakukan menunjukkan bahwa kegiatan ini memiliki peran penting dalam memastikan kualitas pelaksanaan kegiatan kokurikuler di madrasah. Melalui supervisi, guru memperoleh bimbingan dan masukan yang konstruktif untuk meningkatkan kualitas perencanaan dan pelaksanaan kegiatan kokurikuler.</p>';
+html+='<p>Pelaksanaan pendampingan kokurikuler yang telah dilakukan menunjukkan bahwa kegiatan ini memiliki peran penting dalam memastikan kualitas pelaksanaan kegiatan kokurikuler di madrasah. Melalui pendampingan, guru memperoleh bimbingan dan masukan yang konstruktif untuk meningkatkan kualitas perencanaan dan pelaksanaan kegiatan kokurikuler.</p>';
 html+='<p>Kegiatan kokurikuler yang berkualitas akan memberikan kontribusi signifikan terhadap pencapaian tujuan pendidikan secara holistik, tidak hanya aspek kognitif tetapi juga afektif dan psikomotorik peserta didik. Oleh karena itu, pembinaan dan pendampingan berkelanjutan perlu terus dilakukan.</p>';
 html+='<p>Demikian laporan ini disusun sebagai bentuk pertanggungjawaban dan bahan evaluasi bersama. Semoga dapat memberikan manfaat nyata dalam peningkatan mutu pendidikan di madrasah.</p>';
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div></div>';
@@ -4153,11 +4153,11 @@ setTimeout(function(){w.print()},500);
 function renderLaporanEkstrakurikulerPage(){
 var data=getEkstrakurikuler();
 var pengawas=getPengawas();
-var html='<div class="card"><h2 style="margin-bottom:20px">&#128196; Laporan Hasil Supervisi Ekstrakurikuler</h2>';
+var html='<div class="card"><h2 style="margin-bottom:20px">&#128196; Laporan Hasil Pendampingan Ekstrakurikuler</h2>';
 if(data.length===0){
-html+='<div class="empty-state"><p>Belum ada data supervisi ekstrakurikuler untuk dicetak menjadi laporan.</p></div>';
+html+='<div class="empty-state"><p>Belum ada data pendampingan ekstrakurikuler untuk dicetak menjadi laporan.</p></div>';
 }else{
-html+='<p style="margin-bottom:15px">Laporan akan digenerate otomatis berdasarkan data supervisi ekstrakurikuler yang sudah diinput.</p>';
+html+='<p style="margin-bottom:15px">Laporan akan digenerate otomatis berdasarkan data pendampingan ekstrakurikuler yang sudah diinput.</p>';
 html+='<div style="background:#f0f9ff;border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:20px">';
 html+='<h3 style="color:#0d9488;margin-bottom:10px">Ringkasan Data</h3>';
 html+='<ul style="list-style:none;padding:0">';
@@ -4183,7 +4183,7 @@ var totalPct=0;
 data.forEach(function(d){var sc=d.scores||[];var sum=sc.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);var max=EKSTRAKURIKULER.length*4;totalPct+=max>0?(sum/max)*100:0});
 var avgPct=data.length>0?(totalPct/data.length):0;
 var w=window.open('','_blank');
-var html='<html><head><title>Laporan Supervisi Ekstrakurikuler</title><style>';
+var html='<html><head><title>Laporan Pendampingan Ekstrakurikuler</title><style>';
 html+='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
 html+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
 html+='p{page-break-inside:avoid}';
@@ -4204,7 +4204,7 @@ html+='.page-break{page-break-before:always}';
 html+='.ttd{margin-top:50px;text-align:center;margin-left:auto;margin-right:0;width:fit-content;min-width:250px}';
 html+='</style></head><body>';
 // COVER
-html+='<div class="cover"><h1>LAPORAN</h1><h1>SUPERVISI EKSTRAKURIKULER</h1><h2>Tahun Ajaran 2025-2026</h2><br><br><br>';
+html+='<div class="cover"><h1>LAPORAN</h1><h1>PENDAMPINGAN EKSTRAKURIKULER</h1><h2>Tahun Ajaran 2025-2026</h2><br><br><br>';
 html+='<p style="text-align:center;font-size:14pt"><b>'+(pengawas.tempatTugas||'KKMA')+'</b></p><br><br><br>';
 html+='<p style="text-align:center">Disusun oleh:</p>';
 html+='<p style="text-align:center;font-size:13pt"><b>'+(pengawas.nama||'...')+'</b></p>';
@@ -4212,8 +4212,8 @@ html+='<p style="text-align:center">NIP. '+(pengawas.nip||'...')+'</p>';
 html+='<p style="text-align:center">'+(pengawas.jabatan||'Pengawas Madrasah')+'</p></div>';
 // KATA PENGANTAR
 html+='<div class="page-break"></div><div style="page-break-inside:avoid"><h2>KATA PENGANTAR</h2>';
-html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Supervisi Ekstrakurikuler Tahun Ajaran 2025-2026 ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan supervisi kegiatan ekstrakurikuler yang telah dilakukan di madrasah.</p>';
-html+='<p>Kegiatan ekstrakurikuler merupakan wadah pengembangan potensi, minat, dan bakat peserta didik di luar kegiatan intrakurikuler. Melalui supervisi ini, diharapkan pelaksanaan ekstrakurikuler dapat lebih terencana, terarah, dan memberikan dampak positif bagi pengembangan karakter dan kompetensi peserta didik.</p>';
+html+='<p>Puji syukur ke hadirat Allah SWT atas segala limpahan rahmat-Nya sehingga Laporan Pendampingan Ekstrakurikuler Tahun Ajaran 2025-2026 ini dapat diselesaikan dengan baik. Laporan ini disusun sebagai bentuk pertanggungjawaban atas pelaksanaan pendampingan kegiatan ekstrakurikuler yang telah dilakukan di madrasah.</p>';
+html+='<p>Kegiatan ekstrakurikuler merupakan wadah pengembangan potensi, minat, dan bakat peserta didik di luar kegiatan intrakurikuler. Melalui pendampingan ini, diharapkan pelaksanaan ekstrakurikuler dapat lebih terencana, terarah, dan memberikan dampak positif bagi pengembangan karakter dan kompetensi peserta didik.</p>';
 html+='<p>Kami menyadari bahwa laporan ini masih jauh dari sempurna. Kritik dan saran yang membangun sangat kami harapkan.</p>';
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div>';
 html+='</div>';
@@ -4224,8 +4224,8 @@ html+='<tr><td class="left" style="border:none">Halaman Judul</td><td style="bor
 html+='<tr><td class="left" style="border:none">Kata Pengantar</td><td style="border:none;text-align:right">ii</td></tr>';
 html+='<tr><td class="left" style="border:none">Daftar Isi</td><td style="border:none;text-align:right">iii</td></tr>';
 html+='<tr><td class="left" style="border:none">BAB I. PENDAHULUAN</td><td style="border:none;text-align:right">1</td></tr>';
-html+='<tr><td class="left" style="border:none">BAB II. PELAKSANAAN SUPERVISI EKSTRAKURIKULER</td><td style="border:none;text-align:right">3</td></tr>';
-html+='<tr><td class="left" style="border:none">BAB III. HASIL SUPERVISI</td><td style="border:none;text-align:right">5</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB II. PELAKSANAAN PENDAMPINGAN EKSTRAKURIKULER</td><td style="border:none;text-align:right">3</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB III. HASIL PENDAMPINGAN</td><td style="border:none;text-align:right">5</td></tr>';
 html+='<tr><td class="left" style="border:none">BAB IV. EVALUASI DAN TINDAK LANJUT</td><td style="border:none;text-align:right">7</td></tr>';
 html+='<tr><td class="left" style="border:none">BAB V. PENUTUP</td><td style="border:none;text-align:right">9</td></tr>';
 html+='<tr><td class="left" style="border:none">LAMPIRAN</td><td style="border:none;text-align:right">10</td></tr>';
@@ -4236,8 +4236,8 @@ html+='</tbody></table>';
 html+='<div class="page-break"></div><h2>BAB I<br>PENDAHULUAN</h2>';
 html+='<h3>A. Latar Belakang</h3>';
 html+='<p>Kegiatan ekstrakurikuler merupakan kegiatan pendidikan di luar jam pelajaran yang ditujukan untuk mengembangkan potensi, bakat, minat, kemampuan, kepribadian, kerjasama, dan kemandirian peserta didik secara optimal. Kegiatan ini menjadi salah satu wahana pembentukan karakter dan pengembangan soft skills yang tidak sepenuhnya dapat diakomodasi dalam kegiatan intrakurikuler.</p>';
-html+='<p>Dalam konteks pendidikan madrasah, kegiatan ekstrakurikuler juga menjadi sarana untuk menanamkan nilai-nilai keislaman, kepemimpinan, dan kecakapan hidup. Oleh karena itu, supervisi terhadap kegiatan ekstrakurikuler diperlukan untuk memastikan bahwa pelaksanaannya terencana, terarah, dan memberikan manfaat optimal bagi peserta didik.</p>';
-html+='<p>Laporan ini disusun sebagai dokumentasi hasil supervisi kegiatan ekstrakurikuler sekaligus sebagai bahan evaluasi dan perbaikan di masa mendatang.</p>';
+html+='<p>Dalam konteks pendidikan madrasah, kegiatan ekstrakurikuler juga menjadi sarana untuk menanamkan nilai-nilai keislaman, kepemimpinan, dan kecakapan hidup. Oleh karena itu, pendampingan terhadap kegiatan ekstrakurikuler diperlukan untuk memastikan bahwa pelaksanaannya terencana, terarah, dan memberikan manfaat optimal bagi peserta didik.</p>';
+html+='<p>Laporan ini disusun sebagai dokumentasi hasil pendampingan kegiatan ekstrakurikuler sekaligus sebagai bahan evaluasi dan perbaikan di masa mendatang.</p>';
 html+='<h3>B. Dasar Hukum</h3>';
 html+='<ol>';
 html+='<li>Undang-Undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional;</li>';
@@ -4254,25 +4254,25 @@ html+='<li>Mengevaluasi efektivitas kegiatan ekstrakurikuler dalam pembentukan k
 html+='<li>Menyusun rekomendasi perbaikan untuk peningkatan kualitas kegiatan ekstrakurikuler.</li>';
 html+='</ol>';
 html+='<h3>D. Sasaran</h3>';
-html+='<p>Sasaran supervisi ekstrakurikuler meliputi seluruh kegiatan ekstrakurikuler yang dilaksanakan di madrasah binaan. Total penilaian yang dilakukan pada periode ini sebanyak <b>'+data.length+' kegiatan</b>.</p>';
+html+='<p>Sasaran pendampingan ekstrakurikuler meliputi seluruh kegiatan ekstrakurikuler yang dilaksanakan di madrasah binaan. Total penilaian yang dilakukan pada periode ini sebanyak <b>'+data.length+' kegiatan</b>.</p>';
 html+='<h3>E. Ruang Lingkup</h3>';
-html+='<p>Ruang lingkup supervisi ekstrakurikuler meliputi:</p>';
+html+='<p>Ruang lingkup pendampingan ekstrakurikuler meliputi:</p>';
 html+='<ol>';
 html+='<li>Perencanaan program ekstrakurikuler (tujuan, sasaran, jadwal, anggaran);</li>';
 html+='<li>Pelaksanaan kegiatan (metode pelatihan, keterlibatan siswa, sarana prasarana);</li>';
 html+='<li>Evaluasi dan pelaporan (pencapaian prestasi, dampak terhadap karakter siswa).</li>';
 html+='</ol>';
 // BAB II
-html+='<div class="page-break"></div><h2>BAB II<br>PELAKSANAAN SUPERVISI EKSTRAKURIKULER</h2>';
+html+='<div class="page-break"></div><h2>BAB II<br>PELAKSANAAN PENDAMPINGAN EKSTRAKURIKULER</h2>';
 html+='<h3>A. Waktu dan Tempat</h3>';
-html+='<p>Supervisi ekstrakurikuler dilaksanakan pada Tahun Ajaran 2025-2026 di madrasah-madrasah binaan.</p>';
-html+='<h3>B. Instrumen Supervisi</h3>';
-html+='<p>Instrumen yang digunakan dalam supervisi ekstrakurikuler mencakup aspek-aspek berikut:</p>';
+html+='<p>Pendampingan ekstrakurikuler dilaksanakan pada Tahun Ajaran 2025-2026 di madrasah-madrasah binaan.</p>';
+html+='<h3>B. Instrumen Pendampingan</h3>';
+html+='<p>Instrumen yang digunakan dalam pendampingan ekstrakurikuler mencakup aspek-aspek berikut:</p>';
 html+='<ol>';
 EKSTRAKURIKULER.forEach(function(item,i){html+='<li>'+escHtml(item)+'</li>'});
 html+='</ol>';
-html+='<h3>C. Metode Supervisi</h3>';
-html+='<p>Supervisi dilaksanakan melalui:</p>';
+html+='<h3>C. Metode Pendampingan</h3>';
+html+='<p>Pendampingan dilaksanakan melalui:</p>';
 html+='<ol>';
 html+='<li>Observasi langsung terhadap pelaksanaan kegiatan ekstrakurikuler;</li>';
 html+='<li>Telaah dokumen program dan pelaporan kegiatan;</li>';
@@ -4282,8 +4282,8 @@ html+='</ol>';
 
 
 // BAB III EKSTRAKURIKULER - HASIL
-html+='<div class="page-break"></div><h2>BAB III<br>HASIL SUPERVISI EKSTRAKURIKULER</h2>';
-html+='<h3>A. Data Hasil Supervisi</h3>';
+html+='<div class="page-break"></div><h2>BAB III<br>HASIL PENDAMPINGAN EKSTRAKURIKULER</h2>';
+html+='<h3>A. Data Hasil Pendampingan</h3>';
 html+='<table><thead><tr><th>No</th><th>Madrasah</th><th>Tanggal</th><th>Skor</th><th>Prosentase</th><th>Predikat</th></tr></thead><tbody>';
 data.forEach(function(d,i){
 var sc=d.scores||[];
@@ -4311,7 +4311,7 @@ html+='</div>';
 // BAB IV EVALUASI
 html+='<div class="page-break"></div><h2>BAB IV<br>EVALUASI DAN TINDAK LANJUT</h2>';
 html+='<h3>A. Evaluasi</h3>';
-html+='<p>Berdasarkan hasil supervisi ekstrakurikuler yang telah dilaksanakan terhadap '+data.length+' kegiatan, diperoleh temuan sebagai berikut:</p>';
+html+='<p>Berdasarkan hasil pendampingan ekstrakurikuler yang telah dilaksanakan terhadap '+data.length+' kegiatan, diperoleh temuan sebagai berikut:</p>';
 if(avgPct>=75){
 html+='<p>Secara umum, pelaksanaan kegiatan ekstrakurikuler di madrasah binaan sudah berjalan dengan baik. Program terencana dengan jelas, pembina/pelatih kompeten, dan peserta didik menunjukkan antusiasme tinggi.</p>';
 html+='<p>Kekuatan yang ditemukan:</p><ul>';
@@ -4340,14 +4340,14 @@ html+='<li><b>Penguatan Program:</b> Membimbing madrasah dalam menyusun program 
 html+='<li><b>Peningkatan SDM:</b> Mendorong peningkatan kompetensi pembina/pelatih melalui pelatihan dan workshop.</li>';
 html+='<li><b>Pengembangan Sarana:</b> Mengadvokasi penyediaan sarana prasarana yang memadai untuk mendukung kegiatan.</li>';
 html+='<li><b>Kompetisi dan Prestasi:</b> Mendorong partisipasi peserta didik dalam berbagai kompetisi untuk mengasah kemampuan.</li>';
-html+='<li><b>Monitoring Berkelanjutan:</b> Melaksanakan supervisi lanjutan secara berkala.</li>';
+html+='<li><b>Monitoring Berkelanjutan:</b> Melaksanakan pendampingan lanjutan secara berkala.</li>';
 html+='</ol>';
 
 
 // BAB V PENUTUP EKSTRAKURIKULER
 html+='<div class="page-break"></div><div style="page-break-inside:avoid"><h2>BAB V<br>PENUTUP</h2>';
-html+='<p>Pelaksanaan supervisi ekstrakurikuler yang telah dilakukan menunjukkan bahwa kegiatan ini memiliki peran penting dalam memastikan kualitas pelaksanaan kegiatan ekstrakurikuler di madrasah. Kegiatan ekstrakurikuler yang berkualitas akan memberikan kontribusi signifikan terhadap pembentukan karakter, pengembangan bakat, dan peningkatan prestasi peserta didik.</p>';
-html+='<p>Hasil supervisi menunjukkan bahwa secara umum madrasah telah berupaya melaksanakan kegiatan ekstrakurikuler dengan baik, meskipun masih terdapat beberapa aspek yang perlu ditingkatkan. Tindak lanjut berupa pendampingan, pelatihan, dan monitoring berkelanjutan perlu terus dilakukan agar kualitas kegiatan ekstrakurikuler semakin optimal.</p>';
+html+='<p>Pelaksanaan pendampingan ekstrakurikuler yang telah dilakukan menunjukkan bahwa kegiatan ini memiliki peran penting dalam memastikan kualitas pelaksanaan kegiatan ekstrakurikuler di madrasah. Kegiatan ekstrakurikuler yang berkualitas akan memberikan kontribusi signifikan terhadap pembentukan karakter, pengembangan bakat, dan peningkatan prestasi peserta didik.</p>';
+html+='<p>Hasil pendampingan menunjukkan bahwa secara umum madrasah telah berupaya melaksanakan kegiatan ekstrakurikuler dengan baik, meskipun masih terdapat beberapa aspek yang perlu ditingkatkan. Tindak lanjut berupa pendampingan, pelatihan, dan monitoring berkelanjutan perlu terus dilakukan agar kualitas kegiatan ekstrakurikuler semakin optimal.</p>';
 html+='<p>Demikian laporan ini disusun sebagai bentuk pertanggungjawaban dan bahan evaluasi bersama. Semoga dapat memberikan manfaat nyata dalam peningkatan mutu pendidikan di madrasah.</p>';
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div></div>';
 // LAMPIRAN
@@ -4968,14 +4968,14 @@ w.document.write(html);w.document.close();setTimeout(function(){w.print();},500)
 // Kokurikuler
 function renderLaporanKokurikulerPerMadrasahPage(){return renderLaporanPerMadrasahGeneric('Laporan Kokurikuler',getKokurikuler,KOKURIKULER,'cetakLaporanKokurikulerPerMadrasah');}
 function renderLaporanKokurikulerPerKKMAPage(){return renderLaporanPerKKMAGeneric('Laporan Kokurikuler',getKokurikuler,KOKURIKULER,'cetakLaporanKokurikulerPerKKMA');}
-function cetakLaporanKokurikulerPerMadrasah(mName){cetakLaporanPerMadrasahGeneric(mName,'Supervisi Kokurikuler',getKokurikuler,KOKURIKULER);}
-function cetakLaporanKokurikulerPerKKMA(){cetakLaporanPerKKMAGeneric('Supervisi Kokurikuler',getKokurikuler,KOKURIKULER);}
+function cetakLaporanKokurikulerPerMadrasah(mName){cetakLaporanPerMadrasahGeneric(mName,'Pendampingan Kokurikuler',getKokurikuler,KOKURIKULER);}
+function cetakLaporanKokurikulerPerKKMA(){cetakLaporanPerKKMAGeneric('Pendampingan Kokurikuler',getKokurikuler,KOKURIKULER);}
 
 // Ekstrakurikuler
 function renderLaporanEkstrakurikulerPerMadrasahPage(){return renderLaporanPerMadrasahGeneric('Laporan Ekstrakurikuler',getEkstrakurikuler,EKSTRAKURIKULER,'cetakLaporanEkstrakurikulerPerMadrasah');}
 function renderLaporanEkstrakurikulerPerKKMAPage(){return renderLaporanPerKKMAGeneric('Laporan Ekstrakurikuler',getEkstrakurikuler,EKSTRAKURIKULER,'cetakLaporanEkstrakurikulerPerKKMA');}
-function cetakLaporanEkstrakurikulerPerMadrasah(mName){cetakLaporanPerMadrasahGeneric(mName,'Supervisi Ekstrakurikuler',getEkstrakurikuler,EKSTRAKURIKULER);}
-function cetakLaporanEkstrakurikulerPerKKMA(){cetakLaporanPerKKMAGeneric('Supervisi Ekstrakurikuler',getEkstrakurikuler,EKSTRAKURIKULER);}
+function cetakLaporanEkstrakurikulerPerMadrasah(mName){cetakLaporanPerMadrasahGeneric(mName,'Pendampingan Ekstrakurikuler',getEkstrakurikuler,EKSTRAKURIKULER);}
+function cetakLaporanEkstrakurikulerPerKKMA(){cetakLaporanPerKKMAGeneric('Pendampingan Ekstrakurikuler',getEkstrakurikuler,EKSTRAKURIKULER);}
 
 // Iklim Madrasah
 function renderLaporanIklimMadrasahPerMadrasahPage(){return renderLaporanPerMadrasahGeneric('Laporan Iklim Madrasah',getIklimMadrasah,IKLIM_MADRASAH,'cetakLaporanIklimMadrasahPerMadrasah');}
