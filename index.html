@@ -7,9 +7,9 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Aplikasi Supervisi Pembelajaran</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);min-height:100vh;color:#333}
@@ -4980,6 +4980,22 @@ function renderLaporanIklimMadrasahPerKKMAPage(){return renderLaporanPerKKMAGene
 function cetakLaporanIklimMadrasahPerMadrasah(mName){cetakLaporanPerMadrasahGeneric(mName,'Supervisi Iklim Madrasah',getIklimMadrasah,IKLIM_MADRASAH);}
 function cetakLaporanIklimMadrasahPerKKMA(){cetakLaporanPerKKMAGeneric('Supervisi Iklim Madrasah',getIklimMadrasah,IKLIM_MADRASAH);}
 
+// === MIGRATION: Hapus seed data lama ===
+function cleanupOldSeedData(){
+var OLD_SEED_NPSN=['20580249','20580256','20580298','20596561','20580304','20580300','20580266','60728115','69788053','69894851','69894852','20580308','69894854','69894855','20580306','20580270','69881456','20595872','70010531','70059027'];
+var keys=['supervisi_madrasah','supervisi_madrasah_ra'];
+var changed=false;
+keys.forEach(function(k){
+try{
+var data=JSON.parse(localStorage.getItem(k)||'[]');
+if(!Array.isArray(data)||data.length===0)return;
+var isOldSeed=data.length===20&&data.every(function(m){return OLD_SEED_NPSN.indexOf(m.npsn)!==-1;});
+if(isOldSeed){localStorage.removeItem(k);changed=true;}
+}catch(e){}
+});
+if(changed)console.log('[Migration] Old seed madrasah data removed.');
+}
+cleanupOldSeedData();
 initDefaultMadrasah();
 checkAuth();
 render();
