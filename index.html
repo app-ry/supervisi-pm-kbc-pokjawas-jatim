@@ -71,6 +71,7 @@ header p{opacity:.8;font-size:.85rem}
 .skor-radio{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#94a3b8;transition:all .2s}
 .skor-radio:hover{color:#0ea5e9}
 .skor-radio.selected{color:#0ea5e9;font-weight:bold}
+.skor-locked{opacity:.35;cursor:not-allowed;font-size:1.1rem;color:#94a3b8}
 .tahap-header{background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;padding:10px 16px;border-radius:8px;margin:20px 0 12px;font-weight:600;font-size:.9rem}
 .rekap-card{background:linear-gradient(135deg,#f0f9ff,#f0fdfa);border:2px solid #0ea5e9;border-radius:12px;padding:20px;margin-bottom:16px}
 .rekap-card h3{color:#0d9488;margin-bottom:10px}
@@ -869,7 +870,7 @@ render();
 }
 
 // ===== STATE =====
-let state={view:'dashboard',editId:null,formData:{},currentStep:0,detailIdx:null,jenjang:'umum'};
+let state={view:'dashboard',editId:null,formData:{},currentStep:0,detailIdx:null,jenjang:'umum',unlocked:{}};
 
 // ===== JENJANG HELPERS =====
 function isRAView(v){return v==='supervisi-ra'||v==='supervisi-ra-form'||v==='form-ra'||v==='detail-ra'||v==='rekap-ra'||v==='cetak-ra'||v==='laporan-ra'||v==='guru-ra'||v==='madrasah-ra';}
@@ -940,7 +941,16 @@ return s;
 }
 function getPelaksanaanFlat(){return getIndikatorPelaksanaanFlat()}
 
+// ===== SKOR LOCK =====
+function isSkorLocked(key,idx){return !(state.unlocked&&state.unlocked[key]&&state.unlocked[key][idx]);}
+function unlockSkor(key,idx){
+if(!state.unlocked)state.unlocked={};
+if(!state.unlocked[key])state.unlocked[key]={};
+if(!state.unlocked[key][idx]){state.unlocked[key][idx]=true;render();}
+}
+
 function showPenggalian(idx){
+unlockSkor('pelaksanaan',idx);
 var items=getPelaksanaanFlat();
 var title=items[idx]||'Aspek';
 document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
@@ -948,6 +958,7 @@ document.getElementById('modalContent').innerHTML=getPenggalian('pelaksanaan',id
 document.getElementById('modalPenggalian').style.display='flex';
 }
 function showPenggalianPerencanaan(idx){
+unlockSkor('perencanaan',idx);
 var items=getIndikator('perencanaan');
 var title=items[idx]||'Aspek';
 document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
@@ -955,6 +966,7 @@ document.getElementById('modalContent').innerHTML=getPenggalian('perencanaan',id
 document.getElementById('modalPenggalian').style.display='flex';
 }
 function showPenggalianGeneric(key,idx){
+unlockSkor(key,idx);
 var items=getIndikator(key);
 var title=items[idx]||'Aspek';
 document.getElementById('modalTitle').textContent='Penggalian Data: '+(idx+1)+'. '+title;
@@ -1587,9 +1599,15 @@ items.forEach(function(item,i){
 var score=(d.scores&&d.scores[i]!==undefined)?d.scores[i]:null;
 var cat=(d.catatan&&d.catatan[i])?d.catatan[i]:getAutoCatatan(score);
 var penggalian=(key==='perencanaan'||key==='asesmen')&&getPenggalian(key,i)?true:false;
-html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek'+(penggalian?' clickable':'')+'"'+(penggalian?' onclick="showPenggalianGeneric(\''+key+'\','+i+')" title="Klik untuk lihat penggalian data"':'')+'>'+(penggalian?'\u{1F50D} ':'')+item+'</td>';
+var locked=isSkorLocked(key,i);
+var clickFn=penggalian?('showPenggalianGeneric(\''+key+'\','+i+')'):('unlockSkor(\''+key+'\','+i+')');
+html+='<tr><td class="col-no">'+(i+1)+'</td><td class="col-aspek clickable" onclick="'+clickFn+'" title="Klik untuk baca penggalian data &amp; buka kolom skor">'+(locked?'\uD83D\uDD12 ':'')+(penggalian&&!locked?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
+if(locked){
+html+='<td class="col-skor"><span class="skor-locked" title="Klik indikator dulu untuk membuka skor">'+(score===s?'&#9679;':'&#9675;')+'</span></td>';
+}else{
 html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':'')+'" onclick="setSkor(\''+key+'\','+i+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+}
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\''+key+'\','+i+',this.value)" placeholder="Otomatis"></td></tr>';
 });
@@ -1630,9 +1648,15 @@ var gi=idx;
 var score=(d.scores&&d.scores[gi]!==undefined)?d.scores[gi]:null;
 var cat=(d.catatan&&d.catatan[gi])?d.catatan[gi]:getAutoCatatan(score);
 var hasInfo=getPenggalian('pelaksanaan',gi)?true:false;
-html+='<tr><td class="col-no">'+(gi+1)+'</td><td class="col-aspek'+(hasInfo?' clickable':'')+'"'+(hasInfo?' onclick="showPenggalian('+gi+')" title="Klik untuk lihat penggalian data"':'')+'>'+(hasInfo?'\u{1F50D} ':'')+item+'</td>';
+var locked=isSkorLocked('pelaksanaan',gi);
+var clickFn=hasInfo?('showPenggalian('+gi+')'):('unlockSkor(\'pelaksanaan\','+gi+')');
+html+='<tr><td class="col-no">'+(gi+1)+'</td><td class="col-aspek clickable" onclick="'+clickFn+'" title="Klik untuk baca penggalian data &amp; buka kolom skor">'+(locked?'\uD83D\uDD12 ':'')+(hasInfo&&!locked?'\u{1F50D} ':'')+item+'</td>';
 for(var s=0;s<4;s++){
+if(locked){
+html+='<td class="col-skor"><span class="skor-locked" title="Klik indikator dulu untuk membuka skor">'+(score===s?'&#9679;':'&#9675;')+'</span></td>';
+}else{
 html+='<td class="col-skor"><button class="skor-radio '+(score===s?'selected':'')+'" onclick="setSkor(\'pelaksanaan\','+gi+','+s+')">'+(score===s?'&#9679;':'&#9675;')+'</button></td>';
+}
 }
 html+='<td class="col-catatan"><input type="text" value="'+escHtml(cat)+'" onchange="setCatatan(\'pelaksanaan\','+gi+',this.value)" placeholder="Otomatis"></td></tr>';
 idx++;
@@ -1880,7 +1904,7 @@ return html;
 // ===== FORM ACTIONS =====
 function newForm(){
 state.view=isRAJenjang()?'form-ra':'form';
-state.currentStep=0;state.editId=null;
+state.currentStep=0;state.editId=null;state.unlocked={perencanaan:{},pelaksanaan:{},asesmen:{}};
 var pengawas=getPengawas();
 state.formData={identitas:{namaSupervisor:pengawas.nama||'',nipSupervisor:pengawas.nip||'',jabatanSupervisor:pengawas.jabatan||''},perencanaan:{scores:[],catatan:[],manualCatatan:[]},pelaksanaan:{scores:[],catatan:[],manualCatatan:[]},asesmen:{scores:[],catatan:[],manualCatatan:[]},rekap:{}};
 render();
@@ -1932,7 +1956,7 @@ saveData(data);state.view='dashboard';render();
 function editItem(idx){
 var data=getData();
 state.formData=JSON.parse(JSON.stringify(data[idx]));
-state.editId=idx;
+state.editId=idx;state.unlocked={perencanaan:{},pelaksanaan:{},asesmen:{}};
 state.view=isRAJenjang()?'form-ra':'form';
 state.currentStep=0;render();
 }
