@@ -1251,7 +1251,12 @@ rows+='</td></tr>';
 var html='<div class="card">';
 html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">';
 html+='<h2>'+(isRAJenjang()?'Data Guru RA':'Data Guru')+'</h2>';
-html+='<button class="btn btn-primary" onclick="showGuruModal()">+ Tambah Guru'+(isRAJenjang()?' RA':'')+'</button></div>';
+html+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
+html+='<button class="btn btn-primary" onclick="showGuruModal()">+ Tambah Guru'+(isRAJenjang()?' RA':'')+'</button> ';
+html+='<button class="btn btn-success" onclick="exportGuruExcel()">\uD83D\uDCC4 Export Excel</button> ';
+html+='<button class="btn btn-info" onclick="importGuruExcel()">\uD83D\uDCC4 Import Excel</button> ';
+html+='<button class="btn btn-secondary" onclick="downloadTemplateGuru()">\uD83D\uDCE9 Template Excel</button></div>';
+html+='<input type="file" id="importGuruFile" accept=".xlsx,.xls" style="display:none" onchange="handleImportGuru(event)">';
 if(data.length===0){html+='<div class="empty-state"><p>Belum ada data guru'+(isRAJenjang()?' RA':'')+'.</p></div>';}
 else{
 html+='<div style="overflow-x:auto"><table class="data-table"><thead><tr><th>No</th><th>Nama Guru</th><th>NIP</th><th>Mata Pelajaran</th><th>Madrasah</th><th>Aksi</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
@@ -1294,6 +1299,57 @@ saveGuru(data);closeModal();render();
 
 function editGuru(idx){showGuruModal(idx)}
 function deleteGuru(idx){if(!confirm('Hapus data guru ini?'))return;var data=getGuru();data.splice(idx,1);saveGuru(data);render();}
+
+// ===== IMPORT/EXPORT/TEMPLATE EXCEL GURU =====
+function exportGuruExcel(){
+var data=getGuru();
+if(data.length===0){alert('Belum ada data guru untuk diexport');return;}
+var aoa=[['No','Nama Guru','NIP','Mata Pelajaran','Madrasah']];
+data.forEach(function(g,i){aoa.push([i+1,g.nama||'',g.nip||'',g.mataPelajaran||'',g.madrasah||'']);});
+var ws=XLSX.utils.aoa_to_sheet(aoa);
+var wb=XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb,ws,'Data Guru');
+XLSX.writeFile(wb,'Data_Guru_'+new Date().toISOString().slice(0,10)+'.xlsx');
+}
+function importGuruExcel(){document.getElementById('importGuruFile').click();}
+function handleImportGuru(event){
+var file=event.target.files[0];
+if(!file)return;
+var reader=new FileReader();
+reader.onload=function(e){
+try{
+var data=new Uint8Array(e.target.result);
+var workbook=XLSX.read(data,{type:'array'});
+var sheet=workbook.Sheets[workbook.SheetNames[0]];
+var json=XLSX.utils.sheet_to_json(sheet,{defval:''});
+if(json.length===0){alert('File kosong atau format tidak sesuai');return;}
+var existing=getGuru();
+var count=0;
+json.forEach(function(row){
+var nama=(row['Nama Guru']||row['nama']||row['NAMA GURU']||'').toString().trim();
+if(!nama)return;
+var obj={
+nama:nama,
+nip:(row['NIP']||row['nip']||'').toString().trim(),
+mataPelajaran:(row['Mata Pelajaran']||row['mataPelajaran']||row['MATA PELAJARAN']||row['Mapel']||'').toString().trim(),
+madrasah:(row['Madrasah']||row['madrasah']||row['MADRASAH']||'').toString().trim()
+};
+existing.push(obj);count++;
+});
+saveGuru(existing);
+alert('Berhasil import '+count+' data guru!');
+render();
+}catch(err){alert('Gagal membaca file: '+err.message);}
+};
+reader.readAsArrayBuffer(file);
+event.target.value='';
+}
+function downloadTemplateGuru(){
+var ws=XLSX.utils.aoa_to_sheet([['Nama Guru','NIP','Mata Pelajaran','Madrasah'],['Ahmad, S.Pd','197001012000031001','Matematika','MTs Negeri 1 Jember'],['Fatimah, S.Pd.I','198505152010032002','Akidah Akhlak','MTs Negeri 2 Jember']]);
+var wb=XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb,ws,'Data Guru');
+XLSX.writeFile(wb,'Template_Data_Guru.xlsx');
+}
 
 // ===== DATA PENGAWAS =====
 function renderPengawasPage(){
