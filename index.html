@@ -1374,7 +1374,7 @@ html+='<div class="form-group"><label>Nama Pengawas</label><input type="text" id
 html+='<div class="form-group"><label>NIP</label><input type="text" id="pNip" value="'+escHtml(p.nip||'')+'"></div>';
 html+='<div class="form-group"><label>Jabatan</label><input type="text" id="pJabatan" value="'+escHtml(p.jabatan||'Pengawas Madrasah')+'"></div>';
 html+='<div class="form-group"><label>Pangkat/Golongan</label><select id="pPangkat" class="form-control">';
-var golonganList=['III/b','III/c','III/d','IV/a','IV/b','IV/c','IV/d','IV/e'];
+var golonganList=['Penata Muda Tingkat I, III/b','Penata, III/c','Penata Tingkat I, III/d','Pembina, IV/a','Pembina Tingkat I, IV/b','Pembina Utama Muda, IV/c','Pembina Utama Madya, IV/d','Pembina Utama, IV/e'];
 var curPangkat=p.pangkat||'';
 html+='<option value="">- Pilih Golongan -</option>';
 golonganList.forEach(function(g){
