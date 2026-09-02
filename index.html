@@ -1373,7 +1373,14 @@ html+='<div class="grid-2">';
 html+='<div class="form-group"><label>Nama Pengawas</label><input type="text" id="pNama" value="'+escHtml(p.nama||'')+'"></div>';
 html+='<div class="form-group"><label>NIP</label><input type="text" id="pNip" value="'+escHtml(p.nip||'')+'"></div>';
 html+='<div class="form-group"><label>Jabatan</label><input type="text" id="pJabatan" value="'+escHtml(p.jabatan||'Pengawas Madrasah')+'"></div>';
-html+='<div class="form-group"><label>Pangkat/Golongan</label><input type="text" id="pPangkat" value="'+escHtml(p.pangkat||'')+'"></div>';
+html+='<div class="form-group"><label>Pangkat/Golongan</label><select id="pPangkat" class="form-control">';
+var golonganList=['Penata Muda Tingkat I, III/b','Penata, III/c','Penata Tingkat I, III/d','Pembina, IV/a','Pembina Tingkat I, IV/b','Pembina Utama Muda, IV/c','Pembina Utama Madya, IV/d','Pembina Utama, IV/e'];
+var curPangkat=p.pangkat||'';
+html+='<option value="">- Pilih Golongan -</option>';
+golonganList.forEach(function(g){
+html+='<option value="'+g+'"'+(curPangkat===g?' selected':'')+'>'+g+'</option>';
+});
+html+='</select></div>';
 html+='<div class="form-group"><label>Instansi</label><input type="text" id="pInstansi" value="'+escHtml(p.instansi||'')+'"></div>';
 html+='<div class="form-group"><label>Kabupaten/Kota</label><input type="text" id="pKabupaten" value="'+escHtml(p.kabupaten||'')+'"></div>';
 html+='<div class="form-group"><label>Tempat Tugas</label><input type="text" id="pTempatTugas" value="'+escHtml(p.tempatTugas||'')+'" placeholder="Contoh: KKMA 04"></div>';
