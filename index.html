@@ -938,6 +938,25 @@ function getPredikatClass(p){return'predikat-'+p.toLowerCase().replace(' ','-')}
 function calcTotal(d){let sum=0,max=0;['perencanaan','pelaksanaan','asesmen'].forEach(k=>{const scores=d[k]&&d[k].scores?d[k].scores:[];const itemCount=k==='pelaksanaan'?getIndikatorPelaksanaanFlat().length:getIndikator(k).length;const effectiveLen=Math.min(scores.length,itemCount);for(let i=0;i<effectiveLen;i++){const s=scores[i];if(s!==null&&s!==undefined){sum+=s+1;max+=4}}});return max>0?(sum/max)*100:0}
 function calcKomponen(d,key){const scores=d[key]&&d[key].scores?d[key].scores:[];const itemCount=key==='pelaksanaan'?getIndikatorPelaksanaanFlat().length:getIndikator(key).length;let sum=0,max=0;const effectiveLen=Math.min(scores.length,itemCount);for(let i=0;i<effectiveLen;i++){const s=scores[i];if(s!==null&&s!==undefined){sum+=s+1;max+=4}}return max>0?(sum/max)*100:0}
 function escHtml(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+// Helper cetak: tunggu semua foto selesai dimuat baru buka dialog print; aman dari popup blocker
+function printWindow(w){
+if(!w){alert('Popup diblokir browser. Silakan izinkan popup untuk situs ini (klik ikon di address bar) lalu coba lagi.');return;}
+function goPrint(){try{w.focus();w.print();}catch(e){}}
+function waitImages(){
+try{
+var imgs=w.document.querySelectorAll('img');
+var pending=0,done=0;
+for(var i=0;i<imgs.length;i++){(function(img){
+if(img.complete)return;
+pending++;
+img.onload=function(){done++;if(done>=pending)goPrint();};
+img.onerror=function(){done++;if(done>=pending)goPrint();};
+})(imgs[i]);}
+if(pending===0)goPrint();else setTimeout(goPrint,6000);
+}catch(e){goPrint();}
+}
+setTimeout(waitImages,300);
+}
 function formatDateDMY(value){
 if(!value)return'-';
 var s=String(value).trim();
@@ -1622,7 +1641,7 @@ function printRekapMadrasah(mName){
 var data=getData();
 var filtered=data.filter(function(d){return (d.identitas.namaMadrasah||'(Tanpa Madrasah)')===mName});
 var pengawas=getPengawas();
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Rekap Supervisi - '+mName+'</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:12px}';
 html+='h2{text-align:center;margin-bottom:5px}';
@@ -1666,7 +1685,7 @@ html+='<p style="margin-top:0">NIP. '+(pengawas.nip||'.........................'
 html+='</tr></table>';
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 
 // ===== FORM SUPERVISI =====
@@ -2191,7 +2210,7 @@ printInstrumen(bagian);
 
 function cetakSemua(d){
 var id=d.identitas||{};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Cetak Semua Instrumen</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:12px}';
 html+='h2{text-align:center;margin-bottom:5px}';
@@ -2257,12 +2276,12 @@ html+='</tr></table>';
 });
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 
 function cetakRekapDetail(d){
 var id=d.identitas||{};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Cetak Rekap Supervisi</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:12px}';
 html+='h2{text-align:center;margin-bottom:5px}';
@@ -2317,7 +2336,7 @@ html+='<p style="margin-top:0">NIP. '+(id.nipSupervisor||'......................
 html+='</tr></table>';
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 
 // ===== PRINT FUNCTIONS =====
@@ -2330,7 +2349,7 @@ asesmen:{items:getIndikator('asesmen'),label:'Asesmen Pembelajaran'}
 var info=instrumenMap[key];
 var id=state.formData.identitas||{};
 var d=state.formData[key]||{scores:[],catatan:[]};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Cetak '+info.label+'</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:12px}';
 html+='h2{text-align:center;margin-bottom:5px}';
@@ -2390,7 +2409,7 @@ html+='<p style="margin-top:0">NIP. '+(id.nipSupervisor||'......................
 html+='</td></tr></table>';
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 
 function printRekap(){window.print();}
@@ -2822,7 +2841,7 @@ function printRekapKokurikuler(){
 var data=getKokurikuler();
 var pengawas=getPengawas();
 var id={};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Rekap Kokurikuler</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:11px}';
 html+='h2{text-align:center;margin-bottom:15px}';
@@ -2858,7 +2877,7 @@ html+='<p style="margin-top:0">NIP. '+(pengawas.nip||'..........................
 html+='</tr></table>';
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 
 function cetakKokurikuler(idx){
@@ -2868,7 +2887,7 @@ if(!d)return;
 var pengawas=getPengawas();
 var madrasahList=getMadrasah();
 var madrasahData=madrasahList.find(function(m){return m.nama===d.madrasahNama})||{};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Cetak Instrumen Kokurikuler</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:12px}';
 html+='h2{text-align:center;margin-bottom:5px}';
@@ -2925,7 +2944,7 @@ html+='<p style="margin-top:0">NIP. '+(pengawas.nip||'.........................'
 html+='</tr></table>';
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 
 // ===== EKSTRAKURIKULER =====
@@ -3161,7 +3180,7 @@ function printRekapEkstrakurikuler(){
 var data=getEkstrakurikuler();
 var pengawas=getPengawas();
 var id={};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Rekap Ekstrakurikuler</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:11px}';
 html+='h2{text-align:center;margin-bottom:15px}';
@@ -3197,7 +3216,7 @@ html+='<p style="margin-top:0">NIP. '+(pengawas.nip||'..........................
 html+='</tr></table>';
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 
 function cetakEkstrakurikuler(idx){
@@ -3207,7 +3226,7 @@ if(!d)return;
 var pengawas=getPengawas();
 var madrasahList=getMadrasah();
 var madrasahData=madrasahList.find(function(m){return m.nama===d.madrasahNama})||{};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Cetak Instrumen Ekstrakurikuler</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:12px}';
 html+='h2{text-align:center;margin-bottom:5px}';
@@ -3264,7 +3283,7 @@ html+='<p style="margin-top:0">NIP. '+(pengawas.nip||'..........................
 html+='</tr></table>';
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 
 function editIndikatorEkstrakurikuler(){
@@ -3523,7 +3542,7 @@ function printRekapIklimMadrasah(){
 var data=getIklimMadrasah();
 var pengawas=getPengawas();
 var id={};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Rekap Iklim Madrasah</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:11px}';
 html+='h2{text-align:center;margin-bottom:15px}';
@@ -3559,7 +3578,7 @@ html+='<p style="margin-top:0">NIP. '+(pengawas.nip||'..........................
 html+='</tr></table>';
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 function cetakIklimMadrasah(idx){
 var data=getIklimMadrasah();
@@ -3568,7 +3587,7 @@ if(!d)return;
 var pengawas=getPengawas();
 var madrasahList=getMadrasah();
 var madrasahData=madrasahList.find(function(m){return m.nama===d.madrasahNama})||{};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Cetak Instrumen Iklim Madrasah</title><style>';
 html+='body{font-family:Arial,sans-serif;padding:20px;font-size:12px}';
 html+='h2{text-align:center;margin-bottom:5px}';
@@ -3625,7 +3644,7 @@ html+='<p style="margin-top:0">NIP. '+(pengawas.nip||'..........................
 html+='</tr></table>';
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print();},500);
+printWindow(w);
 }
 
 
@@ -3682,7 +3701,7 @@ var avgP=data.length>0?(totalP/data.length):0;
 var avgL=data.length>0?(totalL/data.length):0;
 var avgA=data.length>0?(totalA/data.length):0;
 var avgPct=data.length>0?(totalPct/data.length):0;
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Laporan Supervisi - '+escHtml(mName)+'</title><style>';
 html+='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
 html+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
@@ -3865,7 +3884,7 @@ html+='<ol><li>SK Tim Supervisi</li><li>Jadwal Pelaksanaan</li><li>Instrumen Has
 html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print()},500);
+printWindow(w);
 }
 
 function cetakLaporan(){
@@ -3890,7 +3909,7 @@ var avgL=data.length>0?(totalL/data.length):0;
 var avgA=data.length>0?(totalA/data.length):0;
 var avgPct=data.length>0?(totalPct/data.length):0;
 var firstMadrasah=madrasahList.length>0?madrasahList[0]:{};
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Laporan Supervisi Pembelajaran</title><style>';
 html+='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
 html+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
@@ -4188,7 +4207,7 @@ html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);
 w.document.close();
-setTimeout(function(){w.print()},500);
+printWindow(w);
 }
 
 
@@ -4227,7 +4246,7 @@ var firstMadrasah=madrasahList.length>0?madrasahList[0]:{};
 var totalPct=0;
 data.forEach(function(d){var sc=d.scores||[];var sum=sc.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);var max=KOKURIKULER.length*4;totalPct+=max>0?(sum/max)*100:0});
 var avgPct=data.length>0?(totalPct/data.length):0;
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Laporan Pendampingan Kokurikuler</title><style>';
 html+='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
 html+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
@@ -4400,7 +4419,7 @@ html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Kegiatan K
 html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print()},500);
+printWindow(w);
 }
 
 
@@ -4437,7 +4456,7 @@ var firstMadrasah=madrasahList.length>0?madrasahList[0]:{};
 var totalPct=0;
 data.forEach(function(d){var sc=d.scores||[];var sum=sc.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);var max=EKSTRAKURIKULER.length*4;totalPct+=max>0?(sum/max)*100:0});
 var avgPct=data.length>0?(totalPct/data.length):0;
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Laporan Pendampingan Ekstrakurikuler</title><style>';
 html+='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
 html+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
@@ -4610,7 +4629,7 @@ html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Kegiatan E
 html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print()},500);
+printWindow(w);
 }
 
 
@@ -4647,7 +4666,7 @@ var firstMadrasah=madrasahList.length>0?madrasahList[0]:{};
 var totalPct=0;
 data.forEach(function(d){var sc=d.scores||[];var sum=sc.reduce(function(a,b){return a+((b!==null&&b!==undefined)?b+1:0)},0);var max=IKLIM_MADRASAH.length*4;totalPct+=max>0?(sum/max)*100:0});
 var avgPct=data.length>0?(totalPct/data.length):0;
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Laporan Supervisi Iklim Madrasah</title><style>';
 html+='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
 html+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
@@ -4825,7 +4844,7 @@ html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Supervisi 
 html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();
-setTimeout(function(){w.print()},500);
+printWindow(w);
 }
 
 
@@ -4959,7 +4978,7 @@ var madrasahObj=madrasahList.find(function(m){return m.nama===mName;})||{nama:mN
 var totalPct=0;
 data.forEach(function(d){totalPct+=calcScorePct(d.scores||[],INDIKATOR.length)});
 var avgPct=data.length>0?(totalPct/data.length):0;
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Laporan '+title+' - '+escHtml(mName)+'</title><style>';
 html+='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
 html+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
@@ -5060,7 +5079,7 @@ html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">............
 html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Kegiatan</h3>';
 html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
-w.document.write(html);w.document.close();setTimeout(function(){w.print();},500);}
+w.document.write(html);w.document.close();printWindow(w);}
 
 function cetakLaporanPerKKMAGeneric(title,getData,INDIKATOR){
 var data=getData();
@@ -5071,7 +5090,7 @@ var madrasahList=getMadrasah();
 var totalPct=0;
 data.forEach(function(d){totalPct+=calcScorePct(d.scores||[],INDIKATOR.length)});
 var avgPct=data.length>0?(totalPct/data.length):0;
-var w=window.open('','_blank');
+var w=window.open('','_blank');if(!w){alert('Popup diblokir browser. Klik ikon popup di address bar, izinkan popup untuk situs ini, lalu coba lagi.');return;}
 var html='<html><head><title>Laporan '+title+' - '+escHtml(kkma)+'</title><style>';
 html+='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
 html+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
@@ -5176,7 +5195,7 @@ html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">............
 html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Kegiatan</h3>';
 html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
-w.document.write(html);w.document.close();setTimeout(function(){w.print();},500);}
+w.document.write(html);w.document.close();printWindow(w);}
 
 // Kokurikuler
 function renderLaporanKokurikulerPerMadrasahPage(){return renderLaporanPerMadrasahGeneric('Laporan Kokurikuler',getKokurikuler,KOKURIKULER,'cetakLaporanKokurikulerPerMadrasah');}
