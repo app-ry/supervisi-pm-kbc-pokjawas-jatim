@@ -2503,11 +2503,10 @@ return html;
 }
 
 function showAddKokurikuler(){
-var madrasahList=getMadrasah();
-var opts='<option value="">-- Pilih Madrasah --</option>';
-madrasahList.forEach(function(m){opts+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});
+var opts=jenjangMadrasahOpts(false);
 var modal='<div class="modal-overlay" style="display:flex" onclick="if(event.target===this)closeKokurikulerModal()">';
 modal+='<div class="modal"><h3>Tambah Penilaian Kokurikuler</h3>';
+modal+='<div class="form-group"><label>Jenjang</label><select id="kok-jenjang" onchange="onJenjangChange(this,\'kok-madrasah\')"><option value="mi">MI / MTs / MA</option><option value="ra">RA (Raudhatul Athfal)</option></select></div>';
 modal+='<div class="form-group"><label>Madrasah</label><select id="kok-madrasah">'+opts+'</select></div>';
 modal+='<div class="form-group"><label>Tanggal</label><input type="date" id="kok-tanggal"></div>';
 modal+='<div class="btn-group"><button class="btn btn-success" onclick="addKokurikulerEntry()">Lanjut</button>';
@@ -2519,6 +2518,16 @@ document.getElementById('modal-container').innerHTML=modal;
 function closeKokurikulerModal(){
 var mc=document.getElementById('modal-container');if(mc)mc.innerHTML='';
 }
+
+// ===== JENJANG MADRASAH (Koku/Ekstra/Iklim) =====
+function getMadrasahByJenjang(ra){try{return JSON.parse(localStorage.getItem(ra?MADRASAH_KEY_RA:MADRASAH_KEY))||[]}catch(e){return[]}}
+function jenjangMadrasahOpts(ra){
+var l=getMadrasahByJenjang(ra);
+var o='<option value="">-- '+(l.length===0?'Belum ada data madrasah':'Pilih Madrasah')+' --</option>';
+l.forEach(function(m){o+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});
+return o;
+}
+function onJenjangChange(sel,targetId){document.getElementById(targetId).innerHTML=jenjangMadrasahOpts(sel.value==='ra');}
 
 function addKokurikulerEntry(){
 var madrasah=document.getElementById('kok-madrasah').value;
@@ -2881,13 +2890,12 @@ return html;
 }
 
 function showAddEkstrakurikuler(){
-var madrasahList=getMadrasah();
 var html='<div style="background:rgba(0,0,0,.5);position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:flex;align-items:center;justify-content:center" id="modal-ekstra">';
 html+='<div style="background:#fff;border-radius:12px;padding:30px;max-width:400px;width:90%">';
 html+='<h3 style="margin-bottom:15px">Tambah Penilaian Ekstrakurikuler</h3>';
+html+='<label>Jenjang:</label><select id="ekstra-jenjang" onchange="onJenjangChange(this,\'ekstra-madrasah\')" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd"><option value="mi">MI / MTs / MA</option><option value="ra">RA (Raudhatul Athfal)</option></select>';
 html+='<label>Madrasah:</label><select id="ekstra-madrasah" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
-if(madrasahList.length===0){html+='<option value="">-- Belum ada data madrasah --</option>';}
-else{madrasahList.forEach(function(m){html+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});}
+html+=jenjangMadrasahOpts(false);
 html+='</select>';
 html+='<label>Tanggal:</label><input type="date" id="ekstra-tanggal" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
 html+='<div style="text-align:right"><button class="btn btn-secondary" onclick="document.getElementById(\'modal-ekstra\').remove()">Batal</button> ';
@@ -3250,13 +3258,12 @@ html+='<div class="no-print" style="margin-top:20px;text-align:right"><button cl
 return html;
 }
 function showAddIklimMadrasah(){
-var madrasahList=getMadrasah();
 var html='<div style="background:rgba(0,0,0,.5);position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:flex;align-items:center;justify-content:center" id="modal-iklim">';
 html+='<div style="background:#fff;border-radius:12px;padding:30px;max-width:400px;width:90%">';
 html+='<h3 style="margin-bottom:15px">Tambah Penilaian Iklim Madrasah</h3>';
+html+='<label>Jenjang:</label><select id="iklim-jenjang" onchange="onJenjangChange(this,\'iklim-madrasah\')" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd"><option value="mi">MI / MTs / MA</option><option value="ra">RA (Raudhatul Athfal)</option></select>';
 html+='<label>Madrasah:</label><select id="iklim-madrasah" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
-if(madrasahList.length===0){html+='<option value="">-- Belum ada data madrasah --</option>';}
-else{madrasahList.forEach(function(m){html+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});}
+html+=jenjangMadrasahOpts(false);
 html+='</select>';
 html+='<label>Tanggal:</label><input type="date" id="iklim-tanggal" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
 html+='<div style="text-align:right"><button class="btn btn-secondary" onclick="document.getElementById(\'modal-iklim\').remove()">Batal</button> ';
