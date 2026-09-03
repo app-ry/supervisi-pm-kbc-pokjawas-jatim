@@ -30,6 +30,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,
 .submenu-toggle:hover{background:rgba(14,165,233,.2)}
 .submenu-toggle.active{border-bottom:3px solid #0ea5e9;background:linear-gradient(135deg,rgba(14,165,233,.3),rgba(13,148,136,.3))}
 .sidebar-menu>li.has-sub:hover>.submenu{display:block}
+.sidebar-menu>li.has-sub.hide-drop:hover>.submenu{display:none}
 .submenu{list-style:none;display:none;position:absolute;top:100%;left:0;min-width:240px;background:rgba(15,32,39,.98);border-radius:0 0 10px 10px;box-shadow:0 12px 30px rgba(0,0,0,.45);padding:6px 0;margin:0;z-index:200}
 .submenu.open{display:block}
 .submenu li{padding:9px 16px;font-size:.75rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.85)}
@@ -1025,6 +1026,10 @@ var sub=t.querySelector('.submenu');
 t.classList.toggle('active',!!(sub&&sub.querySelector('li[data-nav="'+view+'"]')));
 });
 closeAllSubmenus();
+document.querySelectorAll('.sidebar-menu>li.has-sub').forEach(function(t){
+t.classList.add('hide-drop');
+t.onmouseleave=function(){t.classList.remove('hide-drop');t.onmouseleave=null;};
+});
 if(window.innerWidth<768)document.getElementById('sidebar').classList.remove('open');
 if((view==='supervisi'||view==='supervisi-ra')&&(!state.formData||!state.formData.identitas||!state.formData.identitas.namaGuru)){newForm();return;}
 render();
