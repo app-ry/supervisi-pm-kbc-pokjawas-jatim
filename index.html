@@ -20,7 +20,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,
 .sidebar h2 .brand-sub{font-size:.72em;font-weight:600;color:rgba(255,255,255,.85)}
 .nav-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
 .nav-top .sidebar-user{border-bottom:none;margin-bottom:0;padding:8px 20px}
-.app-footer{padding:16px 20px 20px;font-size:.7rem;color:rgba(255,255,255,.45);text-align:center;line-height:1.5;white-space:normal}
+.app-footer{padding:14px 20px 18px;font-size:.62rem;color:rgba(255,255,255,.28);text-align:center;line-height:1.5;white-space:normal;border-top:1px solid rgba(255,255,255,.06);margin-top:10px}
 .sidebar-menu>li.nav-logout{color:#f87171}
 .sidebar-menu{list-style:none;display:flex;flex-wrap:nowrap;align-items:stretch;justify-content:center}
 .sidebar-menu>li{padding:9px 11px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;font-size:.73rem;position:relative;white-space:nowrap}
@@ -144,6 +144,7 @@ canvas{max-width:100%;margin:20px 0}
 .auth-card .auth-link a:hover{text-decoration:underline}
 .auth-card .auth-error{background:#fee2e2;color:#991b1b;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-bottom:16px;display:none}
 .auth-card .auth-success{background:#d1fae5;color:#065f46;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-bottom:16px;display:none}
+.auth-card .auth-credit{margin-top:20px;font-size:.62rem;color:#94a3b8;text-align:center;line-height:1.5}
 .sidebar-user{padding:10px 20px;font-size:.8rem;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:5px}
 .sidebar-user strong{color:#fff;font-size:.85rem}
 .pass-wrap{position:relative}
@@ -305,7 +306,8 @@ card.innerHTML='<h2>🔐 Login</h2>'+
 '<div class="form-group"><label>Username</label><input type="text" id="loginUsername" placeholder="Masukkan username" autocomplete="username"></div>'+
 '<div class="form-group"><label>Password</label><div class="pass-wrap"><input type="password" id="loginPassword" placeholder="Masukkan password" autocomplete="current-password"><button type="button" class="pass-toggle" onclick="togglePass(\'loginPassword\',this)" title="Lihat password">\u{1F441}\uFE0F</button></div></div>'+
 '<button class="btn-auth" onclick="doLogin()">Login</button>'+
-'<div class="auth-link">Belum punya akun? <a onclick="showRegister()">Daftar</a></div>';
+'<div class="auth-link">Belum punya akun? <a onclick="showRegister()">Daftar</a></div>'+
+'<p class="auth-credit">Aplikasi ini dibuat oleh : Subariyanto (Ketua Pokjawas Madrasah Kab. Jember) &bull; Instrumen disusun oleh : Ida Safiaturrahma (Pengawas Madrasah Kab. Lamongan)</p>';
 setTimeout(function(){document.getElementById('loginUsername').focus()},100);
 // Enter key support
 setTimeout(function(){
