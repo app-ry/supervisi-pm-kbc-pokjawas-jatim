@@ -18,7 +18,7 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,
 .sidebar h2{padding:10px 20px;font-size:.95rem;margin-bottom:0;white-space:nowrap}
 .nav-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
 .nav-top .sidebar-user{border-bottom:none;margin-bottom:0;padding:8px 20px}
-.nav-credit{padding:6px 20px;font-size:.6rem;color:rgba(255,255,255,.4);border-top:1px solid rgba(255,255,255,.1);white-space:normal;line-height:1.4;text-align:center}
+.app-footer{padding:16px 20px 20px;font-size:.7rem;color:rgba(255,255,255,.45);text-align:center;line-height:1.5;white-space:normal}
 .sidebar-menu>li.nav-logout{color:#f87171}
 .sidebar-menu{list-style:none;display:flex;flex-wrap:nowrap;align-items:stretch;justify-content:center}
 .sidebar-menu>li{padding:9px 11px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;font-size:.73rem;position:relative;white-space:nowrap}
@@ -226,7 +226,6 @@ canvas{max-width:100%;margin:20px 0}
 <li onclick="window.open('panduan.html','_blank')">&#128214; Panduan</li>
 <li class="nav-logout" onclick="doLogout()">&#128682; Logout</li>
 </ul>
-<p class="nav-credit">Aplikasi ini dibuat oleh : Subariyanto (Ketua Pokjawas Madrasah Kab. Jember) &bull; Instrumen disusun oleh : Ida Safiaturrahma (Pengawas Madrasah Kab. Lamongan)</p>
 </nav>
 <div class="main-content">
 <div class="container">
@@ -235,6 +234,7 @@ canvas{max-width:100%;margin:20px 0}
 </header>
 <div id="app"></div>
 </div>
+<footer class="app-footer no-print">Aplikasi ini dibuat oleh : Subariyanto (Ketua Pokjawas Madrasah Kab. Jember) &bull; Instrumen disusun oleh : Ida Safiaturrahma (Pengawas Madrasah Kab. Lamongan)</footer>
 </div>
 </div>
 <script>
