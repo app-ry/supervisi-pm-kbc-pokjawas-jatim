@@ -134,6 +134,10 @@ canvas{max-width:100%;margin:20px 0}
 .auth-card .auth-success{background:#d1fae5;color:#065f46;padding:10px 14px;border-radius:8px;font-size:.85rem;margin-bottom:16px;display:none}
 .sidebar-user{padding:10px 20px;font-size:.8rem;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:5px}
 .sidebar-user strong{color:#fff;font-size:.85rem}
+.pass-wrap{position:relative}
+.pass-wrap input{padding-right:44px}
+.pass-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;padding:4px 6px;color:#64748b;line-height:1}
+.pass-toggle:hover{color:#0ea5e9}
 </style>
 </head>
 <body>
@@ -273,6 +277,7 @@ document.getElementById('appLayout').style.display='none';
 document.querySelector('.mobile-toggle').style.display='none';
 }
 
+function togglePass(id,btn){var el=document.getElementById(id);if(!el)return;var show=el.type==='password';el.type=show?'text':'password';btn.textContent=show?'\u{1F648}':'\u{1F441}\uFE0F';}
 function showLogin(){
 hideApp();
 var card=document.getElementById('authCard');
@@ -280,7 +285,7 @@ card.innerHTML='<h2>🔐 Login</h2>'+
 '<p class="auth-subtitle">Supervisi Pembelajaran PM-KBC</p>'+
 '<div class="auth-error" id="authError"></div>'+
 '<div class="form-group"><label>Username</label><input type="text" id="loginUsername" placeholder="Masukkan username" autocomplete="username"></div>'+
-'<div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Masukkan password" autocomplete="current-password"></div>'+
+'<div class="form-group"><label>Password</label><div class="pass-wrap"><input type="password" id="loginPassword" placeholder="Masukkan password" autocomplete="current-password"><button type="button" class="pass-toggle" onclick="togglePass(\'loginPassword\',this)" title="Lihat password">\u{1F441}\uFE0F</button></div></div>'+
 '<button class="btn-auth" onclick="doLogin()">Login</button>'+
 '<div class="auth-link">Belum punya akun? <a onclick="showRegister()">Daftar</a></div>';
 setTimeout(function(){document.getElementById('loginUsername').focus()},100);
@@ -302,8 +307,8 @@ card.innerHTML='<h2>📝 Daftar Akun</h2>'+
 '<div class="auth-success" id="authSuccess"></div>'+
 '<div class="form-group"><label>Nama Lengkap</label><input type="text" id="regNama" placeholder="Masukkan nama lengkap"></div>'+
 '<div class="form-group"><label>Username</label><input type="text" id="regUsername" placeholder="Masukkan username" autocomplete="username"></div>'+
-'<div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Masukkan password" autocomplete="new-password"></div>'+
-'<div class="form-group"><label>Konfirmasi Password</label><input type="password" id="regConfirm" placeholder="Ulangi password" autocomplete="new-password"></div>'+
+'<div class="form-group"><label>Password</label><div class="pass-wrap"><input type="password" id="regPassword" placeholder="Masukkan password" autocomplete="new-password"><button type="button" class="pass-toggle" onclick="togglePass(\'regPassword\',this)" title="Lihat password">\u{1F441}\uFE0F</button></div></div>'+
+'<div class="form-group"><label>Konfirmasi Password</label><div class="pass-wrap"><input type="password" id="regConfirm" placeholder="Ulangi password" autocomplete="new-password"><button type="button" class="pass-toggle" onclick="togglePass(\'regConfirm\',this)" title="Lihat password">\u{1F441}\uFE0F</button></div></div>'+
 '<button class="btn-auth" onclick="doRegister()">Daftar</button>'+
 '<div class="auth-link">Sudah punya akun? <a onclick="showLogin()">Login</a></div>';
 setTimeout(function(){document.getElementById('regNama').focus()},100);
@@ -383,9 +388,9 @@ var html='<div class="card"><h2 style="margin-bottom:20px">🔐 Ubah Password</h
 html+='<div class="auth-error" id="ubahError" style="display:none"></div>';
 html+='<div class="auth-success" id="ubahSuccess" style="display:none"></div>';
 html+='<div style="max-width:400px">';
-html+='<div class="form-group"><label>Password Lama</label><input type="password" id="oldPass" placeholder="Masukkan password lama"></div>';
-html+='<div class="form-group"><label>Password Baru</label><input type="password" id="newPass" placeholder="Masukkan password baru"></div>';
-html+='<div class="form-group"><label>Konfirmasi Password Baru</label><input type="password" id="confirmNewPass" placeholder="Ulangi password baru"></div>';
+html+='<div class="form-group"><label>Password Lama</label><div class="pass-wrap"><input type="password" id="oldPass" placeholder="Masukkan password lama"><button type="button" class="pass-toggle" onclick="togglePass(\'oldPass\',this)" title="Lihat password">\u{1F441}\uFE0F</button></div></div>';
+html+='<div class="form-group"><label>Password Baru</label><div class="pass-wrap"><input type="password" id="newPass" placeholder="Masukkan password baru"><button type="button" class="pass-toggle" onclick="togglePass(\'newPass\',this)" title="Lihat password">\u{1F441}\uFE0F</button></div></div>';
+html+='<div class="form-group"><label>Konfirmasi Password Baru</label><div class="pass-wrap"><input type="password" id="confirmNewPass" placeholder="Ulangi password baru"><button type="button" class="pass-toggle" onclick="togglePass(\'confirmNewPass\',this)" title="Lihat password">\u{1F441}\uFE0F</button></div></div>';
 html+='<button class="btn btn-primary" onclick="doUbahPassword()">💾 Simpan Password</button>';
 html+='</div></div>';
 html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
