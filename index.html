@@ -1195,7 +1195,6 @@ nipKepala:document.getElementById('m-nipkepala').value.trim()
 if(!obj.nama){alert('Nama madrasah wajib diisi');return;}
 var data=getMadrasah();
 if(idx!==null&&idx!==undefined){data[idx]=obj;}else{
-if(data.length>=30){alert('Maksimal 30 madrasah');return;}
 data.push(obj);
 }
 saveMadrasah(data);closeModal();render();
@@ -1241,7 +1240,7 @@ kepala:(row['Kepala Madrasah']||row['kepala']||row['KEPALA MADRASAH']||'').toStr
 nipKepala:(row['NIP Kepala']||row['nipKepala']||row['NIP']||'').toString().trim()
 });
 });
-if(list.length>30){list=list.slice(0,30);alert('Maksimal 30 madrasah. Hanya 30 baris pertama file yang diimport.');}
+if(list.length===0){alert('Tidak ada baris valid di file. Pastikan kolom "Nama Madrasah" terisi.');return;}
 saveMadrasah(list);
 alert('Berhasil import '+list.length+' madrasah (data lama diganti semua).');
 render();
