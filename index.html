@@ -1205,10 +1205,12 @@ rows+='</td></tr>';
 var html='<div class="card">';
 html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">';
 html+='<h2>'+(isRAJenjang()?'Data Madrasah RA':'Data Madrasah')+'</h2>';
-html+='<button class="btn btn-primary" onclick="showMadrasahModal()">+ Tambah Madrasah'+(isRAJenjang()?' RA':'')+'</button> ';
-html+='<button class="btn btn-info" onclick="importMadrasahExcel()">&#128196; Import Excel</button> ';
-html+='<button class="btn btn-secondary" onclick="downloadTemplateMadrasah()">&#128229; Template Excel</button> ';
-html+='<button class="btn btn-danger" onclick="deleteAllMadrasah()">&#128465; Hapus Semua</button></div>';
+html+='<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">';
+html+='<button class="btn btn-primary btn-sm" onclick="showMadrasahModal()">+ Tambah</button>';
+html+='<button class="btn btn-info btn-sm" onclick="importMadrasahExcel()">&#128196; Import</button>';
+html+='<button class="btn btn-success btn-sm" onclick="exportMadrasahExcel()">&#128228; Eksport Excel</button>';
+html+='<button class="btn btn-secondary btn-sm" onclick="downloadTemplateMadrasah()">&#128229; Template</button>';
+html+='<button class="btn btn-danger btn-sm" onclick="deleteAllMadrasah()">&#128465; Hapus Semua</button></div></div>';
 html+='<input type="file" id="importMadrasahFile" accept=".xlsx,.xls" style="display:none" onchange="handleImportMadrasah(event)">';
 if(data.length===0){html+='<div class="empty-state"><p>Belum ada data madrasah'+(isRAJenjang()?' RA':'')+'.</p></div>';}
 else{
@@ -1264,6 +1266,18 @@ saveMadrasah([]);render();
 function closeModal(){var mc=document.getElementById('modal-container');if(mc)mc.innerHTML='';}
 
 // ===== IMPORT EXCEL MADRASAH =====
+// ===== IMPORT/EXPORT/TEMPLATE EXCEL MADRASAH =====
+function exportMadrasahExcel(){
+var data=getMadrasah();
+if(data.length===0){alert('Belum ada data madrasah untuk diexport');return;}
+var aoa=[['No','Nama Madrasah','NPSN','Alamat','Kabupaten/Kota','Kepala Madrasah','NIP Kepala']];
+data.forEach(function(m,i){aoa.push([i+1,m.nama||'',m.npsn||'',m.alamat||'',m.kabupaten||'',m.kepala||'',m.nipKepala||'']);});
+var ws=XLSX.utils.aoa_to_sheet(aoa);
+ws['!cols']=[{wch:5},{wch:35},{wch:12},{wch:35},{wch:18},{wch:28},{wch:22}];
+var wb=XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb,ws,'Data Madrasah');
+XLSX.writeFile(wb,'Data_Madrasah_'+new Date().toISOString().slice(0,10)+'.xlsx');
+}
 function importMadrasahExcel(){document.getElementById('importMadrasahFile').click();}
 function handleImportMadrasah(event){
 var file=event.target.files[0];
