@@ -1614,8 +1614,10 @@ else if(state.currentStep===2)content=renderPelaksanaan();
 else if(state.currentStep===3)content=renderInstrumen('asesmen',getIndikator('asesmen'));
 else if(state.currentStep===4)content=renderRekap();
 var isLast=state.currentStep===4;
-var nav='<div style="display:flex;justify-content:space-between;margin-top:20px">';
-nav+='<button class="btn btn-secondary" onclick="'+(state.currentStep===0?'backToDashboard()':'prevStep()')+'">&#8592; '+(state.currentStep===0?'Batal':'Kembali')+'</button>';
+var nav='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:8px">';
+nav+='<div style="display:flex;gap:8px">';
+if(state.currentStep>0){nav+='<button class="btn btn-secondary" onclick="prevStep()">&#8592; Kembali</button>';}
+nav+='<button class="btn btn-danger" onclick="cancelForm()">&#10005; Batal</button></div>';
 if(isLast){nav+='<button class="btn btn-success" onclick="saveForm()">&#128190; Simpan</button>';}
 else{nav+='<button class="btn btn-primary" onclick="nextStep()">Lanjut &#8594;</button>';}
 nav+='</div>';
@@ -2013,6 +2015,10 @@ state.formData={identitas:{namaSupervisor:pengawas.nama||'',nipSupervisor:pengaw
 render();
 }
 function backToDashboard(){state.view='dashboard';state.jenjang='umum';render()}
+function cancelForm(){
+if(state.currentStep>0&&!confirm('Batalkan pengisian? Data yang belum disimpan akan hilang.'))return;
+backToDashboard();
+}
 function nextStep(){if(state.currentStep<4)state.currentStep++;render()}
 function prevStep(){if(state.currentStep>0)state.currentStep--;render()}
 
