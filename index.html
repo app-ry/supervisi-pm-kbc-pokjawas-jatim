@@ -1224,13 +1224,13 @@ var sheet=workbook.Sheets[workbook.SheetNames[0]];
 var json=XLSX.utils.sheet_to_json(sheet,{defval:''});
 if(json.length===0){alert('File kosong atau format tidak sesuai');return;}
 if(!confirm('Import akan MENGGANTI SEMUA data madrasah'+(isRAJenjang()?' RA':'')+' saat ini dengan isi file Excel. Lanjutkan?'))return;
-var list=[];var seen={};
+var list=[];var seen={};var skipped=[];var rowNum=2;
 json.forEach(function(row){
 var nama=(row['Nama Madrasah']||row['nama']||row['NAMA MADRASAH']||'').toString().trim();
-if(!nama)return;
+if(!nama){skipped.push('Baris '+rowNum+': kolom Nama Madrasah kosong');rowNum++;return;}
 var key=nama.toLowerCase();
-if(seen[key])return;
-seen[key]=true;
+if(seen[key]){skipped.push('Baris '+rowNum+': nama duplikat — "'+nama+'" sudah ada di baris '+seen[key]);rowNum++;return;}
+seen[key]=rowNum;
 list.push({
 nama:nama,
 npsn:(row['NPSN']||row['npsn']||'').toString().trim(),
@@ -1239,10 +1239,13 @@ kabupaten:(row['Kabupaten/Kota']||row['kabupaten']||row['Kab/Kota']||row['KABUPA
 kepala:(row['Kepala Madrasah']||row['kepala']||row['KEPALA MADRASAH']||'').toString().trim(),
 nipKepala:(row['NIP Kepala']||row['nipKepala']||row['NIP']||'').toString().trim()
 });
+rowNum++;
 });
 if(list.length===0){alert('Tidak ada baris valid di file. Pastikan kolom "Nama Madrasah" terisi.');return;}
 saveMadrasah(list);
-alert('Berhasil import '+list.length+' madrasah (data lama diganti semua).');
+var msg='Berhasil import '+list.length+' madrasah dari '+json.length+' baris data (data lama diganti semua).';
+if(skipped.length>0){msg+='\n\nBaris yang dilewati ('+skipped.length+'):\n• '+skipped.join('\n• ');}
+alert(msg);
 render();
 }catch(err){alert('Gagal membaca file: '+err.message);}
 };
