@@ -15,28 +15,30 @@
 body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);min-height:100vh;color:#333}
 .app-layout{display:flex;flex-direction:column;min-height:100vh}
 .sidebar{width:100%;background:rgba(15,32,39,.97);padding:0;color:#fff;position:sticky;top:0;height:auto;overflow:visible;z-index:100;transition:transform .3s;box-shadow:0 4px 20px rgba(0,0,0,.35)}
-.sidebar h2{padding:10px 20px;font-size:1.05rem;margin-bottom:0;white-space:nowrap}
+.sidebar h2{padding:10px 20px;font-size:.95rem;margin-bottom:0;white-space:nowrap}
 .nav-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
 .nav-top .sidebar-user{border-bottom:none;margin-bottom:0;padding:8px 20px}
 .nav-credit{padding:6px 20px;font-size:.6rem;color:rgba(255,255,255,.4);border-top:1px solid rgba(255,255,255,.1);white-space:normal;line-height:1.4;text-align:center}
 .sidebar-menu>li.nav-logout{color:#f87171}
-.sidebar-menu{list-style:none;display:flex;flex-wrap:wrap;align-items:stretch}
-.sidebar-menu>li{padding:12px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;font-size:.85rem;position:relative;white-space:nowrap}
+.sidebar-menu{list-style:none;display:flex;flex-wrap:nowrap;align-items:stretch;justify-content:center}
+.sidebar-menu>li{padding:9px 11px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;font-size:.73rem;position:relative;white-space:nowrap}
 .sidebar-menu>li:hover{background:rgba(14,165,233,.2)}
 .sidebar-menu>li.active{background:linear-gradient(135deg,rgba(14,165,233,.3),rgba(13,148,136,.3));border-bottom:3px solid #0ea5e9}
-.submenu-toggle{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px;font-size:.85rem;color:#fff;transition:all .2s;position:relative;white-space:nowrap}
+.submenu-toggle{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:9px 11px;font-size:.73rem;color:#fff;transition:all .2s;position:relative;white-space:nowrap}
 .submenu-toggle:hover{background:rgba(14,165,233,.2)}
 .submenu-toggle.active{border-bottom:3px solid #0ea5e9;background:linear-gradient(135deg,rgba(14,165,233,.3),rgba(13,148,136,.3))}
 .sidebar-menu>li.has-sub:hover>.submenu{display:block}
 .submenu{list-style:none;display:none;position:absolute;top:100%;left:0;min-width:240px;background:rgba(15,32,39,.98);border-radius:0 0 10px 10px;box-shadow:0 12px 30px rgba(0,0,0,.45);padding:6px 0;margin:0;z-index:200}
 .submenu.open{display:block}
-.submenu li{padding:10px 20px;font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.85)}
+.submenu li{padding:9px 16px;font-size:.75rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.85)}
 .submenu li:hover{background:rgba(14,165,233,.25)}
 .submenu li.active{background:linear-gradient(135deg,rgba(14,165,233,.2),rgba(13,148,136,.2));border-left:3px solid #0ea5e9}
 .sidebar-menu .nav-sep{flex:1;cursor:default;padding:0;pointer-events:none}
+.submenu-sep{padding:5px 16px 3px;font-size:.6rem;color:rgba(255,255,255,.35);cursor:default;text-transform:uppercase;letter-spacing:.5px}
+.submenu-sep:hover{background:none}
 .main-content{margin-left:0;flex:1;padding:20px;min-height:100vh;width:100%}
 .mobile-toggle{display:none;position:fixed;top:15px;left:15px;z-index:200;background:linear-gradient(135deg,#0ea5e9,#0d9488);color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:1.2rem;cursor:pointer}
-@media(max-width:768px){.sidebar{position:fixed;top:0;left:0;right:0;max-height:90vh;overflow-y:auto;transform:translateY(-100%)}.sidebar.open{transform:translateY(0)}.sidebar-menu{flex-direction:column;align-items:stretch}.sidebar-menu>li{padding:12px 20px}.sidebar-menu .nav-sep{display:none}.submenu{position:static;display:none;min-width:0;background:rgba(255,255,255,.04);border-radius:0;box-shadow:none}.sidebar-menu>li.has-sub:hover>.submenu{display:none}.submenu.open{display:block}.mobile-toggle{display:block}}
+@media(max-width:768px){.sidebar{position:fixed;top:0;left:0;right:0;max-height:90vh;overflow-y:auto;transform:translateY(-100%)}.sidebar.open{transform:translateY(0)}.sidebar-menu{flex-direction:column;align-items:stretch;justify-content:flex-start}.sidebar-menu>li{padding:12px 20px;font-size:.9rem}.sidebar-menu .nav-sep{display:none}.submenu-toggle{font-size:.9rem;padding:12px 20px}.submenu{position:static;display:none;min-width:0;background:rgba(255,255,255,.04);border-radius:0;box-shadow:none}.sidebar-menu>li.has-sub:hover>.submenu{display:none}.submenu.open{display:block}.submenu li{font-size:.85rem;padding:10px 20px 10px 35px}.mobile-toggle{display:block}}
 .container{max-width:1100px;margin:0 auto}
 header{text-align:center;padding:20px 0;color:#fff}
 header h1{font-size:1.6rem;margin-bottom:5px}
@@ -169,16 +171,16 @@ canvas{max-width:100%;margin:20px 0}
 </div>
 <ul class="sidebar-menu">
 <li class="active" onclick="navigate('dashboard')" data-nav="dashboard">&#128202; Dashboard</li>
-<li onclick="navigate('pengawas')" data-nav="pengawas">&#128100; Data Pengawas</li>
-<li onclick="navigate('madrasah')" data-nav="madrasah">&#127979; Data Madrasah</li>
-<li onclick="navigate('guru')" data-nav="guru">&#128104;&#8205;&#127891; Data Guru</li>
+<li onclick="navigate('pengawas')" data-nav="pengawas">&#128100; Pengawas</li>
+<li onclick="navigate('madrasah')" data-nav="madrasah">&#127979; Madrasah</li>
+<li onclick="navigate('guru')" data-nav="guru">&#128104;&#8205;&#127891; Guru</li>
 <li class="submenu-toggle has-sub" onclick="toggleSubmenu('sub-data-ra')">&#127793; Data RA &#9662;
 <ul class="submenu" id="sub-data-ra">
 <li onclick="navigate('madrasah-ra')" data-nav="madrasah-ra">&#127979; Data Madrasah RA</li>
 <li onclick="navigate('guru-ra')" data-nav="guru-ra">&#128104;&#8205;&#127891; Data Guru RA</li>
 </ul>
 </li>
-<li class="submenu-toggle has-sub" onclick="toggleSubmenu('sub-supervisi')">&#128221; Supervisi Pembelajaran &#9662;
+<li class="submenu-toggle has-sub" onclick="toggleSubmenu('sub-supervisi')">&#128221; Supervisi &#9662;
 <ul class="submenu" id="sub-supervisi">
 <li onclick="navigate('supervisi')" data-nav="supervisi">&#128221; Input Supervisi</li>
 <li onclick="navigate('rekap')" data-nav="rekap">&#128202; Rekap Hasil</li>
@@ -186,7 +188,7 @@ canvas{max-width:100%;margin:20px 0}
 <li onclick="navigate('laporan')" data-nav="laporan">&#128196; Laporan</li>
 </ul>
 </li>
-<li class="submenu-toggle has-sub" onclick="toggleSubmenu('sub-supervisi-ra')">&#127793; Supervisi Pembelajaran RA &#9662;
+<li class="submenu-toggle has-sub" onclick="toggleSubmenu('sub-supervisi-ra')">&#127793; Supervisi RA &#9662;
 <ul class="submenu" id="sub-supervisi-ra">
 <li onclick="navigate('supervisi-ra')" data-nav="supervisi-ra">&#128221; Input Supervisi RA</li>
 <li onclick="navigate('rekap-ra')" data-nav="rekap-ra">&#128202; Rekap Hasil RA</li>
@@ -210,7 +212,7 @@ canvas{max-width:100%;margin:20px 0}
 <li onclick="navigate('laporan-ekstrakurikuler-madrasah')" data-nav="laporan-ekstrakurikuler-madrasah">&#128196; Laporan Per Madrasah</li>
 </ul>
 </li>
-<li class="submenu-toggle has-sub" onclick="toggleSubmenu('sub-iklim')">&#127979; Iklim Madrasah &#9662;
+<li class="submenu-toggle has-sub" onclick="toggleSubmenu('sub-iklim')">&#127979; Iklim &#9662;
 <ul class="submenu" id="sub-iklim">
 <li onclick="navigate('iklim-madrasah')" data-nav="iklim-madrasah">&#128221; Input Iklim Madrasah</li>
 <li onclick="navigate('rekap-iklim-madrasah')" data-nav="rekap-iklim-madrasah">&#128202; Rekap</li>
@@ -218,8 +220,8 @@ canvas{max-width:100%;margin:20px 0}
 <li onclick="navigate('laporan-iklim-madrasah-madrasah')" data-nav="laporan-iklim-madrasah-madrasah">&#128196; Laporan Per Madrasah</li>
 </ul>
 </li>
-<li onclick="navigate('ubah-password')" data-nav="ubah-password">&#128274; Ubah Password</li>
-<li onclick="navigate('backup-restore')" data-nav="backup-restore">&#128190; Backup &amp; Restore</li>
+<li onclick="navigate('ubah-password')" data-nav="ubah-password">&#128274; Password</li>
+<li onclick="navigate('backup-restore')" data-nav="backup-restore">&#128190; Backup</li>
 <li class="nav-sep"></li>
 <li onclick="window.open('panduan.html','_blank')">&#128214; Panduan</li>
 <li class="nav-logout" onclick="doLogout()">&#128682; Logout</li>
