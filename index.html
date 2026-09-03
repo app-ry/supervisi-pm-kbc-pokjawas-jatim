@@ -1259,6 +1259,90 @@ XLSX.utils.book_append_sheet(wb,ws,'Data Madrasah');
 XLSX.writeFile(wb,'Template_Data_Madrasah.xlsx');
 }
 
+// ===== FOTO DOKUMENTASI =====
+var fotoCtx={arr:null,save:null,idx:0};
+function compressFoto(file,cb){
+var img=new Image();
+var url=URL.createObjectURL(file);
+img.onload=function(){
+var maxDim=800;
+var scale=Math.min(1,maxDim/Math.max(img.width,img.height));
+var cv=document.createElement('canvas');
+cv.width=Math.max(1,Math.round(img.width*scale));
+cv.height=Math.max(1,Math.round(img.height*scale));
+var ctx=cv.getContext('2d');
+ctx.fillStyle='#fff';ctx.fillRect(0,0,cv.width,cv.height);
+ctx.drawImage(img,0,0,cv.width,cv.height);
+try{cb(cv.toDataURL('image/jpeg',0.72));}catch(e){alert('Gagal memproses foto: '+e.message);}
+URL.revokeObjectURL(url);
+};
+img.onerror=function(){URL.revokeObjectURL(url);alert('File bukan gambar yang valid.');};
+img.src=url;
+}
+function renderFotoSection(getArr,saveArr,idx){
+var arr=getArr();
+fotoCtx={arr:arr,save:saveArr,idx:idx};
+var d=arr[idx]||{};
+var fotos=d.fotos||[];
+var html='<div style="margin-top:20px;padding:15px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px">';
+html+='<h3 style="margin:0 0 4px">\u{1F4F7} Foto Dokumentasi</h3>';
+html+='<p style="color:#64748b;font-size:.85rem;margin:0 0 10px">Foto otomatis muncul di lampiran laporan. Dikompres otomatis agar hemat penyimpanan.</p>';
+html+='<input type="file" accept="image/*" multiple style="display:none" id="fotoInput" onchange="handleAddFoto(event)">';
+html+='<button class="btn btn-info btn-sm" onclick="document.getElementById(\'fotoInput\').click()">+ Tambah Foto</button>';
+if(fotos.length>0){
+html+='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:12px">';
+fotos.forEach(function(f,i){
+html+='<div style="position:relative;border:1px solid #cbd5e1;border-radius:8px;overflow:hidden;background:#fff">';
+html+='<img src="'+f+'" style="width:100%;height:90px;object-fit:cover;display:block">';
+html+='<button class="btn btn-danger btn-sm" style="position:absolute;top:4px;right:4px;padding:1px 6px;font-size:.75rem;line-height:1.2" onclick="removeFoto('+i+')">&#10005;</button>';
+html+='</div>';
+});
+html+='</div>';
+html+='<p style="color:#94a3b8;font-size:.78rem;margin:6px 0 0">'+fotos.length+' foto tersimpan</p>';
+}else{
+html+='<p style="color:#94a3b8;font-size:.8rem;margin-top:10px">Belum ada foto.</p>';
+}
+html+='</div>';
+return html;
+}
+function fotoTarget(){var c=fotoCtx;if(!c||!c.arr||!c.arr[c.idx])return null;return c.arr[c.idx];}
+function handleAddFoto(event){
+var files=event.target.files;
+if(!files||files.length===0)return;
+Array.prototype.forEach.call(files,function(file){
+compressFoto(file,function(dataUrl){
+var d=fotoTarget();if(!d)return;
+if(!d.fotos)d.fotos=[];
+if(d.fotos.length>=20){alert('Maksimal 20 foto per kegiatan.');return;}
+d.fotos.push(dataUrl);
+if(fotoCtx.save){try{fotoCtx.save(fotoCtx.arr);}catch(e){d.fotos.pop();alert('Penyimpanan browser penuh. Hapus beberapa foto lama atau kurangi jumlah foto.');return;}}
+render();
+});
+});
+event.target.value='';
+}
+function removeFoto(i){
+var d=fotoTarget();if(!d||!d.fotos)return;
+d.fotos.splice(i,1);
+if(fotoCtx.save)fotoCtx.save(fotoCtx.arr);
+render();
+}
+function collectFotos(records,max){
+var out=[];
+(records||[]).forEach(function(d){(d&&d.fotos||[]).forEach(function(f){if(out.length<(max||40))out.push(f);});});
+return out;
+}
+function renderLampiranFotos(fotos){
+fotos=fotos||[];
+if(fotos.length===0){return '<p style="text-align:center;color:#666;margin-top:40px">(Belum ada foto dokumentasi. Upload foto melalui halaman instrumen masing-masing kegiatan.)</p>';}
+var html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px">';
+fotos.forEach(function(f,i){
+html+='<div style="border:1px solid #bbb;padding:5px;text-align:center;page-break-inside:avoid"><img src="'+f+'" style="width:100%;height:auto;display:block" alt="Foto '+(i+1)+'"><p style="margin:4px 0 0;font-size:10pt;color:#444">Foto '+(i+1)+'</p></div>';
+});
+html+='</div>';
+return html;
+}
+
 // ===== DATA GURU =====
 function renderGuruPage(){
 var data=getGuru();
@@ -1731,6 +1815,7 @@ html+='<div class="btn-group no-print" style="justify-content:center">';
 html+='<button class="btn btn-secondary" onclick="printRekap()">&#128424; Cetak Rekap</button>';
 html+='<button class="btn btn-info" onclick="exportRekapPDF()">&#128196; Export PDF Rekap</button>';
 html+='</div>';
+html+=renderFotoSection(function(){return [state.formData];},null,0);
 return html;
 }
 
@@ -2493,6 +2578,7 @@ html+='<div class="form-group" style="margin-top:15px"><label>Catatan Hasil Pend
 html+='<textarea rows="4" onchange="setRekapKokurikuler('+idx+',\'catatan\',this.value)">'+escHtml(rekap.catatan||'')+'</textarea></div>';
 html+='<div class="form-group"><label>Rencana Tindak Lanjut</label>';
 html+='<textarea rows="4" onchange="setRekapKokurikuler('+idx+',\'tindakLanjut\',this.value)">'+escHtml(rekap.tindakLanjut||'')+'</textarea></div>';
+html+=renderFotoSection(getKokurikuler,saveKokurikuler,idx);
 html+='<div class="btn-group no-print" style="justify-content:center">';
 html+='<button class="btn btn-primary" onclick="navigate(\'kokurikuler\')">✔ Simpan</button>';
 html+='<button class="btn btn-info" onclick="cetakKokurikuler('+idx+')">🖨️ Cetak</button>';
@@ -2859,6 +2945,7 @@ html+='<div style="margin-top:20px"><h3>Catatan Hasil Pendampingan</h3>';
 html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px" onchange="setRekapEkstrakurikuler('+idx+',\'catatan\',this.value)">'+escHtml(rekap.catatan||'')+'</textarea></div>';
 html+='<div style="margin-top:15px"><h3>Rencana Tindak Lanjut</h3>';
 html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px" onchange="setRekapEkstrakurikuler('+idx+',\'tindakLanjut\',this.value)">'+escHtml(rekap.tindakLanjut||'')+'</textarea></div>';
+html+=renderFotoSection(getEkstrakurikuler,saveEkstrakurikuler,idx);
 html+='<div class="btn-group no-print" style="justify-content:center">';
 html+='<button class="btn btn-primary" onclick="navigate(\'ekstrakurikuler\')">&\#10004; Simpan</button>';
 html+='<button class="btn btn-info" onclick="cetakEkstrakurikuler('+idx+')">&\#128424; Cetak</button>';
@@ -3225,6 +3312,7 @@ html+='<div style="margin-top:20px"><h3>Catatan Hasil Supervisi</h3>';
 html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px" onchange="setRekapIklimMadrasah('+idx+',\'catatan\',this.value)">'+escHtml(rekap.catatan||'')+'</textarea></div>';
 html+='<div style="margin-top:15px"><h3>Rencana Tindak Lanjut</h3>';
 html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px" onchange="setRekapIklimMadrasah('+idx+',\'tindakLanjut\',this.value)">'+escHtml(rekap.tindakLanjut||'')+'</textarea></div>';
+html+=renderFotoSection(getIklimMadrasah,saveIklimMadrasah,idx);
 html+='<div class="btn-group no-print" style="justify-content:center">';
 html+='<button class="btn btn-primary" onclick="navigate(\'iklim-madrasah\')">&#10004; Simpan</button>';
 html+='<button class="btn btn-info" onclick="cetakIklimMadrasah('+idx+')">&#128424; Cetak</button>';
@@ -3690,10 +3778,7 @@ html+='</div></div>';
 html+='<div class="page-break"></div>';
 html+='<h2>LAMPIRAN</h2>';
 html+='<ol><li>SK Tim Supervisi</li><li>Jadwal Pelaksanaan</li><li>Instrumen Hasil Supervisi</li><li>Foto Kegiatan</li></ol>';
-html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px">';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 1</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 2</div>';
-html+='</div>';
+html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();
 setTimeout(function(){w.print()},500);
@@ -4014,12 +4099,7 @@ html+='<li>Jadwal Pelaksanaan</li>';
 html+='<li>Instrumen Hasil Supervisi Pembelajaran</li>';
 html+='<li>Foto Kegiatan</li>';
 html+='</ol>';
-html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px">';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 1</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 2</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 3</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 4</div>';
-html+='</div>';
+html+=renderLampiranFotos(collectFotos(data));
 
 html+='</body></html>';
 w.document.write(html);
@@ -4233,12 +4313,7 @@ html+='<p>Demikian laporan ini disusun sebagai bentuk pertanggungjawaban dan bah
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div></div>';
 // LAMPIRAN
 html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Kegiatan Kokurikuler</h3>';
-html+='<p style="text-align:center;color:#666;margin-top:50px">(Tempelkan foto-foto dokumentasi kegiatan kokurikuler di halaman ini)</p>';
-html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px">';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 1</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 2</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 3</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 4</div></div>';
+html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();
 setTimeout(function(){w.print()},500);
@@ -4448,12 +4523,7 @@ html+='<p>Demikian laporan ini disusun sebagai bentuk pertanggungjawaban dan bah
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div></div>';
 // LAMPIRAN
 html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Kegiatan Ekstrakurikuler</h3>';
-html+='<p style="text-align:center;color:#666;margin-top:50px">(Tempelkan foto-foto dokumentasi kegiatan ekstrakurikuler di halaman ini)</p>';
-html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px">';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 1</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 2</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 3</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 4</div></div>';
+html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();
 setTimeout(function(){w.print()},500);
@@ -4668,12 +4738,7 @@ html+='<p>Demikian laporan ini disusun sebagai bentuk pertanggungjawaban dan bah
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div></div>';
 // LAMPIRAN
 html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Supervisi Iklim Madrasah</h3>';
-html+='<p style="text-align:center;color:#666;margin-top:50px">(Tempelkan foto-foto dokumentasi supervisi iklim madrasah di halaman ini)</p>';
-html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px">';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 1</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 2</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 3</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 4</div></div>';
+html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();
 setTimeout(function(){w.print()},500);
@@ -4909,12 +4974,7 @@ html+='<p>Demikian laporan '+title.toLowerCase()+' untuk '+escHtml(mName)+' ini 
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div></div>';
 // LAMPIRAN
 html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Kegiatan</h3>';
-html+='<p style="text-align:center;color:#666;margin-top:50px">(Tempelkan foto-foto dokumentasi kegiatan di halaman ini)</p>';
-html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px">';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 1</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 2</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 3</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 4</div></div>';
+html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();setTimeout(function(){w.print();},500);}
 
@@ -5030,12 +5090,7 @@ html+='<p>Demikian laporan '+title.toLowerCase()+' untuk wilayah '+escHtml(kkma)
 html+='<div class="ttd" style="margin-top:20px"><p style="margin:0">..................., .................... 2025</p><p style="margin:0">Pengawas Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(pengawas.nama||'...')+'</u></b></p><p style="margin:0">NIP. '+(pengawas.nip||'...')+'</p></div></div>';
 // LAMPIRAN
 html+='<div class="page-break"></div><h2>LAMPIRAN</h2><h3>Dokumentasi Kegiatan</h3>';
-html+='<p style="text-align:center;color:#666;margin-top:50px">(Tempelkan foto-foto dokumentasi kegiatan di halaman ini)</p>';
-html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px">';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 1</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 2</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 3</div>';
-html+='<div style="border:1px dashed #999;height:200px;display:flex;align-items:center;justify-content:center;color:#999">Foto 4</div></div>';
+html+=renderLampiranFotos(collectFotos(data));
 html+='</body></html>';
 w.document.write(html);w.document.close();setTimeout(function(){w.print();},500);}
 
