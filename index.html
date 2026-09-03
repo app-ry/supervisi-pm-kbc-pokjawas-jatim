@@ -1154,7 +1154,8 @@ html+='<div style="display:flex;justify-content:space-between;align-items:center
 html+='<h2>'+(isRAJenjang()?'Data Madrasah RA':'Data Madrasah')+'</h2>';
 html+='<button class="btn btn-primary" onclick="showMadrasahModal()">+ Tambah Madrasah'+(isRAJenjang()?' RA':'')+'</button> ';
 html+='<button class="btn btn-info" onclick="importMadrasahExcel()">&#128196; Import Excel</button> ';
-html+='<button class="btn btn-secondary" onclick="downloadTemplateMadrasah()">&#128229; Template Excel</button></div>';
+html+='<button class="btn btn-secondary" onclick="downloadTemplateMadrasah()">&#128229; Template Excel</button> ';
+html+='<button class="btn btn-danger" onclick="deleteAllMadrasah()">&#128465; Hapus Semua</button></div>';
 html+='<input type="file" id="importMadrasahFile" accept=".xlsx,.xls" style="display:none" onchange="handleImportMadrasah(event)">';
 if(data.length===0){html+='<div class="empty-state"><p>Belum ada data madrasah'+(isRAJenjang()?' RA':'')+'.</p></div>';}
 else{
@@ -1202,6 +1203,12 @@ saveMadrasah(data);closeModal();render();
 
 function editMadrasah(idx){showMadrasahModal(idx)}
 function deleteMadrasah(idx){if(!confirm('Hapus data madrasah ini?'))return;var data=getMadrasah();data.splice(idx,1);saveMadrasah(data);render();}
+function deleteAllMadrasah(){
+if(getMadrasah().length===0){alert('Belum ada data madrasah'+(isRAJenjang()?' RA':'')+'.');return;}
+if(!confirm('Yakin hapus SEMUA data madrasah'+(isRAJenjang()?' RA':'')+'? Tindakan ini tidak bisa dibatalkan.'))return;
+if(prompt('Ketik HAPUS (huruf besar) untuk konfirmasi:')!=='HAPUS')return;
+saveMadrasah([]);render();
+}
 function closeModal(){var mc=document.getElementById('modal-container');if(mc)mc.innerHTML='';}
 
 // ===== IMPORT EXCEL MADRASAH =====
@@ -1217,25 +1224,26 @@ var workbook=XLSX.read(data,{type:'array'});
 var sheet=workbook.Sheets[workbook.SheetNames[0]];
 var json=XLSX.utils.sheet_to_json(sheet,{defval:''});
 if(json.length===0){alert('File kosong atau format tidak sesuai');return;}
-var existing=getMadrasah();
-var count=0;
+if(!confirm('Import akan MENGGANTI SEMUA data madrasah'+(isRAJenjang()?' RA':'')+' saat ini dengan isi file Excel. Lanjutkan?'))return;
+var list=[];var seen={};
 json.forEach(function(row){
 var nama=(row['Nama Madrasah']||row['nama']||row['NAMA MADRASAH']||'').toString().trim();
 if(!nama)return;
-var obj={
+var key=nama.toLowerCase();
+if(seen[key])return;
+seen[key]=true;
+list.push({
 nama:nama,
 npsn:(row['NPSN']||row['npsn']||'').toString().trim(),
 alamat:(row['Alamat']||row['alamat']||row['ALAMAT']||'').toString().trim(),
 kabupaten:(row['Kabupaten/Kota']||row['kabupaten']||row['Kab/Kota']||row['KABUPATEN']||'').toString().trim(),
 kepala:(row['Kepala Madrasah']||row['kepala']||row['KEPALA MADRASAH']||'').toString().trim(),
 nipKepala:(row['NIP Kepala']||row['nipKepala']||row['NIP']||'').toString().trim()
-};
-var duplicate=existing.some(function(m){return m.nama.toLowerCase()===obj.nama.toLowerCase();});
-if(!duplicate){existing.push(obj);count++;}
 });
-if(existing.length>30){alert('Maksimal 30 madrasah. Hanya '+(30-getMadrasah().length)+' yang bisa ditambahkan.');existing=existing.slice(0,30);}
-saveMadrasah(existing);
-alert('Berhasil import '+count+' madrasah!');
+});
+if(list.length>30){list=list.slice(0,30);alert('Maksimal 30 madrasah. Hanya 30 baris pertama file yang diimport.');}
+saveMadrasah(list);
+alert('Berhasil import '+list.length+' madrasah (data lama diganti semua).');
 render();
 }catch(err){alert('Gagal membaca file: '+err.message);}
 };
