@@ -1737,6 +1737,15 @@ var all=document.querySelectorAll('.submenu.open');
 for(var i=0;i<all.length;i++){if(all[i].id!==id)all[i].classList.remove('open');}
 el.classList.toggle('open', willOpen);
 }
+// Tutup semua submenu saat klik di luar area sidebar/navbar
+function closeAllSubmenus(){
+var open=document.querySelectorAll('.submenu.open');
+for(var i=0;i<open.length;i++){open[i].classList.remove('open');}
+}
+document.addEventListener('click',function(e){
+var sidebar=document.getElementById('sidebar');
+if(sidebar && !sidebar.contains(e.target)){closeAllSubmenus();}
+});
 function navigate(view){
 // ===== ROUTE GUARD (role-based) =====
 var role=getCurrentRole();
