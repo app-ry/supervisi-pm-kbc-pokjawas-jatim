@@ -1755,6 +1755,7 @@ if(role===ROLES.KM){
   if(kmViews.indexOf(view)===-1){alert('Menu ini khusus Pengawas/Admin.');renderSidebar(getSession());return;}
 }
 state.view=view;state.editId=null;
+closeAllSubmenus();
 state.jenjang=isRAView(view)?'ra':'umum';
 document.querySelectorAll('.sidebar-menu li').forEach(function(li){li.classList.toggle('active',li.dataset.nav===view)});
 document.querySelectorAll('.submenu li').forEach(function(li){li.classList.toggle('active',li.dataset.nav===view)});
