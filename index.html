@@ -154,59 +154,7 @@ canvas{max-width:100%;margin:20px 0}
 <nav class="sidebar" id="sidebar">
 <h2 style="line-height:1.3">SUPERVISI PM-KBC<br><span style="font-size:.75em">POKJAWAS JAWA TIMUR</span></h2>
 <div class="sidebar-user" id="sidebarUser"></div>
-<ul class="sidebar-menu">
-<li class="active" onclick="navigate('dashboard')" data-nav="dashboard">&#128202; Dashboard</li>
-<li onclick="navigate('pengawas')" data-nav="pengawas">&#128100; Data Pengawas</li>
-<li onclick="navigate('madrasah')" data-nav="madrasah">&#127979; Data Madrasah</li>
-<li onclick="navigate('guru')" data-nav="guru">&#128104;&#8205;&#127891; Data Guru</li>
-<li class="submenu-toggle" onclick="toggleSubmenu('sub-data-ra')">&#127793; Data RA &#9662;</li>
-<ul class="submenu" id="sub-data-ra">
-<li onclick="navigate('madrasah-ra')" data-nav="madrasah-ra">&#127979; Data Madrasah RA</li>
-<li onclick="navigate('guru-ra')" data-nav="guru-ra">&#128104;&#8205;&#127891; Data Guru RA</li>
-</ul>
-<li class="submenu-toggle" onclick="toggleSubmenu('sub-supervisi')">&#128221; Supervisi Pembelajaran &#9662;</li>
-<ul class="submenu" id="sub-supervisi">
-<li onclick="navigate('supervisi')" data-nav="supervisi">&#128221; Input Supervisi</li>
-<li onclick="navigate('rekap')" data-nav="rekap">&#128202; Rekap Hasil</li>
-<li onclick="navigate('cetak')" data-nav="cetak">&#128424; Cetak Hasil</li>
-<li onclick="navigate('laporan')" data-nav="laporan">&#128196; Laporan</li>
-</ul>
-<li class="submenu-toggle" onclick="toggleSubmenu('sub-supervisi-ra')">&#127793; Supervisi Pembelajaran RA &#9662;</li>
-<ul class="submenu" id="sub-supervisi-ra">
-<li onclick="navigate('supervisi-ra')" data-nav="supervisi-ra">&#128221; Input Supervisi RA</li>
-<li onclick="navigate('rekap-ra')" data-nav="rekap-ra">&#128202; Rekap Hasil RA</li>
-<li onclick="navigate('cetak-ra')" data-nav="cetak-ra">&#128424; Cetak Hasil RA</li>
-<li onclick="navigate('laporan-ra')" data-nav="laporan-ra">&#128196; Laporan RA</li>
-</ul>
-<li class="submenu-toggle" onclick="toggleSubmenu('sub-kokurikuler')">&#128203; Kokurikuler &#9662;</li>
-<ul class="submenu" id="sub-kokurikuler">
-<li onclick="navigate('kokurikuler')" data-nav="kokurikuler">&#128221; Input Kokurikuler</li>
-<li onclick="navigate('rekap-kokurikuler')" data-nav="rekap-kokurikuler">&#128202; Rekap</li>
-<li onclick="navigate('laporan-kokurikuler')" data-nav="laporan-kokurikuler">&#128196; Cetak Laporan Lengkap</li>
-<li onclick="navigate('laporan-kokurikuler-madrasah')" data-nav="laporan-kokurikuler-madrasah">&#128196; Laporan Per Madrasah</li>
-
-</ul>
-<li class="submenu-toggle" onclick="toggleSubmenu('sub-ekstrakurikuler')">&#128203; Ekstrakurikuler &#9662;</li>
-<ul class="submenu" id="sub-ekstrakurikuler">
-<li onclick="navigate('ekstrakurikuler')" data-nav="ekstrakurikuler">&#128221; Input Ekstrakurikuler</li>
-<li onclick="navigate('rekap-ekstrakurikuler')" data-nav="rekap-ekstrakurikuler">&#128202; Rekap</li>
-<li onclick="navigate('laporan-ekstrakurikuler')" data-nav="laporan-ekstrakurikuler">&#128196; Cetak Laporan Lengkap</li>
-<li onclick="navigate('laporan-ekstrakurikuler-madrasah')" data-nav="laporan-ekstrakurikuler-madrasah">&#128196; Laporan Per Madrasah</li>
-
-</ul>
-<li class="submenu-toggle" onclick="toggleSubmenu('sub-iklim')">&#127979; Iklim Madrasah &#9662;</li>
-<ul class="submenu" id="sub-iklim">
-<li onclick="navigate('iklim-madrasah')" data-nav="iklim-madrasah">&#128221; Input Iklim Madrasah</li>
-<li onclick="navigate('rekap-iklim-madrasah')" data-nav="rekap-iklim-madrasah">&#128202; Rekap</li>
-<li onclick="navigate('laporan-iklim-madrasah')" data-nav="laporan-iklim-madrasah">&#128196; Cetak Laporan Lengkap</li>
-<li onclick="navigate('laporan-iklim-madrasah-madrasah')" data-nav="laporan-iklim-madrasah-madrasah">&#128196; Laporan Per Madrasah</li>
-
-</ul>
-<li onclick="navigate('ubah-password')" data-nav="ubah-password">&#128274; Ubah Password</li>
-<li onclick="navigate('backup-restore')" data-nav="backup-restore">&#128190; Export/Backup &amp; Restore</li>
-<li onclick="window.open('panduan.html','_blank')" style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px">&#128214; Panduan</li>
-<li onclick="doLogout()" style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px;color:#f87171">&#128682; Logout</li>
-</ul>
+<ul class="sidebar-menu" id="sidebarMenu"></ul>
 <p style="padding:10px 20px;font-size:.6rem;color:rgba(255,255,255,.4);border-top:1px solid rgba(255,255,255,.1);white-space:normal;line-height:1.4;text-align:center">Aplikasi ini dibuat oleh : Subariyanto<br>Ketua Pokjawas Madrasah Kab. Jember<br><br>Instrumen disusun oleh : Ida Safiaturrahma<br>Pengawas Madrasah Kab. Lamongan</p>
 </nav>
 <div class="main-content">
@@ -223,6 +171,117 @@ canvas{max-width:100%;margin:20px 0}
 const USERS_KEY='supervisi_users';
 const SESSION_KEY='supervisi_session';
 
+// ===== ROLE CONSTANTS =====
+const ROLES={ADMIN:'admin',PENGAWAS:'pengawas',KM:'kepala_madrasah'};
+const ROLE_LABEL={admin:'Admin',pengawas:'Pengawas',kepala_madrasah:'Kepala Madrasah'};
+
+function getCurrentRole(){
+  var s=getSession();
+  return (s&&s.role)?s.role:null;
+}
+function isAdmin(){return getCurrentRole()===ROLES.ADMIN;}
+function isPengawas(){return getCurrentRole()===ROLES.PENGAWAS;}
+function isKM(){return getCurrentRole()===ROLES.KM;}
+// Pengawas & Admin: akses penuh fitur supervisi + modul pengawas
+function isSupervisorLevel(){return isAdmin()||isPengawas();}
+
+// ===== ROLE-AWARE SIDEBAR =====
+function sMenuItem(view,icon,label,active){return '<li class="'+(active?'active ':'')+'" onclick="navigate(\''+view+'\')" data-nav="'+view+'">'+icon+' '+label+'</li>';}
+function sSubmenuToggle(id,icon,label){return '<li class="submenu-toggle" onclick="toggleSubmenu(\''+id+'\')">'+icon+' '+label+' &#9662;</li>';}
+function sSubItem(view,icon,label,active){return '<li class="'+(active?'active ':'')+'" onclick="navigate(\''+view+'\')" data-nav="'+view+'">'+icon+' '+label+'</li>';}
+
+function renderSidebar(session){
+  var role=session.role||ROLES.PENGAWAS;
+  var userEl=document.getElementById('sidebarUser');
+  if(userEl)userEl.innerHTML='<strong>👤 '+escHtml(session.nama)+'</strong><br><span style="color:#7dd3fc">'+ROLE_LABEL[role]+'</span>'+(session.madrasah?'<br><span style="font-size:.7rem;color:#a5f3fc;word-break:break-word">'+escHtml(session.madrasah)+'</span>':'');
+  var menu=document.getElementById('sidebarMenu');
+  if(!menu)return;
+  var html='';
+  if(isSupervisorLevel()){
+    html+=sMenuItem('dashboard','&#128202;','Dashboard',state.view==='dashboard');
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'sub-data\')">&#128218; Data Master &#9662;</li>';
+    html+='<ul class="submenu" id="sub-data">';
+    html+=sSubItem('pengawas','&#128100;','Data Pengawas',state.view==='pengawas');
+    html+=sSubItem('madrasah','&#127979;','Data Madrasah',state.view==='madrasah');
+    html+=sSubItem('guru','&#128104;&#8205;&#127891;','Data Guru',state.view==='guru');
+    html+='</ul>';
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'sub-ra\')">&#127793; Data RA &#9662;</li>';
+    html+='<ul class="submenu" id="sub-ra">';
+    html+=sSubItem('madrasah-ra','&#127979;','Data Madrasah RA',state.view==='madrasah-ra');
+    html+=sSubItem('guru-ra','&#128104;&#8205;&#127891;','Data Guru RA',state.view==='guru-ra');
+    html+='</ul>';
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'sub-spv\')">&#128221; Supervisi Pembelajaran &#9662;</li>';
+    html+='<ul class="submenu" id="sub-spv">';
+    html+=sSubItem('supervisi','&#128221;','Input Supervisi',state.view==='supervisi'||state.view==='form');
+    html+=sSubItem('rekap','&#128202;','Rekap Hasil',state.view==='rekap');
+    html+=sSubItem('cetak','&#128424;','Cetak Hasil',state.view==='cetak');
+    html+=sSubItem('laporan','&#128196;','Laporan',state.view==='laporan');
+    html+='</ul>';
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'sub-spv-ra\')">&#127793; Supervisi Pembelajaran RA &#9662;</li>';
+    html+='<ul class="submenu" id="sub-spv-ra">';
+    html+=sSubItem('supervisi-ra','&#128221;','Input Supervisi RA',state.view==='supervisi-ra'||state.view==='form-ra');
+    html+=sSubItem('rekap-ra','&#128202;','Rekap Hasil RA',state.view==='rekap-ra');
+    html+=sSubItem('cetak-ra','&#128424;','Cetak Hasil RA',state.view==='cetak-ra');
+    html+=sSubItem('laporan-ra','&#128196;','Laporan RA',state.view==='laporan-ra');
+    html+='</ul>';
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'sub-kok\')">&#128203; Kokurikuler &#9662;</li>';
+    html+='<ul class="submenu" id="sub-kok">';
+    html+=sSubItem('kokurikuler','&#128221;','Input Kokurikuler',state.view==='kokurikuler');
+    html+=sSubItem('rekap-kokurikuler','&#128202;','Rekap',state.view==='rekap-kokurikuler');
+    html+=sSubItem('laporan-kokurikuler','&#128196;','Laporan Lengkap',state.view==='laporan-kokurikuler');
+    html+=sSubItem('laporan-kokurikuler-madrasah','&#128196;','Laporan Per Madrasah',state.view==='laporan-kokurikuler-madrasah');
+    html+='</ul>';
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'sub-eks\')">&#128203; Ekstrakurikuler &#9662;</li>';
+    html+='<ul class="submenu" id="sub-eks">';
+    html+=sSubItem('ekstrakurikuler','&#128221;','Input Ekstrakurikuler',state.view==='ekstrakurikuler');
+    html+=sSubItem('rekap-ekstrakurikuler','&#128202;','Rekap',state.view==='rekap-ekstrakurikuler');
+    html+=sSubItem('laporan-ekstrakurikuler','&#128196;','Laporan Lengkap',state.view==='laporan-ekstrakurikuler');
+    html+=sSubItem('laporan-ekstrakurikuler-madrasah','&#128196;','Laporan Per Madrasah',state.view==='laporan-ekstrakurikuler-madrasah');
+    html+='</ul>';
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'sub-iklim\')">&#127979; Iklim Madrasah &#9662;</li>';
+    html+='<ul class="submenu" id="sub-iklim">';
+    html+=sSubItem('iklim-madrasah','&#128221;','Input Iklim Madrasah',state.view==='iklim-madrasah');
+    html+=sSubItem('rekap-iklim-madrasah','&#128202;','Rekap',state.view==='rekap-iklim-madrasah');
+    html+=sSubItem('laporan-iklim-madrasah','&#128196;','Laporan Lengkap',state.view==='laporan-iklim-madrasah');
+    html+=sSubItem('laporan-iklim-madrasah-madrasah','&#128196;','Laporan Per Madrasah',state.view==='laporan-iklim-madrasah-madrasah');
+    html+='</ul>';
+    html+='<li onclick="navigate(\'program-supervisi\')" data-nav="program-supervisi">&#128198; Program Supervisi</li>';
+    html+='<li onclick="navigate(\'terima-data\')" data-nav="terima-data">&#128229; Terima Data Madrasah</li>';
+  }else if(isKM()){
+    html+=sMenuItem('dashboard','&#128202;','Beranda',state.view==='dashboard');
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'subdata-km\')">&#128218; Data Master &#9662;</li>';
+    html+='<ul class="submenu" id="subdata-km">';
+    html+=sSubItem('madrasah','&#127979;','Data Madrasah',state.view==='madrasah');
+    html+=sSubItem('guru','&#128104;&#8205;&#127891;','Data Guru',state.view==='guru');
+    html+=sSubItem('madrasah-ra','&#127979;','Data Madrasah RA',state.view==='madrasah-ra');
+    html+=sSubItem('guru-ra','&#128104;&#8205;&#127891;','Data Guru RA',state.view==='guru-ra');
+    html+='</ul>';
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'subspv-km\')">&#128221; Instrumen Supervisi &#9662;</li>';
+    html+='<ul class="submenu" id="subspv-km">';
+    html+=sSubItem('supervisi','&#128221;','Supervisi Pembelajaran',state.view==='supervisi'||state.view==='form');
+    html+=sSubItem('supervisi-ra','&#127793;','Supervisi RA',state.view==='supervisi-ra'||state.view==='form-ra');
+    html+='</ul>';
+    html+='<li class="submenu-toggle" onclick="toggleSubmenu(\'subhasil-km\')">&#128202; Hasil Supervisi &#9662;</li>';
+    html+='<ul class="submenu" id="subhasil-km">';
+    html+=sSubItem('rekap','&#128202;','Rekap Hasil',state.view==='rekap');
+    html+=sSubItem('rekap-ra','&#128202;','Rekap Hasil RA',state.view==='rekap-ra');
+    html+='</ul>';
+    html+=sMenuItem('program-supervisi','&#128198;','Program Supervisi',state.view==='program-supervisi');
+    html+='<li onclick="navigate(\'laporan\')" data-nav="laporan">&#128196; Laporan</li>';
+  }
+  html+='<li onclick="navigate(\'ubah-password\')" data-nav="ubah-password">&#128274; Ubah Password</li>';
+  if(isSupervisorLevel()){
+    html+='<li onclick="navigate(\'backup-restore\')" data-nav="backup-restore">&#128190; Export/Backup &amp; Restore</li>';
+    if(isAdmin())html+='<li onclick="navigate(\'kelola-akun\')" data-nav="kelola-akun">&#128100; Kelola Akun</li>';
+  }else if(isKM()){
+    html+='<li onclick="navigate(\'kirim-pengawas\')" data-nav="kirim-pengawas">&#128228; Kirim ke Pengawas</li>';
+    html+='<li onclick="navigate(\'backup-restore\')" data-nav="backup-restore">&#128190; Backup</li>';
+  }
+  html+='<li onclick="window.open(\'panduan.html\',\'_blank\')" style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px">&#128214; Panduan</li>';
+  html+='<li onclick="doLogout()" style="border-top:1px solid rgba(255,255,255,.1);margin-top:10px;color:#f87171">&#128682; Logout</li>';
+  menu.innerHTML=html;
+}
+
 function getUsers(){
 try{return JSON.parse(localStorage.getItem(USERS_KEY))||[]}catch(e){return[]}
 }
@@ -237,15 +296,20 @@ function initDefaultAdmin(){
 var users=getUsers();
 var DEFAULT_ADMIN_PASS='@riyant1970';
 if(users.length===0){
-users.push({nama:'Administrator',username:'admin',password:DEFAULT_ADMIN_PASS});
+users.push({nama:'Administrator',username:'admin',password:DEFAULT_ADMIN_PASS,role:ROLES.ADMIN});
 saveUsers(users);
 }else{
-// Migrasi: kalau admin masih pakai password lama, update ke yang baru
-var adminIdx=users.findIndex(function(u){return u.username==='admin'&&u.password==='admin123'});
+// Migrasi: admin lama -> update password + set role
+var adminIdx=users.findIndex(function(u){return u.username==='admin'});
 if(adminIdx!==-1){
-users[adminIdx].password=DEFAULT_ADMIN_PASS;
+if(users[adminIdx].password==='admin123')users[adminIdx].password=DEFAULT_ADMIN_PASS;
+if(!users[adminIdx].role)users[adminIdx].role=ROLES.ADMIN;
 saveUsers(users);
 }
+// Migrasi: user lama yang belum punya role -> default pengawas
+var migrated=false;
+users.forEach(function(u){if(!u.role){u.role=ROLES.PENGAWAS;migrated=true;}});
+if(migrated)saveUsers(users);
 }
 }
 
@@ -263,8 +327,7 @@ function showApp(session){
 document.getElementById('authOverlay').style.display='none';
 document.getElementById('appLayout').style.display='';
 document.querySelector('.mobile-toggle').style.display='';
-var userEl=document.getElementById('sidebarUser');
-if(userEl)userEl.innerHTML='<strong>👤 '+escHtml(session.nama)+'</strong>';
+renderSidebar(session);
 }
 
 function hideApp(){
@@ -296,6 +359,9 @@ if(userEl)userEl.onkeydown=function(e){if(e.key==='Enter')document.getElementByI
 function showRegister(){
 hideApp();
 var card=document.getElementById('authCard');
+var madrasahList=getMadrasah();
+var mOpts='';
+madrasahList.forEach(function(m){mOpts+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});
 card.innerHTML='<h2>📝 Daftar Akun</h2>'+
 '<p class="auth-subtitle">Buat akun baru untuk mengakses aplikasi</p>'+
 '<div class="auth-error" id="authError"></div>'+
@@ -304,6 +370,8 @@ card.innerHTML='<h2>📝 Daftar Akun</h2>'+
 '<div class="form-group"><label>Username</label><input type="text" id="regUsername" placeholder="Masukkan username" autocomplete="username"></div>'+
 '<div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Masukkan password" autocomplete="new-password"></div>'+
 '<div class="form-group"><label>Konfirmasi Password</label><input type="password" id="regConfirm" placeholder="Ulangi password" autocomplete="new-password"></div>'+
+'<div class="form-group"><label>Peran</label><select id="regRole" onchange="toggleRegMadrasah()"><option value="pengawas">Pengawas</option><option value="kepala_madrasah">Kepala Madrasah</option></select></div>'+
+'<div class="form-group" id="regMadrasahWrap" style="display:none"><label>Madrasah Binaan</label><select id="regMadrasah"><option value="">-- Pilih Madrasah --</option>'+mOpts+'</select></div>'+
 '<button class="btn-auth" onclick="doRegister()">Daftar</button>'+
 '<div class="auth-link">Sudah punya akun? <a onclick="showLogin()">Login</a></div>';
 setTimeout(function(){document.getElementById('regNama').focus()},100);
@@ -311,6 +379,12 @@ setTimeout(function(){
 var el=document.getElementById('regConfirm');
 if(el)el.onkeydown=function(e){if(e.key==='Enter')doRegister()};
 },150);
+}
+
+function toggleRegMadrasah(){
+var role=document.getElementById('regRole').value;
+var wrap=document.getElementById('regMadrasahWrap');
+if(wrap)wrap.style.display=(role==='kepala_madrasah')?'block':'none';
 }
 
 function doLogin(){
@@ -328,7 +402,7 @@ if(!user){
 errEl.textContent='Username atau password salah.';
 errEl.style.display='block';return;
 }
-var session={username:user.username,nama:user.nama};
+var session={username:user.username,nama:user.nama,role:user.role||ROLES.PENGAWAS,madrasah:user.madrasah||null};
 saveSession(session);
 showApp(session);
 render();
@@ -365,7 +439,16 @@ if(exists){
 errEl.textContent='Username sudah digunakan.';
 errEl.style.display='block';return;
 }
-users.push({nama:nama,username:username,password:password});
+// Role dipilih saat daftar; default Pengawas. Untuk kepala madrasah wajib pilih madrasah binaan.
+var roleSelect=document.getElementById('regRole');
+var role=roleSelect?roleSelect.value:ROLES.PENGAWAS;
+var madrasahSelect=document.getElementById('regMadrasah');
+var madrasah=madrasahSelect?(madrasahSelect.value||null):null;
+if(role===ROLES.KM&&!madrasah){
+errEl.textContent='Kepala Madrasah wajib memilih madrasah binaan.';
+errEl.style.display='block';return;
+}
+users.push({nama:nama,username:username,password:password,role:role,madrasah:madrasah});
 saveUsers(users);
 sucEl.textContent='Registrasi berhasil! Silakan login.';
 sucEl.style.display='block';
@@ -428,6 +511,511 @@ sucEl.style.display='block';
 document.getElementById('oldPass').value='';
 document.getElementById('newPass').value='';
 document.getElementById('confirmNewPass').value='';
+}
+
+// ===== KELOLA AKUN (khusus Admin) =====
+function renderKelolaAkun(){
+var users=getUsers();
+var rows='';
+users.forEach(function(u,i){
+var roleClass=u.role===ROLES.ADMIN?'admin':u.role===ROLES.KM?'km':'pengawas';
+rows+='<tr><td>'+(i+1)+'</td><td>'+escHtml(u.nama)+'</td><td>'+escHtml(u.username)+'</td><td><span class="rekap-predikat '+roleClass+'">'+(ROLE_LABEL[u.role]||'Pengawas')+'</span>'+(u.madrasah?'<br><small style="color:#64748b">'+escHtml(u.madrasah)+'</small>':'')+'</td><td>';
+if(u.username!=='admin'){
+rows+='<button class="btn btn-sm btn-secondary" style="padding:3px 7px;font-size:.7rem" onclick="resetAkun('+i+')">&#128273; Reset</button> ';
+rows+='<button class="btn btn-sm btn-danger" style="padding:3px 7px;font-size:.7rem" onclick="deleteAkun('+i+')">&#128465;</button>';
+}else{rows+='<span style="color:#94a3b8;font-size:.75rem">(akun utama)</span>';}
+rows+='</td></tr>';
+});
+var html='<div class="card">';
+html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">';
+html+='<h2>👥 Kelola Akun</h2>';
+html+='<button class="btn btn-primary" onclick="showTambahAkunModal()">+ Tambah Akun</button></div>';
+html+='<p style="margin-bottom:16px;color:#64748b;font-size:.85rem">Kelola akun Pengawas & Kepala Madrasah. Akun Kepala Madrasah terikat satu madrasah binaan.</p>';
+html+='<div style="overflow-x:auto"><table class="data-table"><thead><tr><th>No</th><th>Nama</th><th>Username</th><th>Peran</th><th>Aksi</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+html+='</div><div id="modal-container"></div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
+return html;
+}
+
+function showTambahAkunModal(){
+var madrasahList=getMadrasah();
+var mOpts='<option value="">-- Pilih Madrasah --</option>';
+madrasahList.forEach(function(m){mOpts+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});
+var modal='<div class="modal-overlay" style="display:flex" onclick="if(event.target===this)closeModal()">';
+modal+='<div class="modal"><h3>+ Tambah Akun</h3>';
+modal+='<div class="form-group"><label>Nama Lengkap</label><input id="ak-nama" placeholder="Masukkan nama lengkap"></div>';
+modal+='<div class="form-group"><label>Username</label><input id="ak-username" placeholder="Masukkan username"></div>';
+modal+='<div class="form-group"><label>Password</label><input id="ak-password" placeholder="Masukkan password awal"></div>';
+modal+='<div class="form-group"><label>Peran</label><select id="ak-role" onchange="toggleAkunMadrasah()"><option value="pengawas">Pengawas</option><option value="kepala_madrasah">Kepala Madrasah</option></select></div>';
+modal+='<div class="form-group" id="ak-madrasah-wrap" style="display:none"><label>Madrasah Binaan</label><select id="ak-madrasah">'+mOpts+'</select></div>';
+modal+='<div class="btn-group"><button class="btn btn-success" onclick="simpanAkunBaru()">Simpan</button>';
+modal+='<button class="btn btn-secondary" onclick="closeModal()">Batal</button></div>';
+modal+='</div></div>';
+document.getElementById('modal-container').innerHTML=modal;
+}
+
+function toggleAkunMadrasah(){
+var role=document.getElementById('ak-role').value;
+var wrap=document.getElementById('ak-madrasah-wrap');
+if(wrap)wrap.style.display=(role==='kepala_madrasah')?'block':'none';
+}
+
+function simpanAkunBaru(){
+var nama=document.getElementById('ak-nama').value.trim();
+var username=document.getElementById('ak-username').value.trim();
+var password=document.getElementById('ak-password').value;
+var role=document.getElementById('ak-role').value;
+var madrasah=document.getElementById('ak-madrasah')?document.getElementById('ak-madrasah').value:'';
+if(!nama||!username||!password){alert('Semua field wajib diisi.');return;}
+if(password.length<4){alert('Password minimal 4 karakter.');return;}
+if(role==='kepala_madrasah'&&!madrasah){alert('Kepala Madrasah wajib memilih madrasah binaan.');return;}
+var users=getUsers();
+if(users.some(function(u){return u.username===username})){alert('Username sudah dipakai.');return;}
+users.push({nama:nama,username:username,password:password,role:role,madrasah:(role==='kepala_madrasah'?madrasah:null)});
+saveUsers(users);
+closeModal();render();
+}
+
+function resetAkun(idx){
+var users=getUsers();
+if(!users[idx])return;
+var newPass=prompt('Password baru untuk '+users[idx].username+':');
+if(!newPass)return;
+if(newPass.length<4){alert('Password minimal 4 karakter.');return;}
+users[idx].password=newPass;
+saveUsers(users);
+alert('Password '+users[idx].username+' berhasil direset.');
+render();
+}
+
+function deleteAkun(idx){
+var users=getUsers();
+if(!users[idx])return;
+if(users[idx].username==='admin'){alert('Akun admin utama tidak bisa dihapus.');return;}
+if(!confirm('Hapus akun '+users[idx].nama+'?'))return;
+users.splice(idx,1);
+saveUsers(users);
+render();
+}
+
+// ===== PROGRAM SUPERVISI (Tahap 3) =====
+const PROGRAM_KEY='program_supervisi_umum_v1';
+const PROGRAM_KEY_RA='program_supervisi_ra_v1';
+function getProgramKey(){return isRAJenjang()?PROGRAM_KEY_RA:PROGRAM_KEY;}
+function setProgramJenjang(j){state.jenjang=j;render();}
+function getProgramSupervisi(){try{return JSON.parse(localStorage.getItem(getProgramKey()))||null}catch(e){return null}}
+function saveProgramSupervisi(d){localStorage.setItem(getProgramKey(),JSON.stringify(d));}
+function emptyProgramData(){
+return {
+identitas:{},
+naratif:{
+latarBelakang:'',
+landasanHukum:'',
+tujuan:'',
+sasaran:'',
+manfaat:'',
+ruangLingkup:'',
+prinsipSupervisi:'',
+evaluasiTahunLalu:'',
+analisisUmum:'',
+rekomendasi:'',
+fokusProgram:'',
+pendekatanTeknik:'',
+tahapan:'',
+programSemester:'',
+indikatorKeberhasilan:'',
+persiapan:'',
+praObservasi:'',
+observasi:'',
+pascaObservasi:'',
+tindakLanjut:'',
+pembelajaranMendalam:'',
+pengalamanBelajar:'',
+kbc:'',
+monitoringEvaluasi:'',
+siklusMonitoring:'',
+pelaporan:''
+},
+ttd:{tempat:'',tanggal:'',kepala:'',nipKepala:'',pengawas:'',nipPengawas:''}
+};
+}
+
+function renderProgramSupervisi(){
+var existing=getProgramSupervisi();
+var prog=existing||emptyProgramData();
+var mList=getMadrasah();
+var madrasahObj=(isScopedMode()&&mList.length>0)?mList[0]:(mList[0]||{});
+var n=madrasahObj.nama||'';
+var html='<div class="card">';
+html+='<h2>📅 Program Supervisi'+(isRAJenjang()?' RA':'')+'</h2>';
+// Toggle Umum / RA
+html+='<div class="no-print" style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">';
+html+='<button class="btn '+(isRAJenjang()?'':'btn-primary')+'" onclick="setProgramJenjang(\'umum\')" style="flex:1;min-width:120px">🏫 Umum (MI/MTs/MA)</button>';
+html+='<button class="btn '+(isRAJenjang()?'btn-primary':'')+'" onclick="setProgramJenjang(\'ra\')" style="flex:1;min-width:120px">🎓 RA (Raudhatul Athfal)</button>';
+html+='</div>';
+html+='<p style="color:#64748b;font-size:.85rem;margin-bottom:16px">Susun Program Supervisi Pembelajaran'+ (isRAJenjang()?' RA':'') +' Tahun Pelajaran 2025/2026. Identitas madrasah & statistik hasil supervisi dapat diisi otomatis dari data yang sudah ada. Bagian naratif cukup diisi sekali (revisi tiap tahun).</p>';
+// Identitas
+html+='<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:16px">';
+html+='<h3 style="color:#0f766e;font-size:1rem;margin-bottom:10px">🏫 Identitas Madrasah</h3>';
+html+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">';
+html+='<div class="form-group"><label>Nama Madrasah</label><input id="ps-nama" value="'+escHtml(madrasahObj.nama||'')+'" placeholder="Otomatis dari Data Madrasah"></div>';
+html+='<div class="form-group"><label>NSM/NPSN</label><input id="ps-nsm" value="'+escHtml(madrasahObj.npsn||'')+'" placeholder="NPSN"></div>';
+html+='<div class="form-group"><label>Kab/Kota</label><input id="ps-kab" value="'+escHtml(madrasahObj.kabupaten||'')+'"></div>';
+html+='<div class="form-group"><label>Provinsi</label><input id="ps-prov" value="'+escHtml(madrasahObj.provinsi||'Jawa Timur')+'"></div>';
+html+='<div class="form-group"><label>Kepala Madrasah</label><input id="ps-kepala" value="'+escHtml(madrasahObj.kepala||'')+'"></div>';
+html+='<div class="form-group"><label>NIP Kepala</label><input id="ps-nipkepala" value="'+escHtml(madrasahObj.nipKepala||'')+'"></div>';
+html+='</div>';
+html+='<div style="font-size:.78rem;color:#64748b;margin-top:8px">💡 Kolom di atas diisi otomatis dari Data Madrasah. Bisa diubah manual bila diperlukan.</div>';
+html+='</div>';
+// Statistik otomatis
+html+='<div style="background:#fefce8;border:1px solid #fde047;border-radius:10px;padding:16px;margin-bottom:16px">';
+html+='<h3 style="color:#854d0e;font-size:1rem;margin-bottom:10px">📊 Statistik Hasil Supervisi (auto-fill)</h3>';
+html+='<div id="ps-stats">'+renderProgramStatsInline()+'</div>';
+html+='<button class="btn btn-sm btn-secondary" style="margin-top:8px" onclick="refreshProgramStats()">🔄 Ambil Ulang Statistik</button>';
+html+='</div>';
+// Naratif (diisi sekali per tahun)
+html+='<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:16px">';
+html+='<h3 style="color:#0f766e;font-size:1rem;margin-bottom:10px">📝 Naratif Dokumen</h3>';
+html+='<p style="font-size:.82rem;color:#64748b;margin-bottom:12px">Bagian-bagian berikut sudah diisi dengan teks standar saat mencetak. Bapak/Ibu dapat menyesuaikan/menambahkan isi khusus per madrasah di sini (cukup sekali, tahun berikut revisi).</p>';
+var fields=[
+['n-latar','latarBelakang','Latar Belakang'],
+['n-evaluasi','evaluasiTahunLalu','Evaluasi Program Tahun Sebelumnya'],
+['n-analisis','analisisUmum','Analisis Umum (BAB II)'],
+['n-rekomendasi','rekomendasi','Rekomendasi (BAB II)']
+];
+fields.forEach(function(f){
+html+='<div class="form-group" style="margin-bottom:12px"><label>'+f[2]+'</label>';
+var val=(prog.naratif&&prog.naratif[f[1]])?prog.naratif[f[1]]:'';
+html+='<textarea id="'+f[0]+'" rows="3" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:.85rem;font-family:inherit">'+escHtml(val)+'</textarea></div>';
+});
+html+='</div>';
+// TTD
+html+='<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:16px">';
+html+='<h3 style="color:#0f766e;font-size:1rem;margin-bottom:10px">✍️ Tanda Tangan / Pengesahan</h3>';
+html+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">';
+html+='<div class="form-group"><label>Tempat Ditetapkan</label><input id="ps-ttd-tempat" value="'+escHtml((prog.ttd&&prog.ttd.tempat)||'')+'" placeholder="cth: Sukowono"></div>';
+html+='<div class="form-group"><label>Tanggal</label><input id="ps-ttd-tanggal" value="'+escHtml((prog.ttd&&prog.ttd.tanggal)||'')+'" placeholder="cth: 1 Juli 2026"></div>';
+html+='<div class="form-group"><label>Nama Kepala/Disusun Oleh</label><input id="ps-ttd-kepala" value="'+escHtml((prog.ttd&&prog.ttd.kepala)||madrasahObj.kepala||'')+'"></div>';
+html+='<div class="form-group"><label>NIP Kepala</label><input id="ps-ttd-nipkepala" value="'+escHtml((prog.ttd&&prog.ttd.nipKepala)||madrasahObj.nipKepala||'')+'"></div>';
+html+='<div class="form-group"><label>Nama Pengawas (Diketahui)</label><input id="ps-ttd-pengawas" value="'+escHtml((prog.ttd&&prog.ttd.pengawas)||'')+'" placeholder="cth: Subariyanto, S.Pd., M.Pd.I."></div>';
+html+='<div class="form-group"><label>NIP Pengawas</label><input id="ps-ttd-nipengawas" value="'+escHtml((prog.ttd&&prog.ttd.nipPengawas)||'')+'"></div>';
+html+='</div>';
+html+='</div>';
+// Aksi
+html+='<div style="display:flex;gap:10px;flex-wrap:wrap">';
+html+='<button class="btn btn-success" onclick="simpanProgramSupervisi()">💾 Simpan Naratif</button>';
+html+='<button class="btn btn-primary" onclick="cetakProgramSupervisi()">🖨️ Cetak Dokumen</button>';
+html+='</div>';
+html+='<div id="ps-status" style="margin-top:12px"></div>';
+html+='</div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
+return html;
+}
+
+function renderProgramStatsInline(){
+var data=getData();
+if(data.length===0){return '<p style="color:#64748b;font-size:.85rem">Belum ada data supervisi. Statistik akan terisi otomatis saat ada hasil supervisi.</p>';}
+var keys=['perencanaan','pelaksanaan','asesmen'];
+var labels=['Perencanaan','Pelaksanaan','Asesmen'];
+var row='';
+var totalAll=0;
+keys.forEach(function(k,i){
+var pct=0,cnt=0;
+data.forEach(function(d){if(d&&d[k]&&d[k].scores){var c=calcKomponen(d,k);pct+=c;cnt++;}});
+var avg=cnt>0?(pct/cnt):0;
+totalAll+=avg;
+row+='<div style="display:inline-block;margin-right:16px;text-align:center"><div style="font-size:1.5rem;font-weight:700;color:#0369a1">'+avg.toFixed(1)+'%</div><div style="font-size:.75rem;color:#64748b">'+labels[i]+'</div></div>';
+});
+var avgAll=data.length>0?(totalAll/3):0;
+row+='<div style="display:inline-block;text-align:center"><div style="font-size:1.5rem;font-weight:700;color:#16a34a">'+avgAll.toFixed(1)+'%</div><div style="font-size:.75rem;color:#64748b">Rata-rata</div></div>';
+row+='<div style="margin-top:10px;font-size:.85rem;color:#64748b">📌 '+data.length+' guru disupervisi. Predikat rata-rata: <b>'+getPredikat(avgAll)+'</b></div>';
+return row;
+}
+
+function refreshProgramStats(){
+var el=document.getElementById('ps-stats');
+if(el)el.innerHTML=renderProgramStatsInline();
+}
+
+function simpanProgramSupervisi(){
+var prog=getProgramSupervisi()||emptyProgramData();
+prog.identitas={
+nama:gv('ps-nama'),nsm:gv('ps-nsm'),kabupaten:gv('ps-kab'),provinsi:gv('ps-prov'),kepala:gv('ps-kepala'),nipKepala:gv('ps-nipkepala')};
+prog.ttd={tempat:gv('ps-ttd-tempat'),tanggal:gv('ps-ttd-tanggal'),kepala:gv('ps-ttd-kepala'),nipKepala:gv('ps-ttd-nipkepala'),pengawas:gv('ps-ttd-pengawas'),nipPengawas:gv('ps-ttd-nipengawas')};
+if(!prog.naratif)prog.naratif={};
+prog.naratif.latarBelakang=gv('n-latar');
+prog.naratif.evaluasiTahunLalu=gv('n-evaluasi');
+prog.naratif.analisisUmum=gv('n-analisis');
+prog.naratif.rekomendasi=gv('n-rekomendasi');
+saveProgramSupervisi(prog);
+var st=document.getElementById('ps-status');
+if(st)st.innerHTML='<div class="auth-success" style="display:block">✅ Identitas, pengesahan & naratif tersimpan.</div>';
+}
+
+function gv(id){var e=document.getElementById(id);return e?e.value.trim():'';}
+
+function cetakProgramSupervisi(){
+var prog=getProgramSupervisi()||emptyProgramData();
+var iden=prog.identitas||{};
+var ttd=prog.ttd||{};
+var data=getData();
+var isRA=isRAJenjang();
+var mName=iden.nama||(data[0]&&data[0].identitas&&data[0].identitas.namaMadrasah)||'MADRASAH';
+var w=window.open('','_blank');
+if(!w){alert('Pop-up diblokir. Izinkan pop-up untuk mencetak.');return;}
+var css='@page{size:A4;margin:2.5cm 2.5cm 3cm 2.5cm;@bottom-center{content:counter(page);font-size:10pt}}';
+css+='body{font-family:"Times New Roman",Times,serif;font-size:12pt;line-height:1.8;color:#000;orphans:3;widows:3}';
+css+='p{page-break-inside:avoid;text-align:justify;margin:8px 0}';
+css+='h2{page-break-after:avoid}h3{page-break-after:avoid}';
+css+='h1{font-size:16pt;text-align:center;font-weight:bold;margin:5px 0}';
+css+='h2{font-size:14pt;text-align:center;font-weight:bold;margin:20px 0 10px}';
+css+='h3{font-size:12pt;font-weight:bold;margin:15px 0 8px}';
+css+='ol,ul{margin:5px 0 10px 20px}li{margin:3px 0}';
+css+='table{width:100%;border-collapse:collapse;margin:10px 0}';
+css+='th,td{border:1px solid #000;padding:6px 8px;font-size:11pt;vertical-align:middle}';
+css+='th{background:#f0f0f0;font-weight:bold;text-align:center}';
+css+='td{text-align:center}td.left{text-align:left}';
+css+='.cover{text-align:center;padding-top:80px;page-break-after:always}';
+css+='.cover h1{font-size:20pt;margin:10px 0}.cover h2{font-size:16pt;margin:5px 0}';
+css+='.page-break{page-break-before:always}';
+css+='.ttd{margin-top:40px;text-align:center;padding-left:40%;min-width:250px}';
+var html='<html><head><title>Program Supervisi - '+escHtml(mName)+'</title><style>'+css+'</style></head><body>';
+// COVER
+var tempat=(ttd.tempat||'..............');
+var tahun='2026/2027';
+html+='<div class="cover"><h1>PROGRAM SUPERVISI PEMBELAJARAN</h1>'+(isRA?'<h1>RA</h1>':'<h1>MADRASAH</h1>');
+html+='<h2>TAHUN PELAJARAN '+tahun+'</h2><br><br><br>';
+html+='<p style="text-align:center;font-size:14pt"><b>'+escHtml(mName)+'</b></p>';
+html+='<p style="text-align:center">NSM/NPSN: '+escHtml(iden.nsm||'...')+'</p>';
+html+='<p style="text-align:center">'+escHtml(iden.kabupaten||'...')+'</p>';
+html+='<p style="text-align:center">'+escHtml(iden.provinsi||'Jawa Timur')+'</p><br><br>';
+html+='<h2>'+tahun+'</h2></div>';
+// IDENTITAS DOKUMEN
+html+='<div class="page-break"></div><h2>IDENTITAS DOKUMEN</h2>';
+html+='<table><thead><tr><th style="width:40%">Komponen</th><th>Keterangan</th></tr></thead><tbody>';
+var idRows=[['Nama Madrasah',mName],['NSM',iden.nsm||'.................... '],['NPSN',iden.nsm||'....................'],['Alamat','................................................'],['Desa/Kelurahan','...............................................'],['Kecamatan','...............................................'],['Kabupaten/Kota',iden.kabupaten||'...............................................'],['Provinsi',iden.provinsi||'...............................................'],['Nama Kepala Madrasah',iden.kepala||'...............................................'],['NIP/NIY',iden.nipKepala||'...............................................'],['Tahun Pelajaran',tahun]];
+idRows.forEach(function(r){html+='<tr><td class="left"><b>'+r[0]+'</b></td><td class="left">'+escHtml(r[1])+'</td></tr>';});
+html+='</tbody></table>';
+// LEMBAR PENGESAHAN
+html+='<div class="page-break"></div><h2>LEMBAR PENGESAHAN</h2>';
+html+='<p>Program Supervisi Pembelajaran'+(isRA?' RA':'')+' Madrasah Tahun Pelajaran '+tahun+' ini disusun sebagai pedoman pelaksanaan supervisi pembelajaran dalam rangka peningkatan mutu proses dan hasil pembelajaran serta pengembangan profesional guru secara berkelanjutan.</p>';
+html+='<table style="border:none;width:100%"><tr><td class="left" style="border:none;width:50%"><p style="text-align:center"><b>Disusun oleh,</b></p><br><br><br><p style="text-align:center"><b><u>'+(ttd.kepala||'............................')+'</u></b></p><p style="text-align:center">NIP/NIY: '+(ttd.nipKepala||'........................')+'</p></td>';
+html+='<td class="left" style="border:none"><p style="text-align:center"><b>Diketahui oleh,</b></p><br><br><br><p style="text-align:center"><b><u>'+(ttd.pengawas||'............................')+'</u></b></p><p style="text-align:center">NIP: '+(ttd.nipPengawas||'........................')+'</p></td></tr></table>';
+html+='<p style="text-align:center;margin-top:20px">Ditetapkan di : '+(ttd.tempat||'........................')+'</p>';
+html+='<p style="text-align:center">Tanggal : '+(ttd.tanggal||'........................')+'</p>';
+// KATA PENGANTAR
+html+='<div class="page-break"></div><h2>KATA PENGANTAR</h2>';
+html+='<p>Puji syukur ke hadirat Allah SWT atas rahmat dan karunia-Nya sehingga Program Supervisi Pembelajaran'+(isRA?' RA':'')+' Madrasah Tahun Pelajaran '+tahun+' dapat disusun. Program ini menjadi pedoman bagi kepala madrasah dan tim supervisor dalam melaksanakan supervisi yang terencana, objektif, humanis, reflektif, dan berkelanjutan.</p>';
+html+='<p>Supervisi pembelajaran tidak ditempatkan sebagai kegiatan mencari kekurangan guru, tetapi sebagai proses pendampingan profesional untuk membantu guru meningkatkan kualitas perencanaan, pelaksanaan, asesmen, refleksi, dan tindak lanjut pembelajaran. Program ini diarahkan agar praktik pembelajaran di madrasah semakin selaras dengan kebijakan kurikulum madrasah, pendekatan Pembelajaran Mendalam, serta nilai-nilai Kurikulum Berbasis Cinta.</p>';
+html+='<p>Semoga program ini dapat dilaksanakan secara konsisten dan memberi dampak nyata terhadap peningkatan kompetensi guru, kualitas pengalaman belajar peserta didik, dan mutu pendidikan madrasah.</p>';
+html+='<div class="ttd"><p style="margin:0">'+(ttd.tempat||'........................')+', '+(ttd.tanggal||'.................')+' '+tahun+'</p><p style="margin:0">Kepala Madrasah,</p><br><br><br><p style="margin:0"><b><u>'+(ttd.kepala||'............................')+'</u></b></p><p style="margin:0">NIP/NIY. '+(ttd.nipKepala||'........................')+'</p></div>';
+html+='<div class="page-break"></div><h2>DAFTAR ISI</h2>';
+html+='<table style="border:none;width:100%"><tbody>';
+html+='<tr><td class="left" style="border:none">KATA PENGANTAR</td><td style="border:none;width:40px;text-align:right">ii</td></tr>';
+html+='<tr><td class="left" style="border:none">DAFTAR ISI</td><td style="border:none;text-align:right">iii</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB I PENDAHULUAN</td><td style="border:none;text-align:right">1</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB II EVALUASI PROGRAM SUPERVISI TAHUN SEBELUMNYA</td><td style="border:none;text-align:right">4</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB III PROGRAM SUPERVISI TAHUN PELAJARAN '+tahun+'</td><td style="border:none;text-align:right">6</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB IV PELAKSANAAN SUPERVISI PEMBELAJARAN</td><td style="border:none;text-align:right">9</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB V INTEGRASI PEMBELAJARAN MENDALAM DAN KBC</td><td style="border:none;text-align:right">11</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB VI MONITORING, EVALUASI, DAN TINDAK LANJUT</td><td style="border:none;text-align:right">13</td></tr>';
+html+='<tr><td class="left" style="border:none">BAB VII PENUTUP</td><td style="border:none;text-align:right">15</td></tr>';
+html+='<tr><td class="left" style="border:none">LAMPIRAN</td><td style="border:none;text-align:right">16</td></tr>';
+html+='</tbody></table>';
+// ---- BAB I PENDAHULUAN ----
+html+='<div class="page-break"></div><h2>BAB I<br>PENDAHULUAN</h2>';
+html+='<h3>A. Latar Belakang</h3><p>'+(prog.naratif&&prog.naratif.latarBelakang?prog.naratif.latarBelakang:'Peningkatan mutu pendidikan madrasah sangat ditentukan oleh kualitas pembelajaran yang dialami peserta didik. Guru memiliki peran strategis dalam merancang pengalaman belajar, memfasilitasi proses pembelajaran, melaksanakan asesmen, memberikan umpan balik, dan melakukan refleksi untuk perbaikan berkelanjutan. Karena itu, peningkatan kompetensi guru perlu didukung melalui supervisi pembelajaran yang sistematis dan berorientasi pada pengembangan profesional.')+'</p>';
+html+='<h3>B. Landasan Hukum</h3>';
+html+='<ol>';
+html+='<li>Undang-Undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional.</li>';
+html+='<li>Peraturan Pemerintah Nomor 57 Tahun 2021 sebagaimana diubah dengan Peraturan Pemerintah Nomor 4 Tahun 2022.</li>';
+html+='<li>Peraturan Menteri Agama Nomor 90 Tahun 2013 sebagaimana diubah terakhir dengan Peraturan Menteri Agama Nomor 66 Tahun 2016.</li>';
+html+='<li>Peraturan Menteri Agama Nomor 2 Tahun 2020 tentang Penyelenggaraan Penguatan Pendidikan Karakter.</li>';
+html+='<li>Peraturan Menteri Agama Nomor 1 Tahun 2024 tentang Akomodasi yang Layak untuk Peserta Didik Penyandang Disabilitas.</li>';
+html+='<li>Permendikbudristek Nomor 12 Tahun 2024 tentang Kurikulum pada PAUD, Pendidikan Dasar, dan Pendidikan Menengah.</li>';
+html+='<li>Keputusan Menteri Agama Nomor 450 Tahun 2024 tentang Pedoman Implementasi Kurikulum pada RA, MI, MTs, MA, dan MAK.</li>';
+html+='<li>Keputusan Direktur Jenderal Pendidikan Islam tentang Panduan Kurikulum Berbasis Cinta.</li>';
+html+='<li>Panduan Pembelajaran dan Asesmen edisi revisi Tahun 2025 serta pedoman Pembelajaran Mendalam.</li></ol>';
+html+='<h3>C. Tujuan</h3><ol><li>Memperoleh gambaran objektif tentang kualitas perencanaan, pelaksanaan, asesmen, dan tindak lanjut pembelajaran.</li><li>Membantu guru mengembangkan kompetensi profesional dan pedagogis melalui dialog reflektif dan umpan balik konstruktif.</li><li>Memastikan implementasi Pembelajaran Mendalam dan nilai-nilai KBC hadir secara kontekstual.</li><li>Memetakan kekuatan dan area pengembangan setiap guru sebagai dasar tindak lanjut.</li><li>Membangun budaya belajar, refleksi, kolaborasi, dan perbaikan mutu berkelanjutan.</li></ol>';
+html+='<h3>D. Sasaran</h3><p>Sasaran program adalah seluruh guru pada madrasah, baik guru kelas maupun guru mata pelajaran, dengan prioritas dan frekuensi supervisi yang dapat disesuaikan sesuai kebutuhan.</p>';
+html+='<h3>E. Manfaat</h3><p>Bagi guru, supervisi memberikan umpan balik dan dukungan pengembangan kompetensi. Bagi kepala madrasah, hasil supervisi menjadi dasar pengambilan keputusan program peningkatan mutu. Bagi peserta didik, supervisi mendorong hadirnya pembelajaran yang lebih bermutu, inklusif, berkesadaran, bermakna, dan menggembirakan.</p>';
+html+='<h3>F. Ruang Lingkup</h3><ol><li>Perencanaan pembelajaran.</li><li>Pelaksanaan pembelajaran.</li><li>Asesmen pembelajaran.</li><li>Pembelajaran Mendalam.</li><li>Integrasi nilai KBC/Panca Cinta.</li><li>Pengelolaan kelas dan lingkungan belajar.</li><li>Refleksi dan tindak lanjut.</li><li>Pengembangan kompetensi guru.</li></ol>';
+html+='<h3>G. Prinsip Supervisi</h3><ol><li>Objektif dan berbasis bukti.</li><li>Humanis dan memuliakan guru.</li><li>Kolaboratif.</li><li>Reflektif.</li><li>Kontekstual.</li><li>Berkelanjutan.</li><li>Berorientasi pada peningkatan kualitas pengalaman belajar peserta didik.</li></ol>';
+// ---- BAB II EVALUASI ----
+html+='<div class="page-break"></div><h2>BAB II<br>EVALUASI PROGRAM SUPERVISI TAHUN SEBELUMNYA</h2>';
+html+='<p>Evaluasi program supervisi tahun sebelumnya menjadi titik awal penyusunan program tahun berjalan. Madrasah mengisi bagian ini berdasarkan data riil hasil supervisi, tindak lanjut, serta kebutuhan guru.</p>';
+var catatanEval=(prog.naratif&&prog.naratif.evaluasiTahunLalu)||'';
+if(catatanEval)html+='<p style="font-style:italic">'+escHtml(catatanEval)+'</p>';
+html+='<h3>A. Analisis Umum</h3><p>'+(prog.naratif&&prog.naratif.analisisUmum?prog.naratif.analisisUmum:'Berdasarkan hasil evaluasi, madrasah menetapkan prioritas program supervisi tahun pelajaran '+tahun+'. Prioritas tidak semata ditentukan oleh nilai terendah, tetapi mempertimbangkan dampaknya terhadap kualitas pembelajaran dan kebutuhan pengembangan masing-masing guru.')+'</p>';
+html+='<h3>B. Rekomendasi</h3><p>'+(prog.naratif&&prog.naratif.rekomendasi?prog.naratif.rekomendasi:'Rekomendasi hasil evaluasi dituangkan menjadi fokus supervisi, strategi pendampingan, kegiatan pengembangan kompetensi, berbagi praktik baik, coaching/mentoring, serta supervisi tindak lanjut.')+'</p>';
+// ---- BAB III PROGRAM SUPERVISI ----
+html+='<div class="page-break"></div><h2>BAB III<br>PROGRAM SUPERVISI TAHUN PELAJARAN '+tahun+'</h2>';
+html+='<h3>A. Fokus Program</h3><ol><li>Kualitas perencanaan yang sederhana, relevan, dan operasional.</li><li>Keterlaksanaan pembelajaran yang berpusat pada peserta didik.</li><li>Implementasi prinsip berkesadaran, bermakna, dan menggembirakan.</li><li>Pengalaman belajar memahami, mengaplikasi, dan merefleksi.</li><li>Integrasi Panca Cinta secara autentik.</li><li>Asesmen sebagai bagian dari siklus pembelajaran.</li><li>Umpan balik, refleksi, dan tindak lanjut berbasis kebutuhan.</li></ol>';
+html+='<h3>B. Pendekatan dan Teknik</h3><p>Supervisi dapat menggunakan pendekatan direktif, kolaboratif, atau nondirektif sesuai kebutuhan guru. Teknik yang digunakan antara lain observasi kelas, telaah dokumen, percakapan pra dan pasca-observasi, refleksi, coaching, mentoring, diskusi kelompok, lesson study, dan berbagi praktik baik.</p>';
+html+='<h3>C. Tahapan</h3><table><thead><tr><th>No</th><th>Tahap</th><th>Kegiatan Utama</th><th>Output</th></tr></thead><tbody>';
+var tahapan=[['1','Pemetaan','Analisis data dan kebutuhan guru','Peta kebutuhan supervisi'],['2','Perencanaan','Menentukan fokus, supervisor, jadwal, instrumen','Rencana supervisi'],['3','Pra-observasi','Dialog tujuan, konteks kelas, fokus pengamatan','Kesepakatan fokus'],['4','Observasi','Mengumpulkan bukti praktik pembelajaran','Catatan objektif'],['5','Pasca-observasi','Refleksi, umpan balik, dialog perbaikan','Temuan & rekomendasi'],['6','RTL','Menetapkan tindakan perbaikan/pengembangan','Rencana tindak lanjut'],['7','Monitoring','Memantau pelaksanaan RTL','Catatan kemajuan']];
+tahapan.forEach(function(t){html+='<tr><td>'+t[0]+'</td><td class="left">'+t[1]+'</td><td class="left">'+t[2]+'</td><td class="left">'+t[3]+'</td></tr>';});
+html+='</tbody></table>';
+// ---- BAB V & BAB IV ----
+html+='<div class="page-break"></div><h2>BAB IV<br>PELAKSANAAN SUPERVISI PEMBELAJARAN</h2>';
+var isi=[['A. Persiapan','Supervisor mempelajari konteks guru dan kelas, menelaah perencanaan pembelajaran, menentukan fokus pengamatan, dan menyiapkan instrumen.'],['B. Pra-Observasi','Percakapan pra-observasi menggali tujuan pembelajaran, karakteristik peserta didik, strategi yang akan digunakan, bentuk asesmen, tantangan yang diperkirakan muncul, serta aspek yang ingin memperoleh masukan.'],['C. Observasi','Supervisor mencatat fakta dan bukti perilaku pembelajaran, bukan asumsi. Pengamatan mencakup keterlibatan peserta didik, kualitas pertanyaan, interaksi, penggunaan sumber belajar, pengelolaan lingkungan, asesmen formatif, serta prinsip Pembelajaran Mendalam dan KBC.'],['D. Pasca-Observasi','Percakapan pasca-observasi diawali dengan refleksi guru. Supervisor menguatkan praktik yang efektif, mengajak guru menganalisis bukti, dan menyepakati area perbaikan yang realistis. Umpan balik harus spesifik, berbasis bukti, dapat ditindaklanjuti, dan memuliakan guru.'],['E. Tindak Lanjut','Tindak lanjut dapat berupa perbaikan perencanaan, observasi ulang, coaching, mentoring, belajar mandiri, diskusi sejawat, komunitas belajar, pelatihan, lesson study, atau berbagi praktik baik. Keberhasilan RTL dimonitor dan didokumentasikan.']];
+isi.forEach(function(b){html+='<h3>'+b[0]+'</h3><p>'+b[1]+'</p>';});
+// ---- BAB V ----
+html+='<div class="page-break"></div><h2>BAB V<br>INTEGRASI PEMBELAJARAN MENDALAM DAN KURIKULUM BERBASIS CINTA</h2>';
+html+='<h3>A. Pembelajaran Mendalam</h3><p>Pembelajaran Mendalam merupakan pendekatan yang memuliakan peserta didik melalui suasana dan proses pembelajaran berkesadaran, bermakna, dan menggembirakan.</p>';
+html+='<table><thead><tr><th>Prinsip</th><th>Indikasi dalam Praktik Pembelajaran</th></tr></thead><tbody>';
+html+='<tr><td class="left"><b>Berkesadaran</b></td><td class="left">Peserta didik memahami tujuan belajar, terlibat aktif, memiliki motivasi, mampu memilih strategi, dan melakukan refleksi terhadap proses belajarnya.</td></tr>';
+html+='<tr><td class="left"><b>Bermakna</b></td><td class="left">Materi dikaitkan dengan pengetahuan sebelumnya, kehidupan nyata, konteks peserta didik, pemecahan masalah, dan penerapan pengetahuan.</td></tr>';
+html+='<tr><td class="left"><b>Menggembirakan</b></td><td class="left">Lingkungan aman dan positif; peserta didik dihargai, tertantang, termotivasi, berani mencoba, dan menikmati proses belajar tanpa kehilangan kedalaman tujuan.</td></tr>';
+html+='</tbody></table>';
+html+='<h3>C. Kurikulum Berbasis Cinta</h3><p>Integrasi KBC dalam supervisi diarahkan pada internalisasi nilai melalui tujuan, proses, keteladanan, interaksi, konteks materi, pengalaman belajar, dan budaya kelas.</p>';
+html+='<table><thead><tr><th>Panca Cinta</th><th>Contoh Manifestasi yang Dapat Diamati</th></tr></thead><tbody>';
+html+='<tr><td class="left"><b>Cinta Allah dan Rasul-Nya</b></td><td class="left">Pembelajaran menumbuhkan kesadaran spiritual, syukur, akhlak, keteladanan, dan tanggung jawab.</td></tr>';
+html+='<tr><td class="left"><b>Cinta Ilmu</b></td><td class="left">Rasa ingin tahu, ketekunan, literasi, nalar kritis, kejujuran akademik, dan kegemaran belajar.</td></tr>';
+html+='<tr><td class="left"><b>Cinta Lingkungan</b></td><td class="left">Kepedulian terhadap kebersihan, kelestarian, sumber daya, dan tanggung jawab ekologis.</td></tr>';
+html+='<tr><td class="left"><b>Cinta Diri dan Sesama</b></td><td class="left">Penghargaan martabat, empati, inklusivitas, kepedulian, kolaborasi, keamanan, dan penghormatan terhadap perbedaan.</td></tr>';
+html+='<tr><td class="left"><b>Cinta Tanah Air</b></td><td class="left">Kebanggaan, tanggung jawab kewargaan, penghargaan budaya, persatuan, dan kontribusi bagi masyarakat/bangsa.</td></tr>';
+html+='</tbody></table>';
+// ---- BAB VI & VII ----
+html+='<div class="page-break"></div><h2>BAB VI<br>MONITORING, EVALUASI, DAN TINDAK LANJUT</h2>';
+html+='<p>Data hasil supervisi dianalisis untuk memperoleh gambaran kekuatan, area pengembangan, kebutuhan individual, dan kebutuhan kolektif guru. Data digunakan sebagai dasar pendampingan dan pengembangan profesional.</p>';
+html+='<table><thead><tr><th>Kategori Kebutuhan</th><th>Contoh Tindak Lanjut</th></tr></thead><tbody>';
+html+='<tr><td class="left">Individual spesifik</td><td class="left">Coaching, mentoring, observasi ulang, belajar mandiri terarah</td></tr>';
+html+='<tr><td class="left">Beberapa guru</td><td class="left">Diskusi kelompok, peer coaching, lesson study</td></tr>';
+html+='<tr><td class="left">Mayoritas guru</td><td class="left">Workshop internal, komunitas belajar, pendampingan tematik</td></tr>';
+html+='<tr><td class="left">Praktik unggul</td><td class="left">Berbagi praktik baik, guru model, diseminasi</td></tr>';
+html+='</tbody></table>';
+html+='<h3>B. Pelaporan</h3><p>Laporan supervisi sekurang-kurangnya memuat pelaksanaan program, jumlah guru yang disupervisi, fokus supervisi, temuan umum, praktik baik, area pengembangan, tindak lanjut, hasil monitoring, kendala, dan rekomendasi program berikutnya.</p>';
+html+='<div class="page-break"></div><h2>BAB VII<br>PENUTUP</h2>';
+html+='<p>Program Supervisi Pembelajaran'+(isRA?' RA':'')+' Madrasah Tahun Pelajaran '+tahun+' merupakan pedoman kerja yang bersifat operasional dan adaptif. Keberhasilannya ditentukan oleh konsistensi pelaksanaan, kualitas dialog profesional, ketepatan tindak lanjut, dan komitmen seluruh warga madrasah untuk terus belajar.</p>';
+html+='<p>Melalui supervisi yang humanis, objektif, reflektif, dan berkelanjutan, diharapkan guru semakin mampu menghadirkan pembelajaran yang memuliakan peserta didik, berkesadaran, bermakna, menggembirakan, serta menginternalisasikan nilai-nilai cinta dalam kehidupan nyata.</p>';
+// ---- LAMPIRAN ----
+html+='<div class="page-break"></div><h2>LAMPIRAN</h2>';
+html+='<h3>Lampiran 1. Format Daftar Guru Sasaran dan Jadwal Supervisi</h3>';
+html+='<table><thead><tr><th>No</th><th>Nama Guru</th><th>Mapel/Kelas</th><th>Supervisor</th><th>Pra-Obs</th><th>Observasi</th><th>Pasca-Obs</th><th>RTL</th></tr></thead><tbody>';
+var guru=getGuru();
+if(guru.length===0){html+='<tr><td colspan="8" class="left">Belum ada data guru.</td></tr>';}else{guru.forEach(function(g,i){html+='<tr><td>'+(i+1)+'</td><td class="left">'+escHtml(g.nama||'')+'</td><td class="left">'+escHtml(g.mapel||'')+'</td><td style="background:#fafafa">&nbsp;</td><td style="background:#fafafa">&nbsp;</td><td style="background:#fafafa">&nbsp;</td><td style="background:#fafafa">&nbsp;</td><td style="background:#fafafa">&nbsp;</td></tr>';});}
+html+='</tbody></table>';
+// Lampiran rekapitulasi hasil supervisi (auto dari data)
+html+='<h3>Lampiran 7. Rekapitulasi Hasil Supervisi</h3>';
+if(data.length===0){html+='<p>Belum ada hasil supervisi yang direkap.</p>';}else{
+html+='<table><thead><tr><th>No</th><th>Nama Guru</th><th>Perencanaan</th><th>Pelaksanaan</th><th>Asesmen</th><th>Rata-rata</th><th>Predikat</th></tr></thead><tbody>';
+data.forEach(function(d,i){var p=calcTotal(d);var pe=calcKomponen(d,'perencanaan'),pl=calcKomponen(d,'pelaksanaan'),as=calcKomponen(d,'asesmen');html+='<tr><td>'+(i+1)+'</td><td class="left">'+escHtml(d.identitas&&d.identitas.namaGuru||'')+'</td><td>'+pe.toFixed(1)+'%</td><td>'+pl.toFixed(1)+'%</td><td>'+as.toFixed(1)+'%</td><td>'+p.toFixed(1)+'%</td><td>'+getPredikat(p)+'</td></tr>';});
+html+='</tbody></table>';
+}
+html+='<p style="text-align:center;margin-top:20px">Dokumen ini dibuat melalui aplikasi Supervisi PM-KBC Pokjawas.</p>';
+html+='</body></html>';
+w.document.write(html);
+w.document.close();
+w.focus();
+}
+
+
+// ===== KIRIM KE PENGAWAS (KM) — export data madrasah sendiri =====
+function renderKirimPengawas(){
+var n=getKMMadrasahNama();
+var html='<div class="card">';
+html+='<h2>📤 Kirim ke Pengawas</h2>';
+if(!n){html+='<div class="empty-state"><p>Menu ini khusus Kepala Madrasah. Silakan login sebagai Kepala Madrasah.</p></div></div>';}
+else{
+html+='<p style="color:#64748b;font-size:.9rem;margin-bottom:12px">Export data <b>'+escHtml(n)+'</b> ke satu file JSON untuk dikirim ke Pengawas. File ini hanya berisi data madrasah Bapak: profil madrasah, data guru, hasil supervisi pembelajaran, dan catatan program supervisi. Data madrasah lain tidak ikut.</p>';
+html+='<div style="display:flex;gap:10px;flex-wrap:wrap">';
+html+='<button class="btn btn-primary" onclick="kirimKePengawas()">📦 Kirim Data ke Pengawas</button>';
+html+='</div>';
+html+='<div id="kirimStatus" style="margin-top:16px"></div>';
+html+='</div>';
+}
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
+return html;
+}
+
+function kirimKePengawas(){
+var n=getKMMadrasahNama();
+if(!n){alert('Anda bukan Kepala Madrasah.');return;}
+var madrasah=getMadrasah();
+var guru=getGuru();
+var data=getData();
+if(madrasah.length===0){alert('Belum ada data profil madrasah. Silakan isi di Data Master dulu.');return;}
+var exportObj={
+version:'1.0',
+type:'kirim-pengawas',
+madrasah:n,
+date:new Date().toISOString(),
+sumber:'kepala_madrasah',
+pengirim:(getSession()||{}).nama||'',
+madrasahData:madrasah,
+guruData:guru,
+supervisiData:data
+};
+var blob=new Blob([JSON.stringify(exportObj,null,2)],{type:'application/json'});
+var url=URL.createObjectURL(blob);
+var a=document.createElement('a');
+a.href=url;
+a.download='kirim_pengawas_'+n.replace(/[^a-z0-9]+/gi,'_')+'.json';
+a.click();
+var st=document.getElementById('kirimStatus');
+if(st)st.innerHTML='<div class="auth-success" style="display:block">✅ File data <b>'+escHtml(n)+'</b> berhasil diexport. Kirim file ini ke Pengawas melalui WhatsApp/email.</div>';
+}
+
+// ===== TERIMA DATA MADRASAH (Pengawas) — import mode merge =====
+function renderTerimaData(){
+var html='<div class="card">';
+html+='<h2>&#128229; Terima Data Madrasah</h2>';
+html+='<p style="color:#64748b;font-size:.9rem;margin-bottom:16px">Import file data yang dikirim Kepala Madrasah (hasil menu "Kirim ke Pengawas"). Mode <b>merge</b>: madrasah baru ditambahkan, data madrasah yang sudah ada diperbarui (update terbaru), dan madrasah lain tetap tidak tersentuh.</p>';
+html+='<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:14px;margin-bottom:16px;font-size:.88rem;color:#0369a1">';
+html+='<b>Alur:</b> Kepala Madrasah mengirim file JSON &rarr; Bapak upload di menu ini &rarr; data madrasah/guru/supervisi masuk (merge) &rarr; Bapak bisa input modul kokurikuler/ekstra/iklim lalu cetak laporan.';
+html+='</div>';
+html+='<input type="file" id="terimaFile" accept=".json" style="display:none" onchange="handleTerimaData(event)">';
+html+='<button class="btn btn-primary" onclick="document.getElementById(\'terimaFile\').click()">&#128229; Pilih File dari Kepala Madrasah</button>';
+html+='<div id="terimaStatus" style="margin-top:16px"></div>';
+html+='</div>';
+html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">✕ Tutup</button></div>';
+return html;
+}
+
+function handleTerimaData(event){
+var file=event.target.files[0];
+if(!file)return;
+if(!confirm('Import file data Kepala Madrasah? Data madrasah/guru/supervisi akan di-merge (madrasah baru ditambah, yang ada diperbarui).'))return;
+var reader=new FileReader();
+reader.onload=function(e){
+try{
+var j=JSON.parse(e.target.result);
+if(!j||j.type!=='kirim-pengawas'){alert('File tidak dikenali. Ini bukan file hasil "Kirim ke Pengawas".');return;}
+var nama=(j.madrasah||'').trim()||(j.madrasahData&&j.madrasahData[0]&&j.madrasahData[0].nama?j.madrasahData[0].nama:'');
+var r={};
+// --- merge madrasah ---
+var mAll=getMadrasah();
+(j.madrasahData||[]).forEach(function(m){
+var idx=mAll.findIndex(function(x){return x.nama===m.nama;});
+if(idx===-1)mAll.push(m);else mAll[idx]=Object.assign({},mAll[idx],m);
+});
+saveMadrasah(mAll);r.madrasah=(j.madrasahData||[]).length;
+// --- merge guru ---
+var gAll=getGuru();
+var gIn=0,gUp=0;
+(j.guruData||[]).forEach(function(g){
+var idx=gAll.findIndex(function(x){return x.nama===g.nama&&x.madrasah===g.madrasah;});
+if(idx===-1){gAll.push(g);gIn++;}else{gAll[idx]=Object.assign({},gAll[idx],g);gUp++;}
+});
+saveGuru(gAll);r.guru=gIn+' baru, '+gUp+' diperbarui';
+// --- merge supervisi ---
+var sAll=getData();
+var sIn=0,sUp=0;
+(j.supervisiData||[]).forEach(function(s){
+var idKey=(s.identitas&&s.identitas.namaGuru?s.identitas.namaGuru:'')+'|'+(s.identitas&&s.identitas.tanggalSupervisi?s.identitas.tanggalSupervisi:'')+'|'+(s.identitas&&s.identitas.mataPelajaran?s.identitas.mataPelajaran:'');
+var idx=sAll.findIndex(function(x){var k=(x.identitas&&x.identitas.namaGuru?x.identitas.namaGuru:'')+'|'+(x.identitas&&x.identitas.tanggalSupervisi?x.identitas.tanggalSupervisi:'')+'|'+(x.identitas&&x.identitas.mataPelajaran?x.identitas.mataPelajaran:'');return k===idKey;});
+if(idx===-1){sAll.push(s);sIn++;}else{sAll[idx]=Object.assign({},sAll[idx],s);sUp++;}
+});
+saveData(sAll);r.supervisi=sIn+' baru, '+sUp+' diperbarui';
+var st=document.getElementById('terimaStatus');
+if(st)st.innerHTML='<div class="auth-success" style="display:block">✅ Import berhasil untuk <b>'+escHtml(nama)+'</b>.<br>• Madrasah: '+r.madrasah+'<br>• Guru: '+r.guru+'<br>• Supervisi: '+r.supervisi+'</div>';
+alert('Import berhasil!\nMadrasah: '+r.madrasah+'\nGuru: '+r.guru+'\nSupervisi: '+r.supervisi);
+render();
+}catch(err){alert('Gagal import: '+err.message);}
+};
+reader.readAsText(file);
+event.target.value='';
 }
 
 // ===== CONSTANTS =====
@@ -893,12 +1481,25 @@ return null;
 function getActiveAppKey(){return isRAJenjang()?APP_KEY_RA:APP_KEY;}
 function getActiveGuruKey(){return isRAJenjang()?GURU_KEY_RA:GURU_KEY;}
 function getActiveMadrasahKey(){return isRAJenjang()?MADRASAH_KEY_RA:MADRASAH_KEY;}
-function getData(){try{return JSON.parse(localStorage.getItem(getActiveAppKey()))||[]}catch(e){return[]}}
-function saveData(d){localStorage.setItem(getActiveAppKey(),JSON.stringify(d))}
-function getMadrasah(){try{return JSON.parse(localStorage.getItem(getActiveMadrasahKey()))||[]}catch(e){return[]}}
-function saveMadrasah(d){localStorage.setItem(getActiveMadrasahKey(),JSON.stringify(d))}
-function getGuru(){try{return JSON.parse(localStorage.getItem(getActiveGuruKey()))||[]}catch(e){return[]}}
-function saveGuru(d){localStorage.setItem(getActiveGuruKey(),JSON.stringify(d))}
+function rawGetMadrasah(){try{return JSON.parse(localStorage.getItem(getActiveMadrasahKey()))||[]}catch(e){return[]}}
+function rawGetGuru(){try{return JSON.parse(localStorage.getItem(getActiveGuruKey()))||[]}catch(e){return[]}}
+function rawGetData(){try{return JSON.parse(localStorage.getItem(getActiveAppKey()))||[]}catch(e){return[]}}
+function saveData(d){if(isScopedMode()){var full=rawGetData();var n=getKMMadrasahNama();var rest=full.filter(function(x){return !(x.identitas&&x.identitas.namaMadrasah===n);});localStorage.setItem(getActiveAppKey(),JSON.stringify(rest.concat(d)));}else{localStorage.setItem(getActiveAppKey(),JSON.stringify(d))}}
+function saveMadrasah(d){if(isScopedMode()){var full=rawGetMadrasah();var n=getKMMadrasahNama();var rest=full.filter(function(m){return m.nama!==n;});localStorage.setItem(getActiveMadrasahKey(),JSON.stringify(rest.concat(d)));}else{localStorage.setItem(getActiveMadrasahKey(),JSON.stringify(d))}}
+function saveGuru(d){if(isScopedMode()){var full=rawGetGuru();var n=getKMMadrasahNama();var rest=full.filter(function(g){return g.madrasah!==n;});localStorage.setItem(getActiveGuruKey(),JSON.stringify(rest.concat(d)));}else{localStorage.setItem(getActiveGuruKey(),JSON.stringify(d))}}
+// ===== SCOPE PER MADRASAH UTK KM =====
+function getKMMadrasahNama(){var s=getSession();return (s&&s.role===ROLES.KM&&s.madrasah)?s.madrasah:null;}
+function isScopedMode(){return getKMMadrasahNama()!==null;}
+// KM hanya melihat data madrasahnya sendiri; pengawas/admin melihat semua
+function getMadrasah(){var all=rawGetMadrasah();if(!isScopedMode())return all;var n=getKMMadrasahNama();return all.filter(function(m){return m.nama===n;});}
+function getGuru(){var all=rawGetGuru();if(!isScopedMode())return all;var n=getKMMadrasahNama();return all.filter(function(g){return g.madrasah===n;});}
+function getData(){var all=rawGetData();if(!isScopedMode())return all;var n=getKMMadrasahNama();return all.filter(function(d){return d.identitas&&d.identitas.namaMadrasah===n;});}
+function getScopedMadrasah(){return getMadrasah();}
+function getScopedGuru(){return getGuru();}
+function getScopedData(){return getData();}
+function getScopedKokurikuler(){return isScopedMode()?[]:getKokurikuler();}
+function getScopedEkstrakurikuler(){return isScopedMode()?[]:getEkstrakurikuler();}
+function getScopedIklimMadrasah(){return isScopedMode()?[]:getIklimMadrasah();}
 function getPengawas(){try{return JSON.parse(localStorage.getItem(PENGAWAS_KEY))||{}}catch(e){return{}}}
 function savePengawas(d){localStorage.setItem(PENGAWAS_KEY,JSON.stringify(d))}
 
@@ -993,6 +1594,13 @@ var el=document.getElementById(id);
 if(el)el.classList.toggle('open');
 }
 function navigate(view){
+// ===== ROUTE GUARD (role-based) =====
+var role=getCurrentRole();
+if(role===ROLES.KM){
+  // Kepala Madrasah: akses terbatas (data madrasahnya, supervisi pembelajaran, program, laporan)
+  var kmViews=['dashboard','madrasah','madrasah-ra','guru','guru-ra','supervisi','form','supervisi-ra','form-ra','supervisi-ra-form','detail','detail-ra','rekap','rekap-ra','cetak','cetak-ra','laporan','laporan-ra','program-supervisi','ubah-password','kirim-pengawas','backup-restore'];
+  if(kmViews.indexOf(view)===-1){alert('Menu ini khusus Pengawas/Admin.');renderSidebar(getSession());return;}
+}
 state.view=view;state.editId=null;
 state.jenjang=isRAView(view)?'ra':'umum';
 document.querySelectorAll('.sidebar-menu li').forEach(function(li){li.classList.toggle('active',li.dataset.nav===view)});
@@ -1037,6 +1645,10 @@ case 'laporan-iklim-madrasah-madrasah':app.innerHTML=renderLaporanIklimMadrasahP
 case 'laporan-iklim-madrasah-kkma':app.innerHTML=renderLaporanIklimMadrasahPerKKMAPage();break;
 case 'ubah-password':app.innerHTML=renderUbahPassword();break;
 case 'backup-restore':app.innerHTML=renderBackupRestore();break;
+case 'program-supervisi':app.innerHTML=renderProgramSupervisi();break;
+case 'kelola-akun':app.innerHTML=renderKelolaAkun();break;
+case 'kirim-pengawas':app.innerHTML=renderKirimPengawas();break;
+case 'terima-data':app.innerHTML=renderTerimaData();break;
 case 'supervisi-ra':case 'supervisi-ra-form':case 'form-ra':app.innerHTML=renderForm();break;
 case 'guru-ra':app.innerHTML=renderGuruPage();break;
 case 'detail-ra':app.innerHTML=renderDetail();break;
