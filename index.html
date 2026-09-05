@@ -6213,20 +6213,21 @@ function renderLaporanIklimMadrasahPerKKMAPage(){return renderLaporanPerKKMAGene
 function cetakLaporanIklimMadrasahPerMadrasah(mName){cetakLaporanPerMadrasahGeneric(mName,'Supervisi Iklim Madrasah',getIklimMadrasah,IKLIM_MADRASAH);}
 function cetakLaporanIklimMadrasahPerKKMA(){cetakLaporanPerKKMAGeneric('Supervisi Iklim Madrasah',getIklimMadrasah,IKLIM_MADRASAH);}
 
-// === MIGRATION: Hapus seed data lama ===
+// === MIGRATION: Hapus seluruh baris seed/contoh madrasah lama ===
 function cleanupOldSeedData(){
 var OLD_SEED_NPSN=['20580249','20580256','20580298','20596561','20580304','20580300','20580266','60728115','69788053','69894851','69894852','20580308','69894854','69894855','20580306','20580270','69881456','20595872','70010531','70059027'];
 var keys=['supervisi_madrasah','supervisi_madrasah_ra'];
-var changed=false;
+var removed=0;
 keys.forEach(function(k){
 try{
 var data=JSON.parse(localStorage.getItem(k)||'[]');
 if(!Array.isArray(data)||data.length===0)return;
-var isOldSeed=data.length===20&&data.every(function(m){return OLD_SEED_NPSN.indexOf(m.npsn)!==-1;});
-if(isOldSeed){localStorage.removeItem(k);changed=true;}
+var cleaned=data.filter(function(m){return OLD_SEED_NPSN.indexOf(String(m&&m.npsn||'').trim())===-1;});
+removed+=data.length-cleaned.length;
+if(cleaned.length!==data.length){localStorage.setItem(k,JSON.stringify(cleaned));}
 }catch(e){}
 });
-if(changed)console.log('[Migration] Old seed madrasah data removed.');
+if(removed>0)console.log('[Migration] '+removed+' data contoh madrasah lama dihapus.');
 }
 cleanupOldSeedData();
 initDefaultMadrasah();
