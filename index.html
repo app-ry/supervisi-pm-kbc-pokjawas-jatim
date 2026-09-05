@@ -1918,10 +1918,14 @@ var html='<div class="card">';
 html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">';
 html+='<h2>'+(isRAJenjang()?'Data Madrasah RA':'Data Madrasah')+'</h2>';
 html+='<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">';
+if(isKM()){
+html+='<button class="btn btn-sm btn-primary" onclick="showMadrasahModal()">&#9998; Isi Data Madrasah'+(isRAJenjang()?' RA':'')+'</button>';
+}else{
 html+='<button class="btn btn-sm btn-primary" onclick="showMadrasahModal()">+ Tambah Madrasah'+(isRAJenjang()?' RA':'')+'</button>';
 html+='<button class="btn btn-sm btn-success" onclick="exportMadrasahExcel()">&#128190; Export Excel</button>';
 html+='<button class="btn btn-sm btn-info" onclick="importMadrasahExcel()">&#128196; Import Excel</button>';
 html+='<button class="btn btn-sm btn-secondary" onclick="downloadTemplateMadrasah()">&#128229; Template Excel</button>';
+}
 html+='</div></div>';
 html+='<input type="file" id="importMadrasahFile" accept=".xlsx,.xls" style="display:none" onchange="handleImportMadrasah(event)">';
 if(data.length===0){html+='<div class="empty-state"><p>Belum ada data madrasah'+(isRAJenjang()?' RA':'')+'.</p></div>';}
@@ -1937,8 +1941,8 @@ function showMadrasahModal(idx){
 var m=(idx!==undefined)?getMadrasah()[idx]:{};
 var isEdit=(idx!==undefined);
 var modal='<div class="modal-overlay" style="display:flex" onclick="if(event.target===this)closeModal()">';
-modal+='<div class="modal"><h3>'+(isEdit?'Edit':'Tambah')+' Madrasah</h3>';
-modal+='<div class="form-group"><label>Nama Madrasah</label><input id="m-nama" value="'+escHtml(m.nama||'')+'"></div>';
+modal+='<div class="modal"><h3>'+(isKM()?'Isi':(isEdit?'Edit':'Tambah'))+' Madrasah</h3>';
+modal+='<div class="form-group"><label>Nama Madrasah'+(isKM()?' (dari akun, terkunci)':'')+'</label><input id="m-nama" value="'+escHtml(isKM()?(getKMMadrasahNama()||m.nama||''):(m.nama||''))+'" '+(isKM()?'readonly style="background:#f1f5f9;cursor:not-allowed"':'')+'></div>';
 modal+='<div class="form-group"><label>NPSN</label><input id="m-npsn" value="'+escHtml(m.npsn||'')+'"></div>';
 modal+='<div class="form-group"><label>Alamat</label><input id="m-alamat" value="'+escHtml(m.alamat||'')+'"></div>';
 modal+='<div class="form-group"><label>Kabupaten/Kota</label><input id="m-kabupaten" value="'+escHtml(m.kabupaten||'')+'"></div>';
@@ -1959,11 +1963,16 @@ kabupaten:document.getElementById('m-kabupaten').value.trim(),
 kepala:document.getElementById('m-kepala').value.trim(),
 nipKepala:document.getElementById('m-nipkepala').value.trim()
 };
+if(isKM())obj.nama=getKMMadrasahNama()||obj.nama;
 if(!obj.nama){alert('Nama madrasah wajib diisi');return;}
 var data=getMadrasah();
+if(isKM()){
+if(data.length===0){data=[obj];}else{data[0]=obj;}
+}else{
 if(idx!==null&&idx!==undefined){data[idx]=obj;}else{
 if(data.length>=30){alert('Maksimal 30 madrasah');return;}
 data.push(obj);
+}
 }
 saveMadrasah(data);closeModal();render();
 }
@@ -2068,7 +2077,11 @@ modal+='<div class="modal"><h3>'+(isEdit?'Edit':'Tambah')+' Guru</h3>';
 modal+='<div class="form-group"><label>Nama Guru</label><input id="g-nama" value="'+escHtml(g.nama||'')+'"></div>';
 modal+='<div class="form-group"><label>NIP</label><input id="g-nip" value="'+escHtml(g.nip||'')+'"></div>';
 modal+='<div class="form-group"><label>Mata Pelajaran</label><input id="g-mapel" value="'+escHtml(g.mataPelajaran||'')+'"></div>';
+if(isKM()){
+modal+='<div class="form-group"><label>Madrasah (dari akun, terkunci)</label><input id="g-madrasah" value="'+escHtml(getKMMadrasahNama()||g.madrasah||'')+'" readonly style="background:#f1f5f9;cursor:not-allowed"></div>';
+}else{
 modal+='<div class="form-group"><label>Madrasah</label><select id="g-madrasah">'+opts+'</select></div>';
+}
 modal+='<div class="btn-group"><button class="btn btn-success" onclick="saveGuruForm('+(isEdit?idx:'null')+')">Simpan</button>';
 modal+='<button class="btn btn-secondary" onclick="closeModal()">Batal</button></div>';
 modal+='</div></div>';
@@ -2080,7 +2093,7 @@ var obj={
 nama:document.getElementById('g-nama').value.trim(),
 nip:document.getElementById('g-nip').value.trim(),
 mataPelajaran:document.getElementById('g-mapel').value.trim(),
-madrasah:document.getElementById('g-madrasah').value
+madrasah:isKM()?(getKMMadrasahNama()||''):document.getElementById('g-madrasah').value
 };
 if(!obj.nama){alert('Nama guru wajib diisi');return;}
 var data=getGuru();
@@ -2308,13 +2321,21 @@ return '<div class="card">'+progress+'<h2 style="margin-bottom:20px">'+steps[sta
 
 function renderIdentitas(){
 var id=state.formData.identitas||{};
+var isKm=isKM();
+if(isKm&&!id.namaMadrasah){id.namaMadrasah=getKMMadrasahNama()||'';}
+if(isKm){var myM=getMadrasah().slice(0,1)[0];if(myM){if(!id.alamatMadrasah)id.alamatMadrasah=myM.alamat||'';if(!id.kabupatenKota)id.kabupatenKota=myM.kabupaten||'';}}
 var madrasahList=getMadrasah();
 var guruList=getGuru();
 var html='<div class="grid-2">';
+if(isKm){
+var kmNama=getKMMadrasahNama()||(getMadrasah().slice(0,1)[0]?getMadrasah()[0].nama:'');
+html+='<div class="form-group"><label>Madrasah (dari akun)</label><input type="text" value="'+escHtml(kmNama)+'" readonly style="background:#f1f5f9;cursor:not-allowed"></div>';
+}else{
 // Madrasah dropdown
 html+='<div class="form-group"><label>Pilih Madrasah (dari data)</label><select onchange="selectMadrasah(this.value)"><option value="">-- Pilih atau isi manual --</option>';
 madrasahList.forEach(function(m,i){html+='<option value="'+i+'" '+(id.selectedMadrasahIdx==i?'selected':'')+'>'+escHtml(m.nama)+'</option>';});
 html+='</select></div>';
+}
 // Guru dropdown
 var filteredGuru=guruList;
 if(id.namaMadrasah){filteredGuru=guruList.filter(function(g){return g.madrasah===id.namaMadrasah});}
@@ -2334,7 +2355,10 @@ var fields=[
 ['jabatanSupervisor','Jabatan Supervisor']
 ];
 fields.forEach(function(f){
-html+='<div class="form-group"><label>'+f[1]+'</label><input type="text" value="'+escHtml(id[f[0]]||'')+'" onchange="updateIdentitas(\''+f[0]+'\',this.value)"></div>';
+var fval=id[f[0]]||'';
+var fextra='';
+if(isKm&&f[0]==='namaMadrasah'){fval=getKMMadrasahNama()||fval;fextra=' readonly style="background:#f1f5f9;cursor:not-allowed"';}
+html+='<div class="form-group"><label>'+f[1]+'</label><input type="text" value="'+escHtml(fval)+'"'+fextra+' onchange="updateIdentitas(\''+f[0]+'\',this.value)"></div>';
 });
 html+='<div class="form-group"><label>Tanggal Supervisi</label><input type="date" value="'+(id.tanggalSupervisi||'')+'" onchange="updateIdentitas(\'tanggalSupervisi\',this.value)"></div>';
 html+='</div>';
@@ -3186,7 +3210,11 @@ var opts='<option value="">-- Pilih Madrasah --</option>';
 madrasahList.forEach(function(m){opts+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});
 var modal='<div class="modal-overlay" style="display:flex" onclick="if(event.target===this)closeKokurikulerModal()">';
 modal+='<div class="modal"><h3>Tambah Penilaian Kokurikuler</h3>';
+if(isKM()){
+modal+='<div class="form-group"><label>Madrasah (dari akun, terkunci)</label><input type="text" id="kok-madrasah" value="'+escHtml(getKMMadrasahNama()||'')+'" readonly style="background:#f1f5f9;cursor:not-allowed"></div>';
+}else{
 modal+='<div class="form-group"><label>Madrasah</label><select id="kok-madrasah">'+opts+'</select></div>';
+}
 modal+='<div class="form-group"><label>Tanggal</label><input type="date" id="kok-tanggal"></div>';
 modal+='<div class="btn-group"><button class="btn btn-success" onclick="addKokurikulerEntry()">Lanjut</button>';
 modal+='<button class="btn btn-secondary" onclick="closeKokurikulerModal()">Batal</button></div>';
@@ -3562,10 +3590,13 @@ var madrasahList=getMadrasah();
 var html='<div style="background:rgba(0,0,0,.5);position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:flex;align-items:center;justify-content:center" id="modal-ekstra">';
 html+='<div style="background:#fff;border-radius:12px;padding:30px;max-width:400px;width:90%">';
 html+='<h3 style="margin-bottom:15px">Tambah Penilaian Ekstrakurikuler</h3>';
-html+='<label>Madrasah:</label><select id="ekstra-madrasah" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
-if(madrasahList.length===0){html+='<option value="">-- Belum ada data madrasah --</option>';}
-else{madrasahList.forEach(function(m){html+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});}
-html+='</select>';
+var madSelect='';
+if(isKM()){madSelect='<input type="text" id="ekstra-madrasah" value="'+escHtml(getKMMadrasahNama()||'')+'" readonly style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd;background:#f1f5f9;cursor:not-allowed">';}
+else{madSelect='<select id="ekstra-madrasah" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
+if(madrasahList.length===0){madSelect+='<option value="">-- Belum ada data madrasah --</option>';}
+else{madrasahList.forEach(function(m){madSelect+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});}
+madSelect+='</select>';}
+html+='<label>Madrasah'+(isKM()?' (dari akun, terkunci)':'')+':</label>'+madSelect;
 html+='<label>Tanggal:</label><input type="date" id="ekstra-tanggal" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
 html+='<div style="text-align:right"><button class="btn btn-secondary" onclick="document.getElementById(\'modal-ekstra\').remove()">Batal</button> ';
 html+='<button class="btn btn-primary" onclick="addEkstrakurikuler()">Simpan</button></div></div></div>';
@@ -3930,10 +3961,13 @@ var madrasahList=getMadrasah();
 var html='<div style="background:rgba(0,0,0,.5);position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;display:flex;align-items:center;justify-content:center" id="modal-iklim">';
 html+='<div style="background:#fff;border-radius:12px;padding:30px;max-width:400px;width:90%">';
 html+='<h3 style="margin-bottom:15px">Tambah Penilaian Iklim Madrasah</h3>';
-html+='<label>Madrasah:</label><select id="iklim-madrasah" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
-if(madrasahList.length===0){html+='<option value="">-- Belum ada data madrasah --</option>';}
-else{madrasahList.forEach(function(m){html+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});}
-html+='</select>';
+var madSelect='';
+if(isKM()){madSelect='<input type="text" id="iklim-madrasah" value="'+escHtml(getKMMadrasahNama()||'')+'" readonly style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd;background:#f1f5f9;cursor:not-allowed">';}
+else{madSelect='<select id="iklim-madrasah" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
+if(madrasahList.length===0){madSelect+='<option value="">-- Belum ada data madrasah --</option>';}
+else{madrasahList.forEach(function(m){madSelect+='<option value="'+escHtml(m.nama)+'">'+escHtml(m.nama)+'</option>';});}
+madSelect+='</select>';}
+html+='<label>Madrasah'+(isKM()?' (dari akun, terkunci)':'')+':</label>'+madSelect;
 html+='<label>Tanggal:</label><input type="date" id="iklim-tanggal" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:6px;border:1px solid #ddd">';
 html+='<div style="text-align:right"><button class="btn btn-secondary" onclick="document.getElementById(\'modal-iklim\').remove()">Batal</button> ';
 html+='<button class="btn btn-primary" onclick="addIklimMadrasah()">Simpan</button></div></div></div>';
