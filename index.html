@@ -3265,7 +3265,7 @@ html+='<textarea rows="4" onchange="setRekapKokurikuler('+idx+',\'tindakLanjut\'
 html+='<div class="btn-group no-print" style="justify-content:center">';
 html+='<button class="btn btn-primary" onclick="navigate(\'kokurikuler\')">✔ Simpan</button>';
 html+='<button class="btn btn-info" onclick="cetakKokurikuler('+idx+')">🖨️ Cetak</button>';
-html+='<button class="btn btn-danger" onclick="navigate(\'kokurikuler\')">✕ Tutup</button>';
+html+='<button class="btn btn-danger" onclick="navigate(\'kokurikuler\')">✕ Batal</button>';
 html+='</div></div>';
 return html;
 }
@@ -3629,11 +3629,11 @@ html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;b
 html+='<div style="margin-top:15px"><h3>Rencana Tindak Lanjut</h3>';
 html+='<textarea rows="6" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px" onchange="setRekapEkstrakurikuler('+idx+',\'tindakLanjut\',this.value)">'+escHtml(rekap.tindakLanjut||'')+'</textarea></div>';
 html+='<div class="btn-group no-print" style="justify-content:center">';
-html+='<button class="btn btn-primary" onclick="navigate(\'ekstrakurikuler\')">&\#10004; Simpan</button>';
+html+='<button class="btn btn-primary" onclick="navigate(\'ekstrakurikuler\')">&#10004; Simpan</button>';
 html+='<button class="btn btn-info" onclick="cetakEkstrakurikuler('+idx+')">&\#128424; Cetak</button>';
 html+='<button class="btn btn-secondary" onclick="editIndikatorEkstrakurikuler()">&#9998; Edit Indikator</button>';
 html+='<button class="btn btn-warning" onclick="resetSkorEkstrakurikuler('+idx+')">&\#128260; Reset Skor</button>';
-html+='<button class="btn btn-danger" onclick="navigate(\'ekstrakurikuler\')">&\#10005; Tutup</button>';
+html+='<button class="btn btn-danger" onclick="navigate(\'ekstrakurikuler\')">✕ Batal</button>';
 html+='</div></div>';
 return html;
 }
@@ -3999,7 +3999,7 @@ html+='<button class="btn btn-primary" onclick="navigate(\'iklim-madrasah\')">&#
 html+='<button class="btn btn-info" onclick="cetakIklimMadrasah('+idx+')">&#128424; Cetak</button>';
 html+='<button class="btn btn-secondary" onclick="editIndikatorIklimMadrasah()">&#9998; Edit Indikator</button>';
 html+='<button class="btn btn-warning" onclick="resetSkorIklimMadrasah('+idx+')">&#128260; Reset Skor</button>';
-html+='<button class="btn btn-danger" onclick="navigate(\'iklim-madrasah\')">&#10005; Tutup</button>';
+html+='<button class="btn btn-danger" onclick="navigate(\'iklim-madrasah\')">&#10005; Batal</button>';
 html+='</div></div>';
 return html;
 }
