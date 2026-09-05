@@ -335,7 +335,7 @@ function isSupervisorLevel(){return isAdmin()||isPengawas();}
 // ===== ROLE-AWARE SIDEBAR =====
 function sMenuItem(view,icon,label,active){return '<li class="'+(active?'active ':'')+'" onclick="navigate(\''+view+'\')" data-nav="'+view+'">'+icon+' '+label+'</li>';}
 function sSubmenuToggle(id,icon,label){return '<li class="submenu-toggle" onclick="toggleSubmenu(\''+id+'\')">'+icon+' '+label+' &#9662;</li>';}
-function sSubItem(view,icon,label,active){return '<li class="'+(active?'active ':'')+'" onclick="navigate(\''+view+'\')" data-nav="'+view+'">'+icon+' '+label+'</li>';}
+function sSubItem(view,icon,label,active){return '<li class="'+(active?'active ':'')+'" onclick="event.stopPropagation();navigate(\''+view+'\')" data-nav="'+view+'">'+icon+' '+label+'</li>';}
 
 function renderSidebar(session){
   var role=session.role||ROLES.PENGAWAS;
