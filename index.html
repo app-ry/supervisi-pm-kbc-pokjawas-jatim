@@ -509,7 +509,7 @@ card.innerHTML='<h2>📝 Daftar Akun</h2>'+
 '<div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Masukkan password" autocomplete="new-password"></div>'+
 '<div class="form-group"><label>Konfirmasi Password</label><input type="password" id="regConfirm" placeholder="Ulangi password" autocomplete="new-password"></div>'+
 '<div class="form-group"><label>Peran</label><select id="regRole" onchange="toggleRegMadrasah()"><option value="pengawas">Pengawas</option><option value="kepala_madrasah">Kepala Madrasah</option></select></div>'+
-'<div class="form-group" id="regMadrasahWrap" style="display:none"><label>Madrasah Binaan</label><select id="regMadrasah"><option value="">-- Pilih Madrasah --</option>'+mOpts+'</select></div>'+
+'<div class="form-group" id="regMadrasahWrap" style="display:none"><label>Madrasah Binaan (opsional)</label><select id="regMadrasah"><option value="">-- Pilih Madrasah --</option>'+mOpts+'</select></div>'+
 '<button class="btn-auth" onclick="doRegister()">Daftar</button>'+
 '<div class="auth-link">Sudah punya akun? <a onclick="showLogin()">Login</a></div>';
 setTimeout(function(){document.getElementById('regNama').focus()},100);
@@ -582,10 +582,7 @@ var roleSelect=document.getElementById('regRole');
 var role=roleSelect?roleSelect.value:ROLES.PENGAWAS;
 var madrasahSelect=document.getElementById('regMadrasah');
 var madrasah=madrasahSelect?(madrasahSelect.value||null):null;
-if(role===ROLES.KM&&!madrasah){
-errEl.textContent='Kepala Madrasah wajib memilih madrasah binaan.';
-errEl.style.display='block';return;
-}
+if(madrasah==='')madrasah=null;
 users.push({nama:nama,username:username,password:password,role:role,madrasah:madrasah});
 saveUsers(users);
 sucEl.textContent='Registrasi berhasil! Silakan login.';
@@ -706,7 +703,7 @@ var role=document.getElementById('ak-role').value;
 var madrasah=document.getElementById('ak-madrasah')?document.getElementById('ak-madrasah').value:'';
 if(!nama||!username||!password){alert('Semua field wajib diisi.');return;}
 if(password.length<4){alert('Password minimal 4 karakter.');return;}
-if(role==='kepala_madrasah'&&!madrasah){alert('Kepala Madrasah wajib memilih madrasah binaan.');return;}
+if(role==='kepala_madrasah'&&!madrasah){madrasah=null;}
 var users=getUsers();
 if(users.some(function(u){return u.username===username})){alert('Username sudah dipakai.');return;}
 users.push({nama:nama,username:username,password:password,role:role,madrasah:(role==='kepala_madrasah'?madrasah:null)});
@@ -1626,6 +1623,7 @@ function saveMadrasah(d){if(isScopedMode()){var full=rawGetMadrasah();var n=getK
 function saveGuru(d){if(isScopedMode()){var full=rawGetGuru();var n=getKMMadrasahNama();var rest=full.filter(function(g){return g.madrasah!==n;});localStorage.setItem(getActiveGuruKey(),JSON.stringify(rest.concat(d)));}else{localStorage.setItem(getActiveGuruKey(),JSON.stringify(d))}}
 // ===== SCOPE PER MADRASAH UTK KM =====
 function getKMMadrasahNama(){var s=getSession();return (s&&s.role===ROLES.KM&&s.madrasah)?s.madrasah:null;}
+function bindKMMadrasah(nama){if(!nama)return;var users=getUsers();var s=getSession();if(!s||!s.username)return;var u=users.find(function(x){return x.username===s.username;});if(u){u.madrasah=nama;saveUsers(users);}s.madrasah=nama;saveSession(s);}
 function isScopedMode(){return getKMMadrasahNama()!==null;}
 // KM hanya melihat data madrasahnya sendiri; pengawas/admin melihat semua
 function getMadrasah(){var all=rawGetMadrasah();if(!isScopedMode())return all;var n=getKMMadrasahNama();return all.filter(function(m){return m.nama===n;});}
@@ -1940,9 +1938,10 @@ return html;
 function showMadrasahModal(idx){
 var m=(idx!==undefined)?getMadrasah()[idx]:{};
 var isEdit=(idx!==undefined);
+var kmHasMad=getKMMadrasahNama();
 var modal='<div class="modal-overlay" style="display:flex" onclick="if(event.target===this)closeModal()">';
 modal+='<div class="modal"><h3>'+(isKM()?'Isi':(isEdit?'Edit':'Tambah'))+' Madrasah</h3>';
-modal+='<div class="form-group"><label>Nama Madrasah'+(isKM()?' (dari akun, terkunci)':'')+'</label><input id="m-nama" value="'+escHtml(isKM()?(getKMMadrasahNama()||m.nama||''):(m.nama||''))+'" '+(isKM()?'readonly style="background:#f1f5f9;cursor:not-allowed"':'')+'></div>';
+modal+='<div class="form-group"><label>Nama Madrasah'+(isKM()?(kmHasMad?' (dari akun, terkunci)':' (ketik sendiri)'):'')+'</label><input id="m-nama" value="'+escHtml(isKM()?(kmHasMad||m.nama||''):(m.nama||''))+'" '+(isKM()&&kmHasMad?'readonly style="background:#f1f5f9;cursor:not-allowed"':'')+'></div>';
 modal+='<div class="form-group"><label>NPSN</label><input id="m-npsn" value="'+escHtml(m.npsn||'')+'"></div>';
 modal+='<div class="form-group"><label>Alamat</label><input id="m-alamat" value="'+escHtml(m.alamat||'')+'"></div>';
 modal+='<div class="form-group"><label>Kabupaten/Kota</label><input id="m-kabupaten" value="'+escHtml(m.kabupaten||'')+'"></div>';
@@ -1974,7 +1973,9 @@ if(data.length>=30){alert('Maksimal 30 madrasah');return;}
 data.push(obj);
 }
 }
-saveMadrasah(data);closeModal();render();
+saveMadrasah(data);
+if(isKM()&&obj.nama&&!getKMMadrasahNama()){bindKMMadrasah(obj.nama);}
+closeModal();render();
 }
 
 function editMadrasah(idx){showMadrasahModal(idx)}
