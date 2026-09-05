@@ -1917,9 +1917,12 @@ rows+='</td></tr>';
 var html='<div class="card">';
 html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">';
 html+='<h2>'+(isRAJenjang()?'Data Madrasah RA':'Data Madrasah')+'</h2>';
-html+='<button class="btn btn-primary" onclick="showMadrasahModal()">+ Tambah Madrasah'+(isRAJenjang()?' RA':'')+'</button> ';
-html+='<button class="btn btn-info" onclick="importMadrasahExcel()">&#128196; Import Excel</button> ';
-html+='<button class="btn btn-secondary" onclick="downloadTemplateMadrasah()">&#128229; Template Excel</button></div>';
+html+='<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">';
+html+='<button class="btn btn-sm btn-primary" onclick="showMadrasahModal()">+ Tambah Madrasah'+(isRAJenjang()?' RA':'')+'</button>';
+html+='<button class="btn btn-sm btn-success" onclick="exportMadrasahExcel()">&#128190; Export Excel</button>';
+html+='<button class="btn btn-sm btn-info" onclick="importMadrasahExcel()">&#128196; Import Excel</button>';
+html+='<button class="btn btn-sm btn-secondary" onclick="downloadTemplateMadrasah()">&#128229; Template Excel</button>';
+html+='</div></div>';
 html+='<input type="file" id="importMadrasahFile" accept=".xlsx,.xls" style="display:none" onchange="handleImportMadrasah(event)">';
 if(data.length===0){html+='<div class="empty-state"><p>Belum ada data madrasah'+(isRAJenjang()?' RA':'')+'.</p></div>';}
 else{
@@ -2012,6 +2015,16 @@ var ws=XLSX.utils.aoa_to_sheet([['Nama Madrasah','NPSN','Alamat','Kabupaten/Kota
 var wb=XLSX.utils.book_new();
 XLSX.utils.book_append_sheet(wb,ws,'Data Madrasah');
 XLSX.writeFile(wb,'Template_Data_Madrasah.xlsx');
+}
+function exportMadrasahExcel(){
+var data=getMadrasah();
+if(data.length===0){alert('Belum ada data madrasah untuk diexport');return;}
+var aoa=[['No','Nama Madrasah','NPSN','Alamat','Kabupaten/Kota','Kepala Madrasah','NIP Kepala']];
+data.forEach(function(m,i){aoa.push([i+1,m.nama||'',m.npsn||'',m.alamat||'',m.kabupaten||'',m.kepala||'',m.nipKepala||'']);});
+var ws=XLSX.utils.aoa_to_sheet(aoa);
+var wb=XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(wb,ws,'Data Madrasah');
+XLSX.writeFile(wb,'Data_Madrasah_'+new Date().toISOString().slice(0,10)+'.xlsx');
 }
 
 // ===== DATA GURU =====
