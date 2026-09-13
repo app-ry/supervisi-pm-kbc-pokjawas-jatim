@@ -2037,7 +2037,6 @@ if(isKM()){
 if(data.length===0){data=[obj];}else{data[0]=obj;}
 }else{
 if(idx!==null&&idx!==undefined){data[idx]=obj;}else{
-if(data.length>=30){alert('Maksimal 30 madrasah');return;}
 data.push(obj);
 }
 }
@@ -2079,7 +2078,6 @@ nipKepala:(row['NIP Kepala']||row['nipKepala']||row['NIP']||'').toString().trim(
 var duplicate=existing.some(function(m){return m.nama.toLowerCase()===obj.nama.toLowerCase();});
 if(!duplicate){existing.push(obj);count++;}
 });
-if(existing.length>30){alert('Maksimal 30 madrasah. Hanya '+(30-getMadrasah().length)+' yang bisa ditambahkan.');existing=existing.slice(0,30);}
 saveMadrasah(existing);
 alert('Berhasil import '+count+' madrasah!');
 render();
