@@ -2381,11 +2381,16 @@ else if(state.currentStep===2)content=renderPelaksanaan();
 else if(state.currentStep===3)content=renderInstrumen('asesmen',getIndikator('asesmen'));
 else if(state.currentStep===4)content=renderRekap();
 var isLast=state.currentStep===4;
-var nav='<div style="display:flex;justify-content:space-between;margin-top:20px">';
-nav+='<button class="btn btn-secondary" onclick="'+(state.currentStep===0?'backToDashboard()':'prevStep()')+'">&#8592; '+(state.currentStep===0?'Batal':'Kembali')+'</button>';
-if(isLast){nav+='<button class="btn btn-success" onclick="saveForm()">&#128190; Simpan</button>';}
-else{nav+='<button class="btn btn-primary" onclick="nextStep()">Lanjut &#8594;</button>';}
+var hasActionButtons=state.currentStep>0;
+var nav='<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:20px">';
+nav+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
+nav+='<button class="btn btn-secondary" onclick="'+(state.currentStep===0?'cancelForm()':'prevStep()')+'">&#8592; '+(state.currentStep===0?'Batal':'Kembali')+'</button>';
+if(hasActionButtons){nav+='<button class="btn btn-danger" onclick="cancelForm()">&#10005; Batal</button>';}
 nav+='</div>';
+nav+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
+if(hasActionButtons){nav+='<button class="btn btn-success" onclick="saveForm()">&#128190; Simpan</button>';}
+if(!isLast){nav+='<button class="btn btn-primary" onclick="nextStep()">Lanjut &#8594;</button>';}
+nav+='</div></div>';
 return '<div class="card">'+progress+'<h2 style="margin-bottom:20px">'+steps[state.currentStep]+'</h2>'+content+nav+'</div>';
 }
 
@@ -2794,6 +2799,25 @@ state.formData={identitas:{namaSupervisor:supNama,nipSupervisor:supNip,jabatanSu
 render();
 }
 function backToDashboard(){state.view='dashboard';state.jenjang='umum';render()}
+function hasFormInput(){
+var f=state.formData||{};
+if(f.identitas&&(f.identitas.namaGuru||f.identitas.namaMadrasah))return true;
+var ks=['perencanaan','pelaksanaan','asesmen'];
+for(var i=0;i<ks.length;i++){
+var c=f[ks[i]];
+if(!c)continue;
+if(c.scores&&c.scores.some(function(s){return s!==null&&s!==undefined}))return true;
+if(c.catatan&&c.catatan.some(function(t){return t}))return true;
+}
+if(f.rekap){for(var k in f.rekap){var r=f.rekap[k];if(r&&(r.catatan||r.tindakLanjut))return true;}}
+return false;
+}
+function cancelForm(){
+if(state.editId!==null||hasFormInput()){
+if(!confirm('Batalkan pengisian? Perubahan yang belum disimpan akan hilang.'))return;
+}
+backToDashboard();
+}
 function nextStep(){if(state.currentStep<4)state.currentStep++;render()}
 function prevStep(){if(state.currentStep>0)state.currentStep--;render()}
 
@@ -2833,7 +2857,7 @@ if(field==='tindakLanjut')state.formData.rekap[komp].manualTindakLanjut=true;
 function saveForm(){
 var data=getData();
 if(state.editId!==null){data[state.editId]=state.formData;}
-else{data.push(state.formData);}
+else{data.push(state.formData);state.editId=data.length-1;}
 saveData(data);state.view='dashboard';render();
 }
 
