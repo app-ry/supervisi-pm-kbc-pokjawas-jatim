@@ -5969,6 +5969,14 @@ html+='<p style="color:#64748b;font-size:.85rem;margin-bottom:15px">Upload file 
 html+='<button class="btn btn-warning" onclick="document.getElementById(\'restoreFile\').click()">&#128228; Upload & Restore</button>';
 html+='<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="importRestore(event)"></div>';
 html+='</div></div>';
+html+='<div class="card" style="margin-top:20px"><h2 style="margin-bottom:10px">&#128279; Gabung File JSON</h2>';
+html+='<p style="color:#64748b;font-size:.9rem;margin-bottom:14px">Gabungkan beberapa file JSON (backup atau file hasil "Kirim ke Pengawas" dari beberapa madrasah) menjadi satu file. Mode <b>merge</b>: data yang sama diperbarui, data baru ditambahkan, data lain di perangkat ini tetap utuh.</p>';
+html+='<input type="file" id="mergeJsonFiles" accept=".json" multiple style="display:none" onchange="handleGabungJson(event)">';
+html+='<button class="btn btn-primary" onclick="document.getElementById(\'mergeJsonFiles\').click()">&#128279; Pilih File JSON (bisa banyak)</button> ';
+html+='<button class="btn btn-info" onclick="previewGabungJson()">&#128269; Pratinjau Gabungan</button> ';
+html+='<button class="btn btn-primary" style="display:none" id="btnSimpanGabung" onclick="simpanGabungJson()">&#128190; Simpan Gabungan ke Perangkat</button> ';
+html+='<button class="btn btn-success" style="display:none" id="btnDownloadGabung" onclick="downloadGabungJson()">&#128229; Download File Gabungan</button>';
+html+='<div id="gabungStatus" style="margin-top:16px"></div></div>';
 html+='<div class="no-print" style="margin-top:20px;text-align:right"><button class="btn btn-danger" onclick="navigate(\'dashboard\')" style="padding:8px 20px">\u2715 Tutup</button></div>';
 return html;
 }
@@ -6017,6 +6025,147 @@ render();
 };
 reader.readAsText(file);
 event.target.value='';
+}
+
+// ===== GABUNG FILE JSON =====
+var _gabungFiles=[];
+var _gabungResult=null;
+
+function readJsonFiles(fileList){
+return new Promise(function(resolve){
+var files=Array.prototype.slice.call(fileList||[]);
+if(files.length===0){resolve({list:[],failed:0});return;}
+var out=[],done=0,failed=0;
+files.forEach(function(f,idx){
+var r=new FileReader();
+function finish(item,isFail){out[idx]=item;if(isFail)failed++;done++;if(done===files.length)resolve({list:out,failed:failed});}
+r.onload=function(e){
+try{finish({name:f.name,data:JSON.parse(e.target.result)},false);}
+catch(err){finish({name:f.name,data:null,error:err.message},true);}
+};
+r.onerror=function(){finish({name:f.name,data:null,error:'gagal dibaca'},true);};
+r.readAsText(f);
+});
+});
+}
+
+function handleGabungJson(event){
+var st=document.getElementById('gabungStatus');
+_gabungResult=null;
+if(st)st.innerHTML='<div style="color:#64748b;font-size:.88rem">Membaca file...</div>';
+readJsonFiles(event.target.files).then(function(res){
+_gabungFiles=res.list.filter(function(x){return x.data;});
+var nama=_gabungFiles.map(function(x){return '<li>'+escHtml(x.name)+'</li>';}).join('');
+var html='<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px;font-size:.88rem;color:#0369a1">';
+html+='<b>'+_gabungFiles.length+' file terbaca:</b><ul style="margin:6px 0 0 18px">'+nama+'</ul>';
+if(res.failed>0)html+='<div style="color:#b91c1c;margin-top:6px">'+res.failed+' file gagal dibaca / bukan JSON valid.</div>';
+html+='<div style="margin-top:8px">Klik <b>Pratinjau Gabungan</b> untuk melihat jumlah data, lalu pilih <b>Simpan ke Perangkat</b> atau <b>Download File Gabungan</b>.</div></div>';
+if(st)st.innerHTML=html;
+var bs=document.getElementById('btnSimpanGabung'),bd=document.getElementById('btnDownloadGabung');
+if(bs)bs.style.display='';
+if(bd)bd.style.display='';
+});
+event.target.value='';
+}
+
+function buildGabungJson(){
+var sources=[];
+_gabungFiles.forEach(function(f){
+var d=f.data||{};
+if(d.type==='kirim-pengawas'){
+sources.push({file:f.name,pengawas:null,madrasah:d.madrasahData||[],guru:d.guruData||[],supervisi:d.supervisiData||[],kokurikuler:[],ekstrakurikuler:[],iklimMadrasah:[]});
+}else if(d.madrasah||d.guru||d.supervisi||d.kokurikuler||d.ekstrakurikuler||d.iklimMadrasah){
+sources.push({file:f.name,pengawas:d.pengawas||null,madrasah:d.madrasah||[],guru:d.guru||[],supervisi:d.supervisi||[],kokurikuler:d.kokurikuler||[],ekstrakurikuler:d.ekstrakurikuler||[],iklimMadrasah:d.iklimMadrasah||[]});
+}else{
+sources.push({file:f.name,pengawas:null,madrasah:[],guru:[],supervisi:[],kokurikuler:d.kokurikuler||[],ekstrakurikuler:d.ekstrakurikuler||[],iklimMadrasah:d.iklimMadrasah||[]});
+}
+});
+function norm(v){return String(v==null?'':v).trim().toLowerCase();}
+function pushUnique(arr,items,keyFn){
+(items||[]).forEach(function(it){
+if(!it)return;
+var k=keyFn(it);
+var idx=-1;
+for(var i=0;i<arr.length;i++){if(arr[i].k===k){idx=i;break;}}
+if(idx===-1){arr.push({k:k,v:it});}
+else{arr[idx].v=Object.assign({},arr[idx].v,it);}
+});
+}
+var m=[],g=[],s=[],ko=[],ek=[],ik=[];
+sources.forEach(function(src){
+pushUnique(m,src.madrasah,function(x){return norm(x&&x.nama);});
+pushUnique(g,src.guru,function(x){return norm(x&&x.nama)+'|'+norm(x&&x.madrasah);});
+pushUnique(s,src.supervisi,function(x){var id=(x&&x.identitas)||{};return [norm(id.namaGuru),norm(id.tanggalSupervisi),norm(id.namaMadrasah),norm(id.mataPelajaran)].join('|');});
+pushUnique(ko,src.kokurikuler,function(x){return [norm(x&&x.madrasahNama),norm(x&&x.tanggal),JSON.stringify((x&&x.scores)||[])].join('|');});
+pushUnique(ek,src.ekstrakurikuler,function(x){return [norm(x&&x.madrasahNama),norm(x&&x.tanggal),JSON.stringify((x&&x.scores)||[])].join('|');});
+pushUnique(ik,src.iklimMadrasah,function(x){return [norm(x&&x.madrasahNama),norm(x&&x.tanggal),JSON.stringify((x&&x.scores)||[])].join('|');});
+});
+function strip(a){return a.map(function(x){return x.v;});}
+var pengawas=null;
+for(var i=0;i<sources.length;i++){if(sources[i].pengawas&&Object.keys(sources[i].pengawas).length){pengawas=sources[i].pengawas;break;}}
+return {
+version:'1.0',
+type:'gabungan',
+date:new Date().toISOString(),
+mergedFrom:sources.map(function(x){return x.file;}),
+pengawas:pengawas,
+madrasah:strip(m),
+guru:strip(g),
+supervisi:strip(s),
+kokurikuler:strip(ko),
+ekstrakurikuler:strip(ek),
+iklimMadrasah:strip(ik)
+};
+}
+
+function previewGabungJson(){
+if(!_gabungFiles.length){alert('Pilih file JSON dulu.');return;}
+_gabungResult=buildGabungJson();
+var r=_gabungResult;
+var html='<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px;font-size:.9rem;color:#166534">';
+html+='<b>Hasil gabungan dari '+r.mergedFrom.length+' file:</b><br>';
+html+='&bull; Madrasah: <b>'+r.madrasah.length+'</b><br>';
+html+='&bull; Guru: <b>'+r.guru.length+'</b><br>';
+html+='&bull; Supervisi Pembelajaran: <b>'+r.supervisi.length+'</b><br>';
+html+='&bull; Kokurikuler: <b>'+r.kokurikuler.length+'</b><br>';
+html+='&bull; Ekstrakurikuler: <b>'+r.ekstrakurikuler.length+'</b><br>';
+html+='&bull; Iklim Madrasah: <b>'+r.iklimMadrasah.length+'</b></div>';
+var st=document.getElementById('gabungStatus');
+if(st)st.innerHTML=html;
+}
+
+function simpanGabungJson(){
+if(!_gabungResult)previewGabungJson();
+if(!_gabungResult)return;
+if(!confirm('Data di perangkat ini akan ditimpa dengan hasil gabungan ('+_gabungResult.mergedFrom.length+' file). Lanjutkan?'))return;
+var r=_gabungResult;
+try{
+if(r.madrasah.length)saveMadrasah(r.madrasah);
+if(r.guru.length)saveGuru(r.guru);
+if(r.supervisi.length)saveData(r.supervisi);
+if(r.kokurikuler.length)localStorage.setItem(KOKURIKULER_KEY,JSON.stringify(r.kokurikuler));
+if(r.ekstrakurikuler.length)localStorage.setItem(EKSTRAKURIKULER_KEY,JSON.stringify(r.ekstrakurikuler));
+if(r.iklimMadrasah.length)localStorage.setItem(IKLIM_MADRASAH_KEY,JSON.stringify(r.iklimMadrasah));
+if(r.pengawas)savePengawas(r.pengawas);
+var st=document.getElementById('gabungStatus');
+if(st)st.innerHTML='<div class="auth-success" style="display:block">&#9989; Gabungan berhasil disimpan ke perangkat ini.</div>';
+alert('Gabungan berhasil disimpan ke perangkat.');
+render();
+}catch(err){alert('Gagal menyimpan gabungan: '+err.message);}
+}
+
+function downloadGabungJson(){
+if(!_gabungResult)previewGabungJson();
+if(!_gabungResult)return;
+var blob=new Blob([JSON.stringify(_gabungResult,null,2)],{type:'application/json'});
+var url=URL.createObjectURL(blob);
+var a=document.createElement('a');
+a.href=url;
+a.download='gabungan_supervisi_'+new Date().toISOString().slice(0,10)+'.json';
+a.click();
+URL.revokeObjectURL(url);
+var st=document.getElementById('gabungStatus');
+if(st)st.insertAdjacentHTML('beforeend','<div class="auth-success" style="display:block;margin-top:10px">&#9989; File gabungan berhasil diunduh.</div>');
 }
 
 // ===== LAPORAN PER MADRASAH & PER KKMA =====
